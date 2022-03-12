@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "Prof. Dr. Norman Lahme-Hütig (FH Münster)",
+  "author": "Jonathan Hüls, Arne Schaper, Valentin Lieberknecht",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.3"

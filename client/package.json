@@ -12,7 +12,7 @@
     "e2e": "npm run build && mocha --config e2e/.mocharc.json"
   },
   "keywords": [],
-  "author": "Prof. Dr. Norman Lahme-Hütig (FH Münster)",
+  "author": "Jonathan Hüls, Arne Schaper, Valentin Lieberknecht",
   "license": "ISC",
   "devDependencies": {
     "@open-wc/testing-helpers": "^2.0.4",
