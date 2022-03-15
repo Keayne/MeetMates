@@ -14,7 +14,7 @@
     "coverage": "c8 npm test"
   },
   "keywords": [],
-  "author": "Prof. Dr. Norman Lahme-Hütig (FH Münster)",
+  "author": "Jonathan Hüls, Arne Schaper, Valentin Lieberknecht",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
