@@ -1,0 +1,12 @@
+/* Autor: Arne Schaper */
+
+:host {
+  display: flex;
+  position: sticky;
+  background-color: rgb(21, 118, 209);
+}
+
+.logo {
+  justify-content: center;
+  align-items: center;
+}

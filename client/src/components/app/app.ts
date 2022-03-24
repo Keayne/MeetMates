@@ -12,7 +12,10 @@ class AppComponent extends LitElement {
   }
 
   render() {
-    return html` <h3>Ich könnte ein Header sein wenn ich groß bin</h3>`;
+    return html`
+      <app-header></app-header>
+      <app-sign-in></app-sign-in>
+    `;
   }
 
   /** Arne
