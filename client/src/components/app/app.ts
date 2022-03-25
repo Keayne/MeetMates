@@ -1,7 +1,7 @@
 /* Autor: Arne Schaper */
 
 import { LitElement, html } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import { httpClient } from '../../http-client.js';
 import { router } from '../../router/router.js';
 
@@ -12,13 +12,10 @@ class AppComponent extends LitElement {
   }
 
   render() {
-    return html`
-      <app-header></app-header>
-      <app-sign-in></app-sign-in>
-    `;
+    return html` <app-header></app-header> `;
+    //<div class="main">${this.renderRouterOutlet()}</div>
   }
 
-  /** Arne
   renderRouterOutlet() {
     return router.select(
       {
@@ -28,5 +25,4 @@ class AppComponent extends LitElement {
       () => html`<app-sign-in></app-sign-in>` //this should, by default, link to landing/meetmates main page
     );
   }
-  */
 }

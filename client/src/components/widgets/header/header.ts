@@ -1,7 +1,7 @@
 /* Autor: Arne Schaper */
 
 import { LitElement, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
 
 import componentStyle from './header.css';
 
@@ -11,8 +11,17 @@ class HeaderComponent extends LitElement {
 
   render() {
     return html`
-      <p>Placeholder</p>
-      <span class="logo">Logo Placeholder</span>
+      <div class="header">
+        <div class="innerHeader">
+          <div class="logoContainer">
+            <img class="logo" src="/temp_logo.jpg" style="width:50px;height:50px;" />
+          </div>
+          <ol class="navigation">
+            <a><li>Login</li></a>
+            <a><li>About</li></a>
+          </ol>
+        </div>
+      </div>
     `;
   }
 }

@@ -3,10 +3,54 @@
 :host {
   display: flex;
   position: sticky;
-  background-color: rgb(21, 118, 209);
 }
 
-.logo {
+.header {
+  width: 100%;
+  height: 50px;
+  display: block;
+}
+
+.innerHeader {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  margin: 0 auto;
+  background-color: #315895;
+}
+
+.logoContainer {
+  display: table;
+  margin: 0 auto;
+}
+
+.navigation {
+  float: right;
+}
+
+ol {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+ol a {
+  padding: 0 0.5rem 0 0;
+  display: inline-block;
+}
+
+a {
+  text-decoration: none;
+  color: #ccc;
   justify-content: center;
-  align-items: center;
+}
+
+a li {
+  text-align: center;
+  vertical-align: bottom;
+}
+
+a:hover {
+  color: #83a5c2;
 }
