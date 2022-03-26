@@ -1,11 +1,14 @@
-/* Autor: Prof. Dr. Norman Lahme-Hütig (FH Münster) */
+/* Autor: Valentin Lieberknecht */
 
 :root {
-  --app-primary-color: #034da1;
-  --app-error-color: #c5344e;
-  --app-info-color: #14854e;
+  --app-primary-color: #315895;
+  --app-error-color: #bf7f9b;
+  --app-bright-color: #83a5c2;
+  --app-dark-color: #04204a;
 }
 body {
   font-family: 'Open Sans', sans-serif;
   margin: 0;
+  padding: 0;
+  height: 100%;
 }

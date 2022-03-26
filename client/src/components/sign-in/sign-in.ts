@@ -3,8 +3,8 @@
 import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { PageMixin } from '../page.mixin';
-
 import componentStyle from './sign-in.css';
+
 @customElement('app-sign-in')
 class SignInComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
