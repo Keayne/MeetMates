@@ -18,7 +18,7 @@ class FooterComponent extends LitElement {
         <p class="footer-links">
           <a class="link-1" href="#">Home</a>
           <a href="#">FAQ</a>
-          <a href="${this.linkItems[3].routePath}">About</a>
+          <a href="about">About</a>
         </p>
         <p>Meet Mates &copy; 2022</p>
       </div>

@@ -8,13 +8,6 @@ import { router } from '../../router/router.js';
 
 @customElement('app-root')
 class AppComponent extends LitElement {
-  @state() private linkItems = [
-    { title: 'Konto erstellen', routePath: 'users/sign-up' },
-    { title: 'Anmelden', routePath: 'users/sign-in' },
-    { title: 'Abmelden', routePath: 'users/sign-out' },
-    { title: 'Über', routePath: 'about' }
-  ];
-
   firstUpdated() {
     router.subscribe(() => this.requestUpdate());
   }
@@ -24,6 +17,7 @@ class AppComponent extends LitElement {
       {
         // integrate other pages here
         'users/sign-in': () => html`<app-sign-in></app-sign-in>`,
+        'users/sign-up': () => html`<app-sign-up></app-sign-up>`,
         'about': () => html`<app-about></app-about>`
       },
       () => html`<main></main>`
@@ -31,8 +25,8 @@ class AppComponent extends LitElement {
   }
 
   render() {
-    return html` <app-header .linkItems=${this.linkItems}></app-header>
+    return html` <app-header></app-header>
       <div class="main">${this.renderRouterOutlet()}</div>
-      <app-footer .linkItems=${this.linkItems}></app-footer>`;
+      <app-footer></app-footer>`;
   }
 }

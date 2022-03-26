@@ -19,7 +19,8 @@ class HeaderComponent extends LitElement {
             <img class="logo" src="/temp_logo.jpg" style="width:50px;height:50px;" />
           </div>
           <ol class="navigation">
-            <li><a href="${this.linkItems[1].routePath}">Login</a></li>
+            <li><a href="users/sign-in">Login</a></li>
+            <li><a href="users/sign-up">Register</a></li>
           </ol>
         </div>
       </div>
