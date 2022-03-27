@@ -18,10 +18,10 @@ class SignInComponent extends PageMixin(LitElement) {
       <!--Login Form-->
       <form>
         <div>
-          <input id="email" type="email" autofocus required />
+          <input id="email" type="email" placeholder="E-Mail" autofocus required />
         </div>
         <div>
-          <input type="password" required />
+          <input type="password" placeholder="Passwort" required />
         </div>
         <div>
           <button type="button">Anmelden</button>
