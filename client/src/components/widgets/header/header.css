@@ -1,31 +1,28 @@
 /* Autor: Arne Schaper */
 
-:host {
-  display: flex;
-  position: sticky;
-}
-
 .header {
+  top: 0;
   width: 100%;
-  height: 50px;
-  display: block;
-}
-
-.innerHeader {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  margin: 0 auto;
+  display: inline-block;
+  position: sticky;
   background-color: #315895;
 }
 
-.logoContainer {
-  display: table;
+.innerHeader {
+  height: 50px;
+  display: flex;
   margin: 0 auto;
+  line-height: 50px;
+}
+
+.logoContainer {
+  display: inline-block;
+  margin-left: calc(50% - 25px);
 }
 
 .navigation {
-  float: right;
+  display: flex;
+  margin-left: auto;
 }
 
 ol {
@@ -42,7 +39,7 @@ ol a {
 
 a {
   text-decoration: none;
-  color: #ccc;
+  color: rgb(255, 255, 255);
   justify-content: center;
 }
 
