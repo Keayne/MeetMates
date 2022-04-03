@@ -3,7 +3,6 @@
 
 import { LitElement, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
-import { httpClient } from '../../http-client.js';
 import { router } from '../../router/router.js';
 
 @customElement('app-root')
@@ -20,7 +19,7 @@ class AppComponent extends LitElement {
         'users/sign-up': () => html`<app-sign-up></app-sign-up>`,
         'about': () => html`<app-about></app-about>`
       },
-      () => html`<main></main>`
+      () => html`<landing-page></landing-page>`
     );
   }
 
