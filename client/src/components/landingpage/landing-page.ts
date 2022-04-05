@@ -9,7 +9,9 @@ import componentStyle from './landing-page.css';
 class SignInComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
   render() {
-    return html` ${this.renderNotification()}
-      <h1>Hello</h1>`;
+    return html`
+      ${this.renderNotification()}
+      <h1>Hello</h1>
+    `;
   }
 }
