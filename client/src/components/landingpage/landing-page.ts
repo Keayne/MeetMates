@@ -11,7 +11,15 @@ class SignInComponent extends PageMixin(LitElement) {
   render() {
     return html`
       ${this.renderNotification()}
-      <h1>Hello</h1>
+      <section>
+        <div class="content">
+          <div class="info">
+            <p>We are MeetMates!</p>
+
+            <a href="#" class="info-btn">Additional information</a>
+          </div>
+        </div>
+      </section>
     `;
   }
 }
