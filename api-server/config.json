@@ -1,12 +1,12 @@
 {
   "server": { "https": false, "port": 3000 },
   "db": {
-    "use": "in-memory-db",
+    "use": "psql",
     "connect": {
-      "user": "myapp",
+      "user": "postgres",
       "host": "localhost",
-      "database": "myapp",
-      "password": "wifhm",
+      "database": "meetmates",
+      "password": "123456789",
       "port": {
         "mongodb": 27017,
         "psql": 5432
