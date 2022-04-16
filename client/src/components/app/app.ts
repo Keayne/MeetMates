@@ -1,12 +1,16 @@
-/* Autor: Arne Schaper */
-/* Autor: Valentin Lieberknecht */
-
 import { LitElement, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { router } from '../../router/router.js';
+import { httpClient } from '../../http-client.js';
 
 @customElement('app-root')
 class AppComponent extends LitElement {
+  constructor() {
+    super();
+    const port = 3000;
+    httpClient.init({ baseURL: `${location.protocol}//${location.hostname}:${port}/api/` });
+  }
+
   firstUpdated() {
     router.subscribe(() => this.requestUpdate());
   }

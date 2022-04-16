@@ -1,59 +1,48 @@
-/* Autor: Prof. Dr. Norman Lahme-Hütig (FH Münster) */
+/* Autor: Valentin Lieberknecht */
 
-import mongodb from 'mongodb';
 import pg from 'pg';
 import { Express } from 'express';
-import { MongoGenericDAO } from './models/mongo-generic.dao.js';
 import { PsqlGenericDAO } from './models/psql-generic.dao.js';
-import { InMemoryGenericDAO } from './models/in-memory-generic.dao.js';
 import fs from 'fs';
-// TODO: Models importieren
+import { Mate } from './models/mate.js';
 
 const config = JSON.parse(fs.readFileSync(new URL('../config.json', import.meta.url), 'utf-8'));
-const { MongoClient } = mongodb;
 const { Client } = pg;
 
 export default async function startDB(app: Express) {
-  switch (config.db.use) {
-    case 'mongodb':
-      return await startMongoDB(app);
-    case 'psql':
-      return await startPsql(app);
-    default:
-      return await startInMemoryDB(app);
-  }
+  return await startPsql(app);
 }
 
-async function startInMemoryDB(app: Express) {
-  // TODO: DAOs erzeugen
-  return async () => Promise.resolve();
-}
+// async function startInMemoryDB(app: Express) {
+//   // TODO: DAOs erzeugen
+//   return async () => Promise.resolve();
+// }
 
-async function startMongoDB(app: Express) {
-  const client = await connectToMongoDB();
-  const db = client.db('myapp');
-  // TODO: DAOs erzeugen
-  return async () => await client.close();
-}
+// async function startMongoDB(app: Express) {
+//   const client = await connectToMongoDB();
+//   const db = client.db('myapp');
+//   // TODO: DAOs erzeugen
+//   return async () => await client.close();
+// }
 
-async function connectToMongoDB() {
-  const url = `mongodb://${config.db.connect.host}:${config.db.connect.port.mongodb}`;
-  const client = new MongoClient(url, {
-    auth: { username: config.db.connect.user, password: config.db.connect.password },
-    authSource: config.db.connect.database
-  });
-  try {
-    await client.connect();
-  } catch (err) {
-    console.log('Could not connect to MongoDB: ', err);
-    process.exit(1);
-  }
-  return client;
-}
+// async function connectToMongoDB() {
+//   const url = `mongodb://${config.db.connect.host}:${config.db.connect.port.mongodb}`;
+//   const client = new MongoClient(url, {
+//     auth: { username: config.db.connect.user, password: config.db.connect.password },
+//     authSource: config.db.connect.database
+//   });
+//   try {
+//     await client.connect();
+//   } catch (err) {
+//     console.log('Could not connect to MongoDB: ', err);
+//     process.exit(1);
+//   }
+//   return client;
+// }
 
 async function startPsql(app: Express) {
   const client = await connectToPsql();
-  // TODO: DAOs erzeugen
+  app.locals.mateDAO = new PsqlGenericDAO<Mate>(client!, 'mates');
   return async () => await client.end();
 }
 

@@ -47,14 +47,12 @@ input[type='checkbox'] {
 }
 button {
   background: #0b6dff;
-  border: 0;
   padding: 10px 20px;
   margin-top: 20px;
   color: white;
   border-radius: 20px;
-}
-.submit {
   text-align: center;
+  width: 100%;
 }
 .error {
   color: #ff0062;

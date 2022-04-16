@@ -6,6 +6,7 @@ import { PageMixin } from '../page.mixin';
 import componentStyle from './about.css';
 
 @customElement('app-about')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class AboutComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
 

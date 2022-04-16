@@ -2,22 +2,44 @@
 
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { map } from 'lit/directives/map.js';
-import { range } from 'lit/directives/range.js';
 
-@customElement('sign-rating')
+@customElement('sign-slider')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class RatingComponent extends LitElement {
   static styles = css`
-    :host {
-      color: lightgray;
-      cursor: default;
+    table {
+      width: 100%;
     }
-    [checked] {
-      color: #0093d1;
+    td {
+      width: 36%;
     }
-    p {
-      display: inline;
-      color: black;
+    .slider {
+      -webkit-appearance: none;
+      height: 15px;
+      border-radius: 5px;
+      background: #d3d3d3;
+      outline: none;
+      opacity: 0.7;
+      -webkit-transition: 0.2s;
+      transition: opacity 0.2s;
+    }
+
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: #04aa6d;
+      cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: #04aa6d;
+      cursor: pointer;
     }
   `;
   @property({ type: Number }) value = 1;
@@ -26,12 +48,14 @@ class RatingComponent extends LitElement {
   @property({ type: String }) right = '';
 
   render() {
-    return html`<p>${this.left}</p>
-      ${map(
-        range(this.max),
-        (i: number) => html`<span ?checked=${i + 1 <= this.value} @click=${() => (this.value = i + 1)}>★</span>`
-      )}
-      <p>${this.right}</p>
-      <br />`;
+    return html`
+      <table>
+        <tr>
+          <td>${this.left}</td>
+          <td><input type="range" min="1" max="11" value="6" class="slider" /></td>
+          <td>${this.right}</td>
+        </tr>
+      </table>
+    `;
   }
 }

@@ -18,24 +18,24 @@ type Mate = {
   id: string;
   name: string;
   firstName: string;
-  eMail: string;
-  Birthday: string;
+  email: string;
+  birthday: string;
   gender: string;
   lastLoggedIn: string;
 };
 
 async function createPsqlScheme(client: ClientType) {
   await client.connect();
-  await client.query('Drop Table If Exists Meet, MateMeet, Mate, MateDescription, MateInterest, Interest, serviceData');
+  await client.query('drop table if exists meet, matemeet, mate, matedescription, mateinterest, interest, servicedata');
   await client.query(
-    `Create Table Meet(
+    `Create Table meet(
       id VARCHAR(40) PRIMARY KEY,
       "createdAt" bigint Not Null,
       name Varchar(60) Not Null
     )`
   );
   await client.query(
-    `Create Table MateMeet(
+    `Create Table matemeet(
       userId Varchar(40) PRIMARY KEY,
       meetId Varchar(40) UNIQUE NOT NULL,
       "createdAt" bigint Not Null,
@@ -43,7 +43,7 @@ async function createPsqlScheme(client: ClientType) {
       )`
   );
   await client.query(
-    `Create Table Mate(
+    `Create Table mates(
       id Varchar(40) PRIMARY KEY,
       "createdAt" bigint Not Null,
       name VARCHAR(100) NOT NULL,
@@ -51,13 +51,13 @@ async function createPsqlScheme(client: ClientType) {
       email VARCHAR(100) NOT NULL,
       birthday VARCHAR(10),
       gender Varchar(10),
-      pwHash Varchar(255),
-      lastLoggedIn Varchar(10)
+      password Varchar(255),
+      lastloggedin Varchar(10)
     )`
   );
 
   await client.query(
-    `Create Table Interest(
+    `Create Table interests(
       id Varchar(40) PRIMARY KEY,
       text Varchar(80),
       sort Varchar(80)
@@ -65,7 +65,7 @@ async function createPsqlScheme(client: ClientType) {
   );
 
   await client.query(
-    `Create Table MateInterest(
+    `Create Table mateinterest(
       userId Varchar(40) PRIMARY KEY,
       interestId Varchar(40) UNIQUE NOT NULL
     )`
@@ -76,12 +76,12 @@ async function fillSchemeWithData(client: ClientType) {
   const testData = JSON.parse(fs.readFileSync(new URL('./dbTest_data.json', import.meta.url), 'utf-8'));
 
   testData.meet.forEach(async (element: { id: string; name: string }) => {
-    const query = `INSERT INTO Meet(id,"createdAt",name) VALUES('${element.id}',${Date.now()},'${element.name}');`;
+    const query = `INSERT INTO meet (id,"createdAt",name) VALUES('${element.id}',${Date.now()},'${element.name}');`;
     await client.query(query);
   });
 
   testData.mates.forEach(async (element: Mate) => {
-    const query = `Insert into Mate (
+    const query = `Insert into mates (
       id,"createdAt",name,firstname,email,birthday, gender, lastLoggedIn
     ) 
     values(
@@ -89,8 +89,8 @@ async function fillSchemeWithData(client: ClientType) {
       ${Date.now()},
       '${element.name}',
       '${element.firstName}',
-      '${element.eMail}',
-      '${element.Birthday}',
+      '${element.email}',
+      '${element.birthday}',
       '${element.gender}',
       '${element.lastLoggedIn}'
     )`;

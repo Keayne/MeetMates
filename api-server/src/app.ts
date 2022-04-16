@@ -1,16 +1,16 @@
-/* Autor: Prof. Dr. Norman Lahme-Hütig (FH Münster) */
+/* Autor: Valentin Lieberknecht */
 
 import express, { Express } from 'express';
 import cookieParser from 'cookie-parser';
 import http from 'http';
 import https from 'https';
+import users from './routes/mates.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import startDB from './db.js';
 import { corsService } from './services/cors.service.js';
 import fs from 'fs';
 import { pathToFileURL } from 'url';
-// TODO: Routen importieren
 
 const config = JSON.parse(fs.readFileSync(new URL('../config.json', import.meta.url), 'utf-8'));
 
@@ -20,7 +20,7 @@ function configureApp(app: Express) {
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser());
   app.use(corsService.corsMiddleware);
-  // TODO: Routen einbinden
+  app.use('/api/users', users);
 }
 
 export async function start() {

@@ -6,6 +6,7 @@ import { PageMixin } from '../page.mixin';
 import componentStyle from './sign-in.css';
 
 @customElement('app-sign-in')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class SignInComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
   render() {
