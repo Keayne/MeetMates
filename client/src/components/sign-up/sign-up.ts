@@ -49,6 +49,7 @@ class SignUpComponent extends PageMixin(LitElement) {
       };
       try {
         httpClient.post('users', accountData);
+        router.navigate('/');
       } catch (e) {
         this.showNotification((e as Error).message, 'error');
       }

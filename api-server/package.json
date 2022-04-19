@@ -11,7 +11,8 @@
     "lint": "eslint . --ext .ts",
     "test": "mocha",
     "e2e": "mocha --config e2e/.mocharc.json",
-    "coverage": "c8 npm test"
+    "coverage": "c8 npm test",
+    "docker": "docker run --name meet-mates -p 5432:5432 -e POSTGRES_PASSWORD=123456789 -e POSTGRES_USER=postgres -e POSTGRES_DB=meetmates -d postgres"
   },
   "keywords": [],
   "author": "Jonathan Hüls, Arne Schaper, Valentin Lieberknecht",
