@@ -62,7 +62,7 @@
     }
   ],
   "mateMeet": [
-    [
+    
       {
         "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
         "userId": "ce973cad-01dc-446d-894d-1bb966c7bfb8"
@@ -74,9 +74,9 @@
       {
         "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
         "userId": "3939bac7-f0ef-46ec-ac32-cecc98b4926f"
-      }
-    ],
-    [
+      },
+    
+
       {
         "meetId": "be8ce656-875a-4b56-8c7f-8b071fe87e01",
         "userId": "3939bac7-f0ef-46ec-ac32-cecc98b4926f"
@@ -93,13 +93,12 @@
         "meetId": "be8ce656-875a-4b56-8c7f-8b071fe87e01",
         "userId": "ce973cad-01dc-446d-894d-1bb966c7bfb8"
       }
-    ]
   ],
   "interest": [
     {
-      "id": "66939399-b094-4966-b2a7-b8bfd1b4ca6b",
-      "text": "Schwimmen",
-      "sort": "Sport"
+        "id": "66939399-b094-4966-b2a7-b8bfd1b4ca6b",
+        "text": "Schwimmen",
+        "sort": "Sport"
     },
     {
       "id": "922e018f-f6a0-4674-b4af-8b3d8fe37afc",
@@ -157,7 +156,7 @@
       "sort": "Sport"
     },
     {
-      "id": "2c9de31f-d01a-4503-bab6-55760812b8ed",
+      "id": "55f9e928-1101-45b9-b9f2-009092afa3a4",
       "text": "Spikeball",
       "sort": "Sport"
     },
@@ -211,5 +210,91 @@
       "text": "Angeln",
       "sort": "Outdoor"
     }
+  ],
+  "mateInterest":[
+    {
+        "userId":"3939bac7-f0ef-46ec-ac32-cecc98b4926f",
+        "interestId":"048dfe50-bdaa-4e96-9dac-1f26c727a295"
+    },
+    {
+        "userId":"f552eaaf-8fa3-4319-b7af-8139cac8f35b",
+        "interestId":"048dfe50-bdaa-4e96-9dac-1f26c727a295"
+    },
+    {
+        "userId":"eeab19ed-e87b-49a1-878e-e2a62494b050",
+        "interestId":"048dfe50-bdaa-4e96-9dac-1f26c727a295"
+    },
+    {
+        "userId":"eeab19ed-e87b-49a1-878e-e2a62494b050",
+        "interestId":"6eae239b-edf2-4c11-92d5-9dd21b7128ce"
+    },
+    {
+        "userId":"5376a8df-a292-460e-865b-27441f357398",
+        "interestId":"6eae239b-edf2-4c11-92d5-9dd21b7128ce"
+    }
+  ],
+  "description":[
+      {
+          "id":"c1958e31-0ca3-45ac-ad07-d2c8ddbc61da",
+          "lText":"Introvertiert",
+          "rText":"Extrovertiert"
+      },
+      {
+        "id":"bdb68733-030a-495f-a2d5-288552a4f05e",
+        "lText":"Abenteuerlustig",
+        "rText":"Netflix & Chill"
+      },
+      {
+        "id":"2bc81190-bcfa-4204-a20d-2b9051027762",
+        "lText":"Kanal",
+        "rText":"Aasee"
+      },
+      {
+        "id":"164a038c-3e5e-4fc5-b555-8caa0a66d551",
+        "lText":"Bier",
+        "rText":"Wein"
+      },
+      {
+        "id":"f0e0e009-8450-4130-a258-0dca231d34d4",
+        "lText":"Fleisch",
+        "rText":"Vegetarisch/Vegan"
+      },
+      {
+        "id":"2d91588c-84d2-43c0-89f6-85dab19f2c15",
+        "lText":"Redebedürftig",
+        "rText":"Ruhig"
+      },
+      {
+        "id":"8bd07273-949c-43d0-82d2-474d1d4961bd",
+        "lText":"Fast Fashion",
+        "rText":"Second Hand"
+      },
+      {
+        "id":"5d130dbc-9714-4a91-af39-5fa6f6f77d63",
+        "lText":"Öffis",
+        "rText":"Auto"
+      }
+  ],
+  "matedescription":[
+      {
+          "userId":"3939bac7-f0ef-46ec-ac32-cecc98b4926f",
+          "descriptionId":"5d130dbc-9714-4a91-af39-5fa6f6f77d63",
+          "value":5
+      },
+      {
+        "userId":"3939bac7-f0ef-46ec-ac32-cecc98b4926f",
+        "descriptionId":"8bd07273-949c-43d0-82d2-474d1d4961bd",
+        "value":1
+      },
+      {
+        "userId":"f552eaaf-8fa3-4319-b7af-8139cac8f35b",
+        "descriptionId":"8bd07273-949c-43d0-82d2-474d1d4961bd",
+        "value":10
+      },
+      {
+        "userId":"f552eaaf-8fa3-4319-b7af-8139cac8f35b",
+        "descriptionId":"8bd07273-949c-43d0-82d2-474d1d4961bd",
+        "value":7
+      }
   ]
 }
