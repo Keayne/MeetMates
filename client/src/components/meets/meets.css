@@ -1,0 +1,8 @@
+.meets{
+    text-align: center;
+}
+
+.meets-body{
+    display: flex;
+    flex-direction: column;
+}

@@ -1,0 +1,32 @@
+h2 {
+    line-height: 1;
+}
+
+.meet
+{
+    min-width: 500px;
+
+    background-color: lightgrey;
+    margin: 1rem;
+    border-radius: 20px;
+    
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.meet > * {
+    margin: 0.2rem;
+}
+
+.meet > .name{
+    margin: 0rem 1rem;
+}
+
+img{
+    border-radius: 1rem;
+    min-width: auto;
+    min-height: auto;
+
+    max-width: 1.5rem;
+    max-height: 1.5rem;
+}

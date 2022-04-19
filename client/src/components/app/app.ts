@@ -21,7 +21,8 @@ class AppComponent extends LitElement {
         // integrate other pages here
         'users/sign-in': () => html`<app-sign-in></app-sign-in>`,
         'users/sign-up': () => html`<app-sign-up></app-sign-up>`,
-        'about': () => html`<app-about></app-about>`
+        'about': () => html`<app-about></app-about>`,
+        'meets': () => html`<app-meets></app-meets>`
       },
       () => html`<landing-page></landing-page>`
     );

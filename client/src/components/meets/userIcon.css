@@ -1,0 +1,8 @@
+img{
+    border-radius: 1rem;
+    min-width: auto;
+    min-height: auto;
+
+    max-width: 2rem;
+    max-height: 2rem;
+}

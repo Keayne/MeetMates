@@ -7,3 +7,6 @@ import './components/sign-up/rating.ts';
 import './components/about/about.ts';
 import './components/landingpage/landing-page.ts';
 import './components/user-profile/user-profile.ts';
+import './components/meets/meets.ts';
+import './components/meets/meet.ts';
+import './components/meets/userIcon.ts';
