@@ -3,7 +3,6 @@
 import { Entity } from './entity.js';
 
 export interface Mate extends Entity {
-  id: string;
   name: string;
   firstname: string;
   email: string;
