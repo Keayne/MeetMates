@@ -28,6 +28,7 @@ class AppComponent extends LitElement {
     );
   }
 
+  //TODO: Render a different header if we are logged in or make sure that we do render additional elements
   render() {
     return html` <app-header></app-header>
       <div class="main">${this.renderRouterOutlet()}</div>

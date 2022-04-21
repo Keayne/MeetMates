@@ -1,4 +1,5 @@
 /* Autor: Valentin Lieberknecht */
+/* Autor: Arne Schaper */
 
 import express from 'express';
 import bcrypt from 'bcryptjs';
@@ -41,7 +42,7 @@ router.post('/', async (req, res) => {
 });
 
 router.post('/sign-in', async (req, res) => {
-  const userDAO: GenericDAO<Mate> = req.app.locals.userDAO;
+  const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
   const filter: Partial<Mate> = { email: req.body.email };
   const errors: string[] = [];
 
@@ -50,26 +51,29 @@ router.post('/sign-in', async (req, res) => {
     return;
   }
 
-  const user = await userDAO.findOne(filter);
+  const user = await mateDAO.findOne(filter); //find user in DB
 
   if (user && (await bcrypt.compare(req.body.password, user.password))) {
     authService.createAndSetToken({ id: user.id }, res);
     res.status(201).json(user);
+    console.log('logged in!');
   } else {
-    authService.removeToken(res);
+    authService.removeToken(res); //unnecessary?
     res.status(401).json({ message: 'E-Mail oder Passwort ungültig!' });
   }
 });
 
 router.delete('/sign-out', (req, res) => {
+  //sign user out
   authService.removeToken(res);
   res.status(200).end();
 });
 
 router.delete('/', authService.authenticationMiddleware, async (req, res) => {
-  const userDAO: GenericDAO<Mate> = req.app.locals.userDAO;
+  //delete user from DB
+  const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
 
-  userDAO.delete(res.locals.user.id);
+  mateDAO.delete(res.locals.user.id);
 
   authService.removeToken(res);
   res.status(200).end();
