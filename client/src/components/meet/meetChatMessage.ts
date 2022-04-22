@@ -10,7 +10,11 @@ class MeetChatMessageComponent extends PageMixin(LitElement) {
   @property({ type: String }) ownMessage = 'false';
   @property({ type: String }) message = '...';
   @property({ type: String }) from = 'User';
+
   render() {
-    return html`<div class="message" ownMessage="${this.ownMessage}">${this.message}</div>`;
+    return html`<div class="message" ownMessage="${this.ownMessage}">
+      <div class="messageHeader">${this.from}</div>
+      <div class="messageContent">${this.message}</div>
+    </div>`;
   }
 }

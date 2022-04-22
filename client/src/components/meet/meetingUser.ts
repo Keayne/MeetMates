@@ -12,10 +12,11 @@ class MeetUserComponent extends PageMixin(LitElement) {
   @property({ type: String }) firstname = 'Max';
   @property({ type: String }) name = 'Mustermann';
   @property({ type: String }) age = '21';
+  @property({ type: String }) imgSrc = './temp_logo.jpg';
 
   render() {
     return html`<div class="meetingUser">
-      <img src="./temp_logo.jpg" />
+      <img src=${this.imgSrc} />
       <h3>${this.name}, ${this.firstname}</h3>
       <h3>${this.age}</h3>
     </div>`;
