@@ -1,0 +1,47 @@
+
+
+.meetingChat{
+    overflow-y: scroll; 
+    overflow-x: hidden;
+    height: 200px;
+    margin-top: 3rem;
+
+    border:1px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 0.5rem 0.5rem 0rem 0rem;
+    content: unset;
+    
+    display: flex;
+    flex-direction: column;
+
+}
+
+.meetingChat > .message{
+    background-color: aquamarine;
+    width: fit-content;
+    border-radius: 0.3rem 1rem 2rem 3rem;
+    margin: 0.5rem;
+    text-align: left;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    justify-content: flex-start;
+
+    display: flex;
+}
+
+.meetingChat > .message > * {
+    display: flex;
+    
+}
+
+.meetingChat > .message[ownMessage="true"]{
+    background-color: pink;
+    text-align: right;
+    border-radius: 1rem 0.3rem 2rem 3rem;
+    float:right;
+}
+
+.chatTextInput{
+    width: 100%;
+}

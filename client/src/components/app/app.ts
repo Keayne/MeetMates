@@ -22,7 +22,8 @@ class AppComponent extends LitElement {
         'users/sign-in': () => html`<app-sign-in></app-sign-in>`,
         'users/sign-up': () => html`<app-sign-up></app-sign-up>`,
         'about': () => html`<app-about></app-about>`,
-        'meets': () => html`<app-meets></app-meets>`
+        'meets': () => html`<app-meets></app-meets>`,
+        'meet': () => html`<app-your-meet></app-your-meet>`
       },
       () => html`<landing-page></landing-page>`
     );

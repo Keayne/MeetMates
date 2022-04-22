@@ -1,0 +1,26 @@
+.message{
+    background-color: aquamarine;
+    width: fit-content;
+    border-radius: 0.3rem 1rem 2rem 3rem;
+    margin: 0.5rem;
+    text-align: left;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    justify-content: flex-start;
+
+    display: flex;
+}
+
+.message > * {
+    display: flex;
+    
+}
+
+.message[ownMessage="true"]{
+    background-color: pink;
+    text-align: right;
+    border-radius: 1rem 0.3rem 2rem 3rem;
+    float:right;
+}
+
+

@@ -1,0 +1,23 @@
+.meetingUser{
+    display: flex;
+    background-color: lightgrey;
+    border-radius: 1rem;
+
+    margin: 0.5rem;
+    vertical-align: middle;
+}
+.meetingUser:hover{
+    -webkit-box-shadow: 6px 8px 12px -1px rgba(0,0,0,0.36); 
+    box-shadow: 6px 8px 12px -1px rgba(0,0,0,0.36);
+}
+.meetingUser > img{
+    border-radius: 1rem;
+    max-width: 2rem;
+    max-height: 2rem;
+
+}
+.meetingUser > *{
+    
+    margin: 0.5rem;
+    
+}

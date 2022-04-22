@@ -10,3 +10,7 @@ import './components/user-profile/user-profile.ts';
 import './components/meets/meets.ts';
 import './components/meets/meet.ts';
 import './components/meets/userIcon.ts';
+import './components/meet/meet.ts';
+import './components/meet/meetingUser.ts';
+import './components/meet/meetChat.ts';
+import './components/meet/meetChatMessage.ts';

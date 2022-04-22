@@ -1,0 +1,17 @@
+body{
+    background-color: azure;
+}
+
+.meeting{
+    text-align: center;
+}
+.meetingName{
+    background-color: pink;
+    border-radius: 0.35rem; 
+}
+
+.meetingUsers{
+    display: flex;
+    flex-direction: column;
+}
+
