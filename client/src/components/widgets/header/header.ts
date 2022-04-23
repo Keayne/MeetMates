@@ -9,7 +9,7 @@ import componentStyle from './header.css';
 class HeaderComponent extends LitElement {
   static styles = componentStyle;
 
-  @property({ type: Array }) linkItems: Array<{ title: string; routePath: string }> = [];
+  @property({ type: Array }) headerOptions: Array<{ title: string; routePath: string }> = [];
 
   render() {
     return html`
@@ -21,8 +21,7 @@ class HeaderComponent extends LitElement {
             </a>
           </div>
           <ol class="navigation">
-            <li><a href="users/sign-in">Login</a></li>
-            <li><a href="users/sign-up">Register</a></li>
+            ${this.headerOptions.map(linkItem => html`<li><a href="${linkItem.routePath}">${linkItem.title}</a></li>`)}
           </ol>
         </div>
       </div>

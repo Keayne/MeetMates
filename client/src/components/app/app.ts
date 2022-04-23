@@ -15,6 +15,11 @@ class AppComponent extends LitElement {
     router.subscribe(() => this.requestUpdate());
   }
 
+  @state() private headerOptions = [
+    { title: 'Register', routePath: 'users/sign-up' },
+    { title: 'Login', routePath: 'users/sign-in' }
+  ];
+
   renderRouterOutlet() {
     return router.select(
       {
@@ -30,7 +35,7 @@ class AppComponent extends LitElement {
 
   //TODO: Render a different header if we are logged in or make sure that we do render additional elements
   render() {
-    return html` <app-header></app-header>
+    return html` <app-header .headerOptions=${this.headerOptions}></app-header>
       <div class="main">${this.renderRouterOutlet()}</div>
       <app-footer></app-footer>`;
   }
