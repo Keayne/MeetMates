@@ -5,6 +5,11 @@ import { Express } from 'express';
 import { PsqlGenericDAO } from './models/psql-generic.dao.js';
 import fs from 'fs';
 import { Mate } from './models/mate.js';
+import { Description } from './models/description.js';
+import { Interest } from './models/interest.js';
+import { PsqlUniversalDAO } from './models/psql-universal.dao.js';
+import { MateDescription } from './models/matedescription.js';
+import { MateInterest } from './models/mateinterest.js';
 
 const config = JSON.parse(fs.readFileSync(new URL('../config.json', import.meta.url), 'utf-8'));
 const { Client } = pg;
@@ -42,7 +47,11 @@ export default async function startDB(app: Express) {
 
 async function startPsql(app: Express) {
   const client = await connectToPsql();
-  app.locals.mateDAO = new PsqlGenericDAO<Mate>(client!, 'mates');
+  app.locals.mateDAO = new PsqlGenericDAO<Mate>(client!, 'mate');
+  app.locals.descriptionDAO = new PsqlGenericDAO<Description>(client!, 'description');
+  app.locals.matedescriptionDAO = new PsqlUniversalDAO<MateDescription>(client!, 'matedescription');
+  app.locals.interestDAO = new PsqlGenericDAO<Interest>(client!, 'interest');
+  app.locals.mateinterestDAO = new PsqlUniversalDAO<MateInterest>(client!, 'mateinterest');
   return async () => await client.end();
 }
 

@@ -4,7 +4,8 @@ import express, { Express } from 'express';
 import cookieParser from 'cookie-parser';
 import http from 'http';
 import https from 'https';
-import users from './routes/mates.js';
+import mates from './routes/mates.js';
+import profile from './routes/profile.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import startDB from './db.js';
@@ -20,7 +21,8 @@ function configureApp(app: Express) {
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser());
   app.use(corsService.corsMiddleware);
-  app.use('/api/users', users);
+  app.use('/api/mates', mates);
+  app.use('/api/profile', profile);
 }
 
 export async function start() {

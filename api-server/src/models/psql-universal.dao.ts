@@ -1,15 +1,14 @@
 /* Autor: Valentin Lieberknecht */
 
-import { v4 as uuidv4 } from 'uuid';
 import { Client } from 'pg';
-import { Entity } from './entity.js';
-import { GenericDAO } from './generic.dao.js';
+import { UniversalDAO } from './universal.dao.js';
+import { Universal } from './universal.js';
 
-export class PsqlGenericDAO<T extends Entity> implements GenericDAO<T> {
+export class PsqlUniversalDAO<T extends Universal> implements UniversalDAO<T> {
   constructor(private db: Client, private table: string) {}
 
-  public async create(partEntity: Omit<T, keyof Entity>) {
-    const entity = { ...partEntity, id: uuidv4(), createdAt: new Date().getTime() };
+  public async create(partEntity: Omit<T, keyof Universal>) {
+    const entity = { ...partEntity, createdAt: new Date().getTime() };
 
     const propertyNames = getPropertyNames(entity);
     const columnNames = propertyNames.map(prop => toColumnName(prop));
@@ -24,7 +23,7 @@ export class PsqlGenericDAO<T extends Entity> implements GenericDAO<T> {
   }
 
   public async findAll(entityFilter?: Partial<T>) {
-    const query = 'SELECT * FROM ' + this.table + ' ' + createWhereClause(entityFilter) + ' ORDER BY "createdAt" DESC';
+    const query = 'SELECT * FROM ' + this.table + ' ' + createWhereClause(entityFilter);
     const result = await this.db.query(query);
     return result.rows as T[];
   }
@@ -35,14 +34,15 @@ export class PsqlGenericDAO<T extends Entity> implements GenericDAO<T> {
     return result && result.rows ? (result.rows[0] as T) : null;
   }
 
-  public async update(entity: Partial<T> & Pick<Entity, 'id'>) {
-    const query = 'UPDATE ' + this.table + ' ' + createSetClause(entity) + ' WHERE id = ' + toColumnValue(entity.id);
+  public async update(entity: Partial<T> & Pick<Universal, 'createdAt'>) {
+    const query =
+      'UPDATE ' + this.table + ' ' + createSetClause(entity) + ' WHERE createdAt = ' + toColumnValue(entity.createdAt);
     await this.db.query(query);
     return true;
   }
 
-  public async delete(id: string) {
-    const query = 'DELETE FROM ' + this.table + ' WHERE id = ' + toColumnValue(id);
+  public async delete(createdAt: string) {
+    const query = 'DELETE FROM ' + this.table + ' WHERE createdAt = ' + toColumnValue(createdAt);
     await this.db.query(query);
     return true;
   }
@@ -54,7 +54,7 @@ export class PsqlGenericDAO<T extends Entity> implements GenericDAO<T> {
   }
 }
 
-function getPropertyNames<T extends Entity>(entity: Partial<T>) {
+function getPropertyNames<T extends Universal>(entity: Partial<T>) {
   return Object.getOwnPropertyNames(entity) as Array<Extract<keyof T, string>>;
 }
 
@@ -70,7 +70,7 @@ function toColumnValue(value: unknown) {
   }
 }
 
-function createWhereClause<T extends Entity>(entityFilter?: Partial<T>) {
+function createWhereClause<T extends Universal>(entityFilter?: Partial<T>) {
   if (!entityFilter || !Object.getOwnPropertyNames(entityFilter).length) {
     return '';
   }
@@ -81,7 +81,7 @@ function createWhereClause<T extends Entity>(entityFilter?: Partial<T>) {
   return 'WHERE ' + parts.join(' AND ');
 }
 
-function createSetClause<T extends Entity>(entityFilter: Partial<T>) {
+function createSetClause<T extends Universal>(entityFilter: Partial<T>) {
   const parts = getPropertyNames(entityFilter).map(propertyName => {
     const propertyValue = entityFilter[propertyName];
     return toColumnName(propertyName) + ' = ' + toColumnValue(propertyValue);

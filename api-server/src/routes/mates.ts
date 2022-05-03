@@ -6,11 +6,16 @@ import bcrypt from 'bcryptjs';
 import { GenericDAO } from '../models/generic.dao.js';
 import { Mate } from '../models/mate.js';
 import { authService } from '../services/auth.service.js';
+import { MateDescription } from '../models/matedescription.js';
+import { MateInterest } from '../models/mateinterest.js';
+import { UniversalDAO } from '../models/universal.dao.js';
 
 const router = express.Router();
 
 router.post('/', async (req, res) => {
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
+  const matedescriptionDAO: UniversalDAO<MateDescription> = req.app.locals.matedescriptionDAO;
+  const mateinterestDAO: UniversalDAO<MateInterest> = req.app.locals.mateinterestDAO;
   const errors: string[] = [];
 
   const sendErrorMessage = (message: string) => {
@@ -37,6 +42,22 @@ router.post('/', async (req, res) => {
     gender: req.body.gender,
     password: await bcrypt.hash(req.body.password, 10)
   });
+
+  await req.body.interests.forEach((e: string) => {
+    mateinterestDAO.create({
+      userid: createdUser.id,
+      interestid: e
+    });
+  });
+
+  await req.body.descriptions.forEach((e: { id: string; value: number }) => {
+    matedescriptionDAO.create({
+      userid: createdUser.id,
+      descriptionid: e.id,
+      value: e.value
+    });
+  });
+
   authService.createAndSetToken({ id: createdUser.id }, res);
   res.status(201).json(createdUser);
 });

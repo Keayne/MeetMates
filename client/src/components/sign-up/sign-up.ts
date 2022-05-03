@@ -1,13 +1,11 @@
 /* Autor: Valentin Lieberknecht */
 
 import { LitElement, html } from 'lit';
-import { customElement, query } from 'lit/decorators.js';
+import { customElement, query, state } from 'lit/decorators.js';
 import { PageMixin } from '../page.mixin';
 import { httpClient } from '../../http-client.js';
 import { router } from '../../router/router.js';
 import componentStyle from './sign-up.css';
-import hobbies from './hobbies.json';
-import ratings from './ratings.json';
 
 @customElement('app-sign-up')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -22,22 +20,48 @@ class SignUpComponent extends PageMixin(LitElement) {
   @query('#gender') private genderElement!: HTMLInputElement;
   @query('#password') private passwordElement!: HTMLInputElement;
 
-  selectedHobbies: string[] = [];
+  @state() private descriptions = [];
+  @state() private interests = [];
+  private selectedInterests: string[] = [];
+  private selectedDescriptions: { id: string; value: number }[] = [];
 
-  selectHobby(e: any, hobby: string) {
-    const index = this.selectedHobbies.indexOf(hobby);
-    if (index == -1) {
-      this.selectedHobbies.push(hobby);
-      e.currentTarget.style.backgroundColor = '#04204a';
-    } else {
-      this.selectedHobbies.splice(index, 1);
-      e.currentTarget.style.backgroundColor = '#eee';
+  async firstUpdated() {
+    try {
+      const description = await httpClient.get('/profile/descriptions');
+      this.descriptions = await description.json();
+      const interests = await httpClient.get('/profile/interests');
+      this.interests = await interests.json();
+      this.descriptions.forEach((e: { id: string }) => {
+        this.selectedDescriptions.push({
+          id: e.id,
+          value: 0
+        });
+      });
+    } catch (e) {
+      console.log(e);
     }
   }
 
-  submit() {
-    console.log('test' + this.form.checkValidity());
+  selectHobby(e: Event, hobby: string) {
+    if (e.currentTarget instanceof HTMLElement) {
+      const index = this.selectedInterests.indexOf(hobby);
+      if (index == -1) {
+        this.selectedInterests.push(hobby);
+        e.currentTarget.style.backgroundColor = '#04204a';
+      } else {
+        this.selectedInterests.splice(index, 1);
+        e.currentTarget.style.backgroundColor = '#eee';
+      }
+    }
+  }
 
+  updateDescription(e: CustomEvent) {
+    const details = e.detail;
+    const index = this.selectedDescriptions.findIndex(obj => obj.id == details.id);
+    this.selectedDescriptions[index].value = Number(details.value);
+  }
+
+  submit() {
     if (this.form.checkValidity()) {
       const accountData = {
         name: this.nameElement.value,
@@ -45,10 +69,12 @@ class SignUpComponent extends PageMixin(LitElement) {
         email: this.emailElement.value,
         birthday: this.birthdayElement.value,
         gender: this.genderElement.value,
-        password: this.passwordElement.value
+        password: this.passwordElement.value,
+        interests: this.selectedInterests,
+        descriptions: this.selectedDescriptions
       };
       try {
-        httpClient.post('users', accountData);
+        httpClient.post('mates', accountData);
         router.navigate('/');
       } catch (e) {
         this.showNotification((e as Error).message, 'error');
@@ -81,10 +107,21 @@ class SignUpComponent extends PageMixin(LitElement) {
         <label>Passwort:</label>
         <input type="password" id="password" required />
         <h3>Rate hier dich selbst<h3>
-        ${ratings.map(rating => html` <sign-slider left="${rating.left}" right="${rating.right}"></sign-slider>`)}
+        ${this.descriptions.map(
+          (e: { id: string; ltext: string; rtext: string }) =>
+            html` <sign-slider
+              @updateDescription=${this.updateDescription}
+              id=${e.id}
+              ltext="${e.ltext}"
+              rtext="${e.rtext}"
+            ></sign-slider>`
+        )}
         <h3>Wähle hier ein paar Hobbys aus</h3>
-        ${hobbies.map(
-          hobby => html`<div class="pill" @click=${(e: any) => this.selectHobby(e, hobby)}><span>${hobby}</span></div>`
+        ${this.interests.map(
+          (interst: { id: string; text: string }) =>
+            html`<div class="pill" @click=${(e: MouseEvent) => this.selectHobby(e, interst.id)}>
+              <span>${interst.text}</span>
+            </div>`
         )}
         <br>
         <button type="button" @click="${this.submit}" >Konto erstellen</button>

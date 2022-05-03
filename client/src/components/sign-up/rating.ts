@@ -1,7 +1,7 @@
 /* Autor: Valentin Lieberknecht */
 
 import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 
 @customElement('sign-slider')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -27,18 +27,42 @@ class RatingComponent extends LitElement {
       cursor: pointer;
     }
   `;
-  @property({ type: Number }) value = 1;
-  @property({ type: Number }) max = 5;
-  @property({ type: String }) left = '';
-  @property({ type: String }) right = '';
+  @property({ type: Function }) function = {};
+  @property({ type: String }) ltext = '';
+  @property({ type: String }) rtext = '';
+  @property({ type: String }) id = '';
+  @state() private value = 6;
+
+  updateDescription(e: Event) {
+    if (e.target instanceof HTMLInputElement) {
+      this.dispatchEvent(
+        new CustomEvent('updateDescription', {
+          detail: {
+            id: this.id,
+            value: e.target.value
+          }
+        })
+      );
+    }
+  }
 
   render() {
     return html`
       <table>
         <tr>
-          <td>${this.left}</td>
-          <td><input type="range" min="1" max="11" value="6" class="slider" /></td>
-          <td>${this.right}</td>
+          <td>${this.ltext}</td>
+          <td>
+            <input
+              id="${this.id}"
+              type="range"
+              @input="${this.updateDescription}"
+              min="1"
+              max="11"
+              value="${this.value}"
+              class="slider"
+            />
+          </td>
+          <td>${this.rtext}</td>
         </tr>
       </table>
     `;

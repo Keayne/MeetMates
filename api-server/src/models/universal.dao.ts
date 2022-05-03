@@ -1,9 +1,9 @@
 /* Autor: Valentin Lieberknecht */
 
-import { Entity } from './entity.js';
+import { Universal } from './universal.js';
 
-export interface GenericDAO<T extends Entity> {
-  create(partEntity: Omit<T, keyof Entity>): Promise<T>;
+export interface UniversalDAO<T extends Universal> {
+  create(partEntity: Omit<T, keyof Universal>): Promise<T>;
 
   findAll(entityFilter?: Partial<T>): Promise<T[]>;
 

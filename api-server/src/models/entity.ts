@@ -1,4 +1,4 @@
-/* Autor: Prof. Dr. Norman Lahme-Hütig (FH Münster) */
+/* Autor: Valentin Lieberknecht */
 
 export interface Entity {
   id: string;
