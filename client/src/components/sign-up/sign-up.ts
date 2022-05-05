@@ -22,6 +22,7 @@ class SignUpComponent extends PageMixin(LitElement) {
 
   @state() private descriptions = [];
   @state() private interests = [];
+  @state() private imgSrc: any;
   private selectedInterests: string[] = [];
   private selectedDescriptions: { id: string; value: number }[] = [];
 
@@ -61,6 +62,17 @@ class SignUpComponent extends PageMixin(LitElement) {
     this.selectedDescriptions[index].value = Number(details.value);
   }
 
+  async updateImage(e: any) {
+    const toBase64 = (file: Blob) =>
+      new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      });
+    this.imgSrc = await toBase64(e.target.files[0]);
+  }
+
   submit() {
     if (this.form.checkValidity()) {
       const accountData = {
@@ -69,12 +81,13 @@ class SignUpComponent extends PageMixin(LitElement) {
         email: this.emailElement.value,
         birthday: this.birthdayElement.value,
         gender: this.genderElement.value,
+        image: this.imgSrc,
         password: this.passwordElement.value,
         interests: this.selectedInterests,
         descriptions: this.selectedDescriptions
       };
       try {
-        httpClient.post('mates', accountData);
+        httpClient.post('mates/sign-up', accountData);
         router.navigate('/');
       } catch (e) {
         this.showNotification((e as Error).message, 'error');
@@ -123,7 +136,10 @@ class SignUpComponent extends PageMixin(LitElement) {
               <span>${interst.text}</span>
             </div>`
         )}
+        <h3>Profilbild auswählen</h3>
+        <input @change="${this.updateImage}" type="file" accept="image/png, image/jpeg" required>
         <br>
+        <img style="max-width: 200px; max-height: 200px" src="${this.imgSrc}">
         <button type="button" @click="${this.submit}" >Konto erstellen</button>
       </form>
     `;

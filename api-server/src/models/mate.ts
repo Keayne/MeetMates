@@ -8,5 +8,6 @@ export interface Mate extends Entity {
   email: string;
   birthday: string;
   gender: string;
+  image: string;
   password: string;
 }

@@ -46,8 +46,8 @@ async function createPsqlScheme(client: ClientType) {
       email VARCHAR(100) NOT NULL,
       birthday VARCHAR(10),
       gender Varchar(10),
+      image BYTEA,
       password Varchar(255),
-      salt Varchar(255),
       lastloggedin Varchar(10)
     )`
   );

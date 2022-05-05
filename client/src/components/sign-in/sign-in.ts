@@ -56,10 +56,10 @@ class SignInComponent extends PageMixin(LitElement) {
         password: this.passwordElement.value
       };
       try {
-        await httpClient.post('/users/sign-in', authData);
+        await httpClient.post('/mates/sign-in', authData);
         router.navigate('/meets'); //link to your meets after login
       } catch (e) {
-        console.log('ERROR');
+        console.log(e);
         this.showNotification((e as Error).message, 'error');
       }
     } else {

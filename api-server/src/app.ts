@@ -16,11 +16,11 @@ import { pathToFileURL } from 'url';
 const config = JSON.parse(fs.readFileSync(new URL('../config.json', import.meta.url), 'utf-8'));
 
 function configureApp(app: Express) {
-  app.use(express.urlencoded({ extended: true }));
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
+  app.use(express.urlencoded({ limit: '10mb', extended: true }));
+  app.use(express.json({ limit: '10mb' }));
   app.use(cookieParser());
   app.use(corsService.corsMiddleware);
+
   app.use('/api/mates', mates);
   app.use('/api/profile', profile);
 }

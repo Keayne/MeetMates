@@ -12,7 +12,7 @@ import { UniversalDAO } from '../models/universal.dao.js';
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/sign-up', async (req, res) => {
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
   const matedescriptionDAO: UniversalDAO<MateDescription> = req.app.locals.matedescriptionDAO;
   const mateinterestDAO: UniversalDAO<MateInterest> = req.app.locals.mateinterestDAO;
@@ -40,6 +40,7 @@ router.post('/', async (req, res) => {
     email: req.body.email,
     birthday: req.body.birthday,
     gender: req.body.gender,
+    image: req.body.image,
     password: await bcrypt.hash(req.body.password, 10)
   });
 
