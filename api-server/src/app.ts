@@ -12,6 +12,7 @@ import startDB from './db.js';
 import { corsService } from './services/cors.service.js';
 import fs from 'fs';
 import { pathToFileURL } from 'url';
+import { startWebSocketServer } from './ws-server.js';
 
 const config = JSON.parse(fs.readFileSync(new URL('../config.json', import.meta.url), 'utf-8'));
 
@@ -53,6 +54,7 @@ async function startHttpServer(app: Express, port: number) {
       console.log(`Server running at http${config.server.https ? 's' : ''}://localhost:${port}`);
       resolve();
     });
+    startWebSocketServer(httpServer);
   });
   return async () => await new Promise<void>(resolve => httpServer.close(() => resolve()));
 }

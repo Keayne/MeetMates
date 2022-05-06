@@ -14,3 +14,5 @@ import './components/meet/meet.ts';
 import './components/meet/meetingUser.ts';
 import './components/meet/meetChat.ts';
 import './components/meet/meetChatMessage.ts';
+import './components/chat/chat.ts';
+import './components/chat/chat-message.ts';

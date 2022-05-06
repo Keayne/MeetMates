@@ -20,9 +20,9 @@ class SignUpComponent extends PageMixin(LitElement) {
   @query('#gender') private genderElement!: HTMLInputElement;
   @query('#password') private passwordElement!: HTMLInputElement;
 
-  @state() private descriptions = [];
-  @state() private interests = [];
-  @state() private imgSrc: any;
+  @state() private descriptions!: Array<{ id: string; ltext: string; rtext: string }>;
+  @state() private interests!: Array<{ id: string; text: string }>;
+  @state() private imgSrc!: string;
   private selectedInterests: string[] = [];
   private selectedDescriptions: { id: string; value: number }[] = [];
 
@@ -62,15 +62,16 @@ class SignUpComponent extends PageMixin(LitElement) {
     this.selectedDescriptions[index].value = Number(details.value);
   }
 
-  async updateImage(e: any) {
-    const toBase64 = (file: Blob) =>
+  async updateImage(e: InputEvent) {
+    const toBase64 = (file: Blob): Promise<string> =>
       new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
+        reader.onload = () => resolve(reader.result as string);
         reader.onerror = error => reject(error);
       });
-    this.imgSrc = await toBase64(e.target.files[0]);
+    const input = e.target as HTMLInputElement;
+    this.imgSrc = await toBase64(input.files![0]);
   }
 
   submit() {
@@ -121,7 +122,7 @@ class SignUpComponent extends PageMixin(LitElement) {
         <input type="password" id="password" required />
         <h3>Rate hier dich selbst<h3>
         ${this.descriptions.map(
-          (e: { id: string; ltext: string; rtext: string }) =>
+          e =>
             html` <sign-slider
               @updateDescription=${this.updateDescription}
               id=${e.id}
@@ -131,7 +132,7 @@ class SignUpComponent extends PageMixin(LitElement) {
         )}
         <h3>Wähle hier ein paar Hobbys aus</h3>
         ${this.interests.map(
-          (interst: { id: string; text: string }) =>
+          interst =>
             html`<div class="pill" @click=${(e: MouseEvent) => this.selectHobby(e, interst.id)}>
               <span>${interst.text}</span>
             </div>`

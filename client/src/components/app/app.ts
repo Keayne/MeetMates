@@ -4,7 +4,13 @@ import { router } from '../../router/router.js';
 import { httpClient } from '../../http-client.js';
 
 @customElement('app-root')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class AppComponent extends LitElement {
+  @state() private headerOptions = [
+    { title: 'Register', routePath: 'users/sign-up' },
+    { title: 'Login', routePath: 'users/sign-in' }
+  ];
+
   constructor() {
     super();
     const port = 3000;
@@ -15,11 +21,6 @@ class AppComponent extends LitElement {
     router.subscribe(() => this.requestUpdate());
   }
 
-  @state() private headerOptions = [
-    { title: 'Register', routePath: 'users/sign-up' },
-    { title: 'Login', routePath: 'users/sign-in' }
-  ];
-
   renderRouterOutlet() {
     return router.select(
       {
@@ -28,7 +29,8 @@ class AppComponent extends LitElement {
         'users/sign-up': () => html`<app-sign-up></app-sign-up>`,
         'about': () => html`<app-about></app-about>`,
         'meets': () => html`<app-meets></app-meets>`,
-        'meet': () => html`<app-your-meet></app-your-meet>`
+        'meet': () => html`<app-your-meet></app-your-meet>`,
+        'chat': () => html`<app-chat></app-chat>`
       },
       () => html`<landing-page></landing-page>`
     );
