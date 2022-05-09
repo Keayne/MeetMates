@@ -9,6 +9,7 @@ import { authService } from '../services/auth.service.js';
 import { MateDescription } from '../models/matedescription.js';
 import { MateInterest } from '../models/mateinterest.js';
 import { UniversalDAO } from '../models/universal.dao.js';
+import { EventEmitter } from 'events';
 
 const router = express.Router();
 
@@ -63,6 +64,9 @@ router.post('/sign-up', async (req, res) => {
   res.status(201).json(createdUser);
 });
 
+class MyEmitter extends EventEmitter {}
+const myEmitter = new MyEmitter();
+
 router.post('/sign-in', async (req, res) => {
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
   const filter: Partial<Mate> = { email: req.body.email };
@@ -78,6 +82,7 @@ router.post('/sign-in', async (req, res) => {
   if (user && (await bcrypt.compare(req.body.password, user.password))) {
     authService.createAndSetToken({ id: user.id }, res);
     res.status(201).json(user);
+    myEmitter.emit('loggedInEvent');
     console.log('logged in!');
   } else {
     authService.removeToken(res); //unnecessary?
