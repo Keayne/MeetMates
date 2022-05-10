@@ -6,6 +6,7 @@ h2 {
 {
     min-width: 500px;
 
+
     background-color: lightgrey;
     margin: 1rem;
     border-radius: 20px;
@@ -13,7 +14,19 @@ h2 {
     display: inline-flex;
     justify-content: space-between;
     align-items: center;
+    transition: ease-in 0.3s;
 }
+
+.meet:hover{
+    -webkit-box-shadow: 6px 8px 12px -1px rgba(0,0,0,0.36); 
+    box-shadow: 6px 8px 12px -1px rgba(0,0,0,0.36);
+    min-width: 40rem;
+    transition: ease-out 0.3s;
+
+}
+
+
+
 .meet > * {
     margin: 0.2rem;
 }
