@@ -22,7 +22,7 @@ class SignInComponent extends PageMixin(LitElement) {
     return html`
       ${this.renderNotification()}
       <h1>Anmelden</h1>
-      <h3>Du hast noch kein Konto? <a href="users/sign-up">Hier Registrieren</a></h3>
+      <h3>Du hast noch kein Konto? <a href="mates/sign-up">Hier Registrieren</a></h3>
 
       <!--Login Form-->
       <form>

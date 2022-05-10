@@ -8,8 +8,8 @@ import { EventEmitter } from 'events';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class AppComponent extends LitElement {
   @state() private headerOptions = [
-    { title: 'Register', routePath: 'users/sign-up' },
-    { title: 'Login', routePath: 'users/sign-in' }
+    { title: 'Register', routePath: 'mates/sign-up' },
+    { title: 'Login', routePath: 'mates/sign-in' }
   ];
 
   constructor() {
@@ -31,9 +31,9 @@ class AppComponent extends LitElement {
     return router.select(
       {
         // integrate other pages here
-        'users/sign-in': () => html`<app-sign-in></app-sign-in>`,
-        'users/sign-up': () => html`<app-sign-up></app-sign-up>`,
-        'users/profile': () => html`<user-profile></user-profile>`,
+        'mates/sign-in': () => html`<app-sign-in></app-sign-in>`,
+        'mates/sign-up': () => html`<app-sign-up></app-sign-up>`,
+        'mates/profile': () => html`<user-profile></user-profile>`,
         'about': () => html`<app-about></app-about>`,
         'meets': () => html`<app-meets></app-meets>`,
         'meet': () => html`<app-your-meet></app-your-meet>`,

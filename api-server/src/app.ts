@@ -6,7 +6,6 @@ import http from 'http';
 import https from 'https';
 import mates from './routes/mates.js';
 import profile from './routes/profile.js';
-import users from './routes/mates.js';
 import meets from './routes/meets.js';
 import meet from './routes/meet.js';
 import path from 'path';
@@ -16,6 +15,7 @@ import { corsService } from './services/cors.service.js';
 import fs from 'fs';
 import { pathToFileURL } from 'url';
 import { startWebSocketServer } from './ws-server.js';
+import chat from './routes/chat.js';
 
 const config = JSON.parse(fs.readFileSync(new URL('../config.json', import.meta.url), 'utf-8'));
 
@@ -27,9 +27,9 @@ function configureApp(app: Express) {
 
   app.use('/api/mates', mates);
   app.use('/api/profile', profile);
-  app.use('/api/users', users);
   app.use('/api/meets', meets);
   app.use('/api/meet', meet);
+  app.use('/api/chat', chat);
 }
 
 export async function start() {

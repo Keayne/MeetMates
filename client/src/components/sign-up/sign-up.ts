@@ -22,7 +22,7 @@ class SignUpComponent extends PageMixin(LitElement) {
 
   @state() private descriptions: Array<{ id: string; ltext: string; rtext: string }> = [];
   @state() private interests: Array<{ id: string; text: string }> = [];
-  @state() private imgSrc: string = "";
+  @state() private imgSrc!: string;
   private selectedInterests: string[] = [];
   private selectedDescriptions: { id: string; value: number }[] = [];
 
