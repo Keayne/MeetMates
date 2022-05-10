@@ -20,9 +20,9 @@ class SignUpComponent extends PageMixin(LitElement) {
   @query('#gender') private genderElement!: HTMLInputElement;
   @query('#password') private passwordElement!: HTMLInputElement;
 
-  @state() private descriptions!: Array<{ id: string; ltext: string; rtext: string }>;
-  @state() private interests!: Array<{ id: string; text: string }>;
-  @state() private imgSrc!: string;
+  @state() private descriptions: Array<{ id: string; ltext: string; rtext: string }> = [];
+  @state() private interests: Array<{ id: string; text: string }> = [];
+  @state() private imgSrc: string = "";
   private selectedInterests: string[] = [];
   private selectedDescriptions: { id: string; value: number }[] = [];
 
