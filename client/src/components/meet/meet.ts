@@ -48,19 +48,22 @@ class YourMeetComponent extends PageMixin(LitElement) {
       for (const m of this.meet.mates) {
         matesTemp.push(
           html`<meet-user
+            class="meetMate"
             mateId="${m.id}"
             name="${m.name}"
             firstName="${m.firstName}"
             age="${m.age}"
             imgSrc="${m.src}"
-          ></meet-user>`
+          />`
         );
       }
       return html`${this.renderNotification()}
         <div class="meeting">
           <div class="meet-header">
             <h1 class="meetName">${this.meet.name}</h1>
-            <div class="meet-Delete" @click=${(e: Event) => this.deleteMeetClicked(e)}>x</div>
+            <button type="button" class="meet-Delete" @click=${(e: Event) => this.deleteMeetClicked(e)}>
+              &#10006;
+            </button>
           </div>
           <div class="meetingUsers">${matesTemp}</div>
           <meet-chat></meet-chat>

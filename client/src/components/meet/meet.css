@@ -28,30 +28,32 @@ body{
     border: 2px black solid;
     border-radius: 1rem;
     text-align: center;
-    transition: ease-in 0.3s;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+    transition: width ease-in-out 0.3s;
+    display: flex;
     
+    cursor: pointer;
     min-width: 2rem;
     min-height: 2rem;
 }
-.meet-Delete > *{
-    position: absolute;
-    top: 50%;
-    right: 50%;
-}
+
 
 .meet-Delete:hover{
 
     background-color: lightgray;
-
     -webkit-box-shadow: 6px 8px 12px -1px rgba(0,0,0,0.36); 
     box-shadow: 6px 8px 12px -1px rgba(0,0,0,0.36);
     
-
-    transition: ease-out 0.3s;
 }
 
 .meetingUsers{
     display: flex;
+    align-items: center;
     flex-direction: column;
 }
 
+.meetMate {
+
+}

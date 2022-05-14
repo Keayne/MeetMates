@@ -4,7 +4,7 @@ import express from 'express';
 
 const router = express.Router();
 interface Mate {
-  id: string;
+  mateId: string;
   name: string;
   firstName: string;
   src: string;
@@ -18,21 +18,21 @@ interface Meet {
 
 const mates: Mate[] = [
   {
-    id: '123123',
+    mateId: '123123',
     name: 'Müller',
     firstName: 'Peter',
     src: '/favicon.png',
     age: '15'
   },
   {
-    id: 'sdgwegsd',
+    mateId: 'sdgwegsd',
     name: 'Bach',
     firstName: 'Jürgen',
     src: '',
     age: '123'
   },
   {
-    id: 'dvbnkjdfbhgi',
+    mateId: 'dvbnkjdfbhgi',
     name: 'Meyer',
     firstName: 'Lisa',
     src: '',

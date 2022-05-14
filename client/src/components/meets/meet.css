@@ -17,6 +17,8 @@ h2 {
     justify-content: space-between;
     align-items: center;
     transition: ease-in 0.3s;
+
+    cursor: pointer;
 }
 
 .meet:hover{
@@ -35,6 +37,11 @@ h2 {
 
 .meet > .name{
     margin: 0rem 1rem;
+}
+
+.userIcon {
+    display: inline-flex;
+    align-items: center;
 }
 
 img{

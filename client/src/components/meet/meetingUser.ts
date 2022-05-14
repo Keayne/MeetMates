@@ -16,11 +16,11 @@ class MeetUserComponent extends PageMixin(LitElement) {
   @property({ type: String }) imgSrc = './temp_logo.jpg';
 
   render() {
-    return html`<div class="meetingUser" @click=${(e: Event) => this.mateClicked(e)}>
+    return html`<button type="button" class="meetingUser" @click=${(e: Event) => this.mateClicked(e)}>
       <img src=${this.imgSrc} />
-      <h3>${this.name}, ${this.firstname}</h3>
-      <h3>${this.age}</h3>
-    </div>`;
+      <span class="h3">${this.name}, ${this.firstname}</span>
+      <span>${this.age}</span>
+    </button>`;
   }
 
   private mateClicked(e: Event) {

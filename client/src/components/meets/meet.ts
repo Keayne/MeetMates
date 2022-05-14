@@ -40,12 +40,14 @@ class MeetsMeetComponent extends PageMixin(LitElement) {
     const mateTemp = [];
     console.log(this.userIcons);
     for (const m of this.userIcons) {
-      mateTemp.push(html`<user-icon name="${m.name}" firstName="${m.firstName}" src="${m.src}"></user-icon>`);
+      mateTemp.push(
+        html`<user-icon class="userIcon" name="${m.name}" firstName="${m.firstName}" src="${m.src}"></user-icon>`
+      );
     }
 
-    return html`<div class="meet" @click=${() => router.navigate(`/meet/${this.id}`)}>
+    return html`<button type="button" class="meet" @click=${() => router.navigate(`/meet/${this.id}`)}>
       <h2 class="name">${this.name}</h2>
       <div>${mateTemp}</div>
-    </div>`;
+    </button>`;
   }
 }
