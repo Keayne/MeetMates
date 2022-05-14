@@ -43,7 +43,7 @@ class MeetsMeetComponent extends PageMixin(LitElement) {
       mateTemp.push(html`<user-icon name="${m.name}" firstName="${m.firstName}" src="${m.src}"></user-icon>`);
     }
 
-    return html`<div class="meet" @click=${() => router.navigate(`meet/${this.id}`)}>
+    return html`<div class="meet" @click=${() => router.navigate(`/meet/${this.id}`)}>
       <h2 class="name">${this.name}</h2>
       <div>${mateTemp}</div>
     </div>`;

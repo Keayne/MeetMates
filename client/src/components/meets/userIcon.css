@@ -6,3 +6,7 @@ img{
     max-width: 2rem;
     max-height: 2rem;
 }
+
+img:not(:defined) {
+    display: none;
+}

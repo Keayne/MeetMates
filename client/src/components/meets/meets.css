@@ -2,6 +2,10 @@
     text-align: center;
    
 }
+
+.meets:not(:defined) {
+    display: none;
+}
 .meets-header{
     background-color: pink;
     border-radius: 0.5rem; 

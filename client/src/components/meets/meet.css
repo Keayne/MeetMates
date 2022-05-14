@@ -1,7 +1,9 @@
 h2 {
     line-height: 1;
 }
-
+.meet:not(:defined) {
+    display: none;
+}
 .meet
 {
     min-width: 500px;

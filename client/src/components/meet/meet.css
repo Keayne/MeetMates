@@ -5,9 +5,49 @@ body{
 .meeting{
     text-align: center;
 }
-.meetingName{
+
+.meeting:not(:defined) {
+    display: none;
+}
+
+.meet-header{
+    display: inline-flex;
     background-color: pink;
     border-radius: 0.35rem; 
+
+    justify-content: space-between;
+    align-items: center;
+
+    min-width: 40rem;
+    padding: 0rem 2rem;
+    
+}
+
+.meet-Delete{
+    font-weight: 200;
+    border: 2px black solid;
+    border-radius: 1rem;
+    text-align: center;
+    transition: ease-in 0.3s;
+    
+    min-width: 2rem;
+    min-height: 2rem;
+}
+.meet-Delete > *{
+    position: absolute;
+    top: 50%;
+    right: 50%;
+}
+
+.meet-Delete:hover{
+
+    background-color: lightgray;
+
+    -webkit-box-shadow: 6px 8px 12px -1px rgba(0,0,0,0.36); 
+    box-shadow: 6px 8px 12px -1px rgba(0,0,0,0.36);
+    
+
+    transition: ease-out 0.3s;
 }
 
 .meetingUsers{

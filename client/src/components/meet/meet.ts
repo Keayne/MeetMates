@@ -1,55 +1,80 @@
 /* Autor: Jonathan Hüls */
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { PageMixin } from '../page.mixin';
+import { router } from '../../router/router.js';
 import componentStyle from './meet.css';
+import { httpClient } from '../../http-client';
 
-interface mate {
+interface Mate {
+  id: string;
   name: string;
   firstName: string;
   src: string;
   age: string;
 }
-const userJson: mate[] = [
-  {
-    name: 'Müller',
-    firstName: 'Peter',
-    src: '/favicon.png',
-    age: '15'
-  },
-  {
-    name: 'Bach',
-    firstName: 'Jürgen',
-    src: '',
-    age: '123'
-  },
-  {
-    name: 'Meyer',
-    firstName: 'Lisa',
-    src: '',
-    age: '23'
-  }
-];
+interface Meet {
+  id: string;
+  name: string;
+  mates: Mate[];
+}
 
 @customElement('app-your-meet')
 class YourMeetComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
-  @property({ type: JSON }) mates = userJson;
   @property() meetId!: string;
-  @property({ type: String }) meetingName = 'Filler Text';
+
+  private meet!: Meet;
+
+  async firstUpdated() {
+    try {
+      const response = await httpClient.get('/meet/' + this.meetId + location.search);
+      this.meet = await response.json();
+      console.log(this.meet);
+      this.requestUpdate();
+      await this.updateComplete;
+    } catch (err) {
+      if ((err as { statusCode: number }).statusCode === 401) {
+        router.navigate('mates/sign-in');
+      } else {
+        this.showNotification((err as Error).message, 'error');
+      }
+    }
+  }
 
   render() {
-    const matesTemp = [];
-    for (const m of this.mates) {
-      matesTemp.push(
-        html`<meet-user name="${m.name}" firstName="${m.firstName}" age="${m.age}" imgSrc="${m.src}"></meet-user>`
-      );
+    if (this.meet !== undefined) {
+      const matesTemp = [];
+      for (const m of this.meet.mates) {
+        matesTemp.push(
+          html`<meet-user
+            mateId="${m.id}"
+            name="${m.name}"
+            firstName="${m.firstName}"
+            age="${m.age}"
+            imgSrc="${m.src}"
+          ></meet-user>`
+        );
+      }
+      return html`${this.renderNotification()}
+        <div class="meeting">
+          <div class="meet-header">
+            <h1 class="meetName">${this.meet.name}</h1>
+            <div class="meet-Delete" @click=${(e: Event) => this.deleteMeetClicked(e)}>x</div>
+          </div>
+          <div class="meetingUsers">${matesTemp}</div>
+          <meet-chat></meet-chat>
+        </div>`;
     }
-    return html`${this.renderNotification()}
-      <div class="meeting">
-        <h1 class="meetingName">${this.meetingName}</h1>
-        <div class="meetingUsers">${matesTemp}</div>
-        <meet-chat></meet-chat>
-      </div>`;
+  }
+  async deleteMeetClicked(e: Event) {
+    if (confirm('Do you realy wish to quit the Meet ?')) {
+      try {
+        await httpClient.delete('/meet/' + this.meetId);
+        router.navigate('meets');
+      } catch (err) {
+        this.showNotification((err as Error).message, 'error');
+      }
+    }
   }
 }
