@@ -4,23 +4,29 @@ import { customElement, property } from 'lit/decorators.js';
 import { PageMixin } from '../page.mixin';
 import componentStyle from './meet.css';
 
-const userJson = [
+interface mate {
+  name: string;
+  firstName: string;
+  src: string;
+  age: string;
+}
+const userJson: mate[] = [
   {
     name: 'Müller',
-    firstname: 'Peter',
-    src: 'team_10/client/public/temp_logo.jpg',
+    firstName: 'Peter',
+    src: '/favicon.png',
     age: '15'
   },
   {
     name: 'Bach',
-    firstname: 'Jürgen',
-    src: 'team_10/client/public/temp_logo.jpg',
+    firstName: 'Jürgen',
+    src: '',
     age: '123'
   },
   {
     name: 'Meyer',
-    firstname: 'Lisa',
-    src: 'team_10/client/public/temp_logo.jpg',
+    firstName: 'Lisa',
+    src: '',
     age: '23'
   }
 ];
@@ -28,18 +34,21 @@ const userJson = [
 @customElement('app-your-meet')
 class YourMeetComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
-  @property({ type: JSON }) users = userJson;
+  @property({ type: JSON }) mates = userJson;
+  @property() meetId!: string;
   @property({ type: String }) meetingName = 'Filler Text';
 
   render() {
+    const matesTemp = [];
+    for (const m of this.mates) {
+      matesTemp.push(
+        html`<meet-user name="${m.name}" firstName="${m.firstName}" age="${m.age}" imgSrc="${m.src}"></meet-user>`
+      );
+    }
     return html`${this.renderNotification()}
       <div class="meeting">
         <h1 class="meetingName">${this.meetingName}</h1>
-        <div class="meetingUsers">
-          <meet-user name="Peter" firstName="Meyer" age="12"></meet-user>
-          <meet-user name="Peter" firstName="Meyer" age="12" imgSrc="/favicon.png"></meet-user>
-          <meet-user name="Peter" firstName="Meyer" age="12"></meet-user>
-        </div>
+        <div class="meetingUsers">${matesTemp}</div>
         <meet-chat></meet-chat>
       </div>`;
   }

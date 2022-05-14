@@ -1,44 +1,54 @@
 /* Autor: Jonathan Hüls */
 
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
+import { httpClient } from '../../http-client';
+import { router } from '../../router/router';
 import { PageMixin } from '../page.mixin';
 import componentStyle from './meets.css';
 
-const userJson = [
-  {
-    name: 'Müller',
-    firstname: 'Peter',
-    src: 'https://lh3.googleusercontent.com/ogw/ADea4I4oHiicNWrPtZiaZzAMB-Nl35i4NbU4ymarKsVN=s32-c-mo'
-  },
-  {
-    name: 'Bach',
-    firstname: 'Jürgen',
-    src: 'team_10/client/public/temp_logo.jpg'
-  },
-  {
-    name: 'Meyer',
-    firstname: 'Lisa',
-    src: 'team_10/client/public/temp_logo.jpg'
-  }
-];
+interface Meet {
+  id: string;
+  name: string;
+  mates: Mate[];
+}
+interface Mate {
+  id: string;
+  name: string;
+  src: string;
+}
 
 @customElement('app-meets')
 class MeetsComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
-  @property({ type: JSON }) users = userJson;
+  @state() private meets: Meet[] = [];
+
+  async firstUpdated() {
+    try {
+      this.startAsyncInit();
+      const response = await httpClient.get('/meets' + location.search);
+      this.meets = await response.json();
+    } catch (err) {
+      if ((err as { statusCode: number }).statusCode === 401) {
+        router.navigate('mates/sign-in');
+      } else {
+        this.showNotification((err as Error).message, 'error');
+      }
+    }
+  }
 
   render() {
+    const meetsTemp = [];
+    for (const m of this.meets) {
+      meetsTemp.push(html`<meets-meet id="${m.id}" name="${m.name}" mates=${m.mates}></meets-meet>`);
+    }
+
     return html`${this.renderNotification()}
       <div class="meets">
         <div class="meets-header">
           <h2>New Meets</h2>
         </div>
-        <div class="meets-body">
-          <meets-meet id="123" name="Test" users=${this.users}></meets-meet>
-          <meets-meet id="456" name="Test2"></meets-meet>
-          <meets-meet id="789" name="Test3"></meets-meet>
-        </div>
+        <div class="meets-body">${meetsTemp}</div>
       </div>`;
   }
 }

@@ -2,25 +2,50 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { PageMixin } from '../page.mixin';
+import { router } from '../../router/router.js';
+import { httpClient } from '../../http-client';
 import componentStyle from './meet.css';
 
+interface Mate {
+  id: string;
+  name: string;
+  firstName: string;
+  src: string;
+}
 @customElement('meets-meet')
 class MeetsMeetComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
 
   @property({ type: String }) id = '';
   @property({ type: String }) name = '';
-  @property({ type: JSON }) users = [];
+  @property() userIcons: Mate[] = [];
+
+  async firstUpdated() {
+    console.log('firstUpdated id:' + this.id);
+
+    try {
+      this.startAsyncInit();
+      const response = await httpClient.get(`/meets/userIcons/:${this.id}` + location.search);
+      this.userIcons = await response.json();
+    } catch (err) {
+      if ((err as { statusCode: number }).statusCode === 401) {
+        router.navigate('mates/sign-in');
+      } else {
+        this.showNotification((err as Error).message, 'error');
+      }
+    }
+  }
 
   render() {
-    return html`<div class="meet" onclick="location.href='meet/${this.id}'">
+    const mateTemp = [];
+    console.log(this.userIcons);
+    for (const m of this.userIcons) {
+      mateTemp.push(html`<user-icon name="${m.name}" firstName="${m.firstName}" src="${m.src}"></user-icon>`);
+    }
+
+    return html`<div class="meet" @click=${() => router.navigate(`meet/${this.id}`)}>
       <h2 class="name">${this.name}</h2>
-      <div>
-        <user-icon src="/favicon.png"></user-icon>
-        <user-icon></user-icon>
-        <user-icon></user-icon>
-        <user-icon></user-icon>
-      </div>
+      <div>${mateTemp}</div>
     </div>`;
   }
 }

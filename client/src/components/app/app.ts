@@ -12,6 +12,11 @@ class AppComponent extends LitElement {
     { title: 'Login', routePath: 'mates/sign-in' }
   ];
 
+  @state() private loggedInHeaderOptions = [
+    { title: 'Meets', routePath: 'meets' },
+    { title: 'Profil', routePath: 'mates/profile' }
+  ];
+
   constructor() {
     super();
     const port = 3000;
@@ -21,11 +26,6 @@ class AppComponent extends LitElement {
   firstUpdated() {
     router.subscribe(() => this.requestUpdate());
   }
-
-  @state() private loggedInHeaderOptions = [
-    { title: 'Meets', routePath: 'meets' },
-    { title: 'Profil', routePath: 'mates/profile' }
-  ];
 
   renderRouterOutlet() {
     return router.select(
@@ -40,7 +40,7 @@ class AppComponent extends LitElement {
           html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><user-profile></user-profile>`,
         'meets': () =>
           html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><app-meets></app-meets>`,
-        'meet': () =>
+        'meet/:id': () =>
           html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><app-your-meet></app-your-meet>`,
         'chat': () => html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><app-chat></app-chat>`
       },

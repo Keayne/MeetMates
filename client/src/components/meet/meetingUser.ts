@@ -9,9 +9,9 @@ class MeetUserComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
 
   @property({ type: String }) userId = '';
-  @property({ type: String }) firstname = 'Max';
-  @property({ type: String }) name = 'Mustermann';
-  @property({ type: String }) age = '21';
+  @property({ type: String }) firstname = '';
+  @property({ type: String }) name = '';
+  @property({ type: String }) age = '';
   @property({ type: String }) imgSrc = './temp_logo.jpg';
 
   render() {
