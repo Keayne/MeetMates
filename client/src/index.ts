@@ -16,3 +16,5 @@ import './components/meet/meetChat.ts';
 import './components/meet/meetChatMessage.ts';
 import './components/chat/chat.ts';
 import './components/chat/chat-message.ts';
+import './components/find-activity/find-activity.ts';
+import './components/find-activity/activity/activity.ts';

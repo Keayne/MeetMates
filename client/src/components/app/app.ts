@@ -24,7 +24,8 @@ class AppComponent extends LitElement {
 
   @state() private loggedInHeaderOptions = [
     { title: 'Meets', routePath: 'meets' },
-    { title: 'Profil', routePath: 'mates/profile' }
+    { title: 'Profil', routePath: 'mates/profile' },
+    { title: 'Activity', routePath: 'meet/find-activity' }
   ];
 
   renderRouterOutlet() {
@@ -42,7 +43,9 @@ class AppComponent extends LitElement {
           html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><app-meets></app-meets>`,
         'meet': () =>
           html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><app-your-meet></app-your-meet>`,
-        'chat': () => html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><app-chat></app-chat>`
+        'chat': () => html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><app-chat></app-chat>`,
+        'meet/find-activity': () =>
+          html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><find-activity></find-activity>`
       },
       () => html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><landing-page></landing-page>`
     );
