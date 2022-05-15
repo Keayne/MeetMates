@@ -15,7 +15,7 @@ import { corsService } from './services/cors.service.js';
 import fs from 'fs';
 import { pathToFileURL } from 'url';
 import { startWebSocketServer } from './ws-server.js';
-import chat from './routes/chat.js';
+//import chat from './routes/chat.js';
 
 const config = JSON.parse(fs.readFileSync(new URL('../config.json', import.meta.url), 'utf-8'));
 
@@ -29,7 +29,7 @@ function configureApp(app: Express) {
   app.use('/api/profile', profile);
   app.use('/api/meets', meets);
   app.use('/api/meet', meet);
-  app.use('/api/chat', chat);
+  //app.use('/api/chat', chat);
 }
 
 export async function start() {

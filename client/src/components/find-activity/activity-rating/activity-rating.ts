@@ -1,15 +1,22 @@
 /* Autor: Arne Schaper */
 import { LitElement, html } from 'lit';
-import { query, customElement } from 'lit/decorators.js';
+import { query, customElement, property } from 'lit/decorators.js';
 import { PageMixin } from '../../page.mixin';
-import componentStyle from './find-activity.css';
+import { Actitity } from '../find-activity';
+import componentStyle from './activity-rating.css';
 
 @customElement('activity-rating')
-class ActivityRating extends PageMixin(LitElement) {
+class ActivityRatingComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
 
+  @property({ reflect: true }) activity = {} as Actitity;
+
   render() {
-    return html`${this.renderNotification()}
-      <h1>find activity component :)</h1>`;
+    return html`
+      <p>${this.activity.motivationTitle}</p>
+      <div class="slidecontainer">
+        <input type="range" min="1" max="100" value="50" class="slider" id="myRange" />
+      </div>
+    `;
   }
 }

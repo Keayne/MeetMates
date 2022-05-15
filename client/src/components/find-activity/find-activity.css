@@ -1,4 +1,4 @@
 /* Arne Schaper */
-h1 {
-  text-align: center;
+.activity {
+  display: inline-block;
 }
