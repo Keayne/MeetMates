@@ -4,25 +4,23 @@ import { query, customElement, state, property } from 'lit/decorators.js';
 import { PageMixin } from '../page.mixin';
 import componentStyle from './find-activity.css';
 import { repeat } from 'lit/directives/repeat.js';
+import { httpClient } from '../../http-client';
 
 export interface Actitity {
-  id: string;
   title: string;
   description: string;
   tooltip: string;
   motivationTitle: string;
 }
 
-let activity_array: { id: number; title: String; description: String; tooltip: String; motivationTitle: String }[] = [
+let activity_array: { title: String; description: String; tooltip: String; motivationTitle: String }[] = [
   {
-    id: 1,
     title: 'title1',
     description: 'description1',
     tooltip: 'tooltip desc1',
     motivationTitle: 'Wie viel Lust hast du auf title1?'
   },
   {
-    id: 2,
     title: 'title2',
     description: 'description2',
     tooltip: 'tooltip desc2',
@@ -33,11 +31,13 @@ let activity_array: { id: number; title: String; description: String; tooltip: S
 class FindActivityComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
 
-  @property({ type: Array }) private ActivityList: Array<Actitity> = []; //this should take info from db, currently unused
+  @property({ type: Array }) private activityList: Array<Actitity> = [];
 
   async firstUpdated() {
     try {
       this.startAsyncInit();
+      const response = await httpClient.get('activities' + location.search);
+      this.activityList = (await response.json()).results;
     } catch (e) {
       this.showNotification((e as Error).message, 'error');
     } finally {
@@ -49,7 +49,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
     return html`${this.renderNotification()}
       <h3>Find Actitity Component start</h3>
       ${repeat(
-        activity_array, //this should render this.ActivityList
+        this.activityList,
         activity =>
           html` <div class="activity">
               <activity-info .activity=${activity}></activity-info>

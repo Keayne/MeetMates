@@ -8,6 +8,7 @@ import mates from './routes/mates.js';
 import profile from './routes/profile.js';
 import meets from './routes/meets.js';
 import meet from './routes/meet.js';
+import activity from './routes/activity.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import startDB from './db.js';
@@ -29,6 +30,7 @@ function configureApp(app: Express) {
   app.use('/api/profile', profile);
   app.use('/api/meets', meets);
   app.use('/api/meet', meet);
+  app.use('/api/activity', activity);
   //app.use('/api/chat', chat);
 }
 
