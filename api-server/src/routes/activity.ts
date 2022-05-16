@@ -28,13 +28,13 @@ function decrypt(ivPlusCipherTextBase64: string) {
 }
 
 router.get('/', async (req, res) => {
-  console.log('GET ANFRAGE');
   const activityDAO: GenericDAO<Activity> = req.app.locals.activityDAO;
   const activites = await activityDAO.findAll();
   res.json({ results: activites });
 });
 
 router.post('/', authService.authenticationMiddleware, async (req, res) => {
+  //TODO integrate post option
   console.log('POST REQUEST');
   const activityDAO: GenericDAO<Activity> = req.app.locals.activitiesDAO;
 

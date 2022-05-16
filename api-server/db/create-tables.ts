@@ -27,7 +27,7 @@ type Mate = {
 async function createPsqlScheme(client: ClientType) {
   await client.connect();
   await client.query(
-    'drop table if exists matemeet, matedescription , mateinterest , meet,  mate, interest, matedescription, description, servicedata'
+    'drop table if exists matemeet, matedescription , mateinterest , meet,  mate, interest, matedescription, description, servicedata, activitymeet, activity'
   );
   await client.query(
     `create table meet(
@@ -95,6 +95,29 @@ async function createPsqlScheme(client: ClientType) {
       value int NOT NULL
     )`
   );
+
+  await client.query(
+    `create table activity(
+      id Varchar(40) PRIMARY KEY,
+      "createdAt" bigint Not Null,
+      title Varchar(255) NOT NULL,
+      description Varchar(255) NOT NULL,
+      tooltip Varchar(255) NOT NULL,
+      motivationTitle Varchar(255) NOT NULL,
+      rating int
+    )`
+  );
+
+  /*
+  await client.query(
+    `create table activitymeet(
+      userId Varchar(40) NOT NULL references mate(id),
+      meetId Varchar(40) NOT NULL references meet(id),
+      activityId Varchar(40) NOT NULL references activity(id),
+      rating int
+    )
+  `
+  );*/
 }
 
 async function fillSchemeWithData(client: ClientType) {
@@ -207,6 +230,36 @@ async function fillSchemeWithData(client: ClientType) {
 
       await client.query(query);
     });
+
+    testData.activity.forEach(
+      async (element: {
+        id: string;
+        createdAt: number;
+        title: String;
+        description: String;
+        tooltip: String;
+        motivationTitle: String;
+      }) => {
+        const query = `insert into activity(
+        id,
+        "createdAt",
+        title,
+        description,
+        tooltip,
+        motivationTitle
+      )
+      values(
+        '${element.id}',
+        '${Date.now()}',
+        '${element.title}',
+        '${element.description}',
+        '${element.tooltip}',
+        '${element.motivationTitle}'
+      )`;
+
+        await client.query(query);
+      }
+    );
   });
 }
 
