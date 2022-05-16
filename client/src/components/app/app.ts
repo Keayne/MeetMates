@@ -41,14 +41,14 @@ class AppComponent extends LitElement {
           html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><user-profile></user-profile>`,
         'meets': () =>
           html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><app-meets></app-meets>`,
+        'meet/find-activity': () =>
+          html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><find-activity></find-activity>`,
         'meet/:meetId': params =>
           html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header>
             <app-your-meet .meetId=${params.meetId}></app-your-meet>`,
         'chat': () => html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><app-chat></app-chat>`,
         'meet': () =>
-          html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><app-your-meet></app-your-meet>`,
-        'meet/find-activity': () =>
-          html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><find-activity></find-activity>`
+          html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><app-your-meet></app-your-meet>`
       },
       () => html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><landing-page></landing-page>`
     );

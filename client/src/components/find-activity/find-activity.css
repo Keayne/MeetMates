@@ -1,4 +1,20 @@
 /* Arne Schaper */
+
+.activity-container {
+  margin: 0 auto;
+}
+
 .activity {
-  display: inline-block;
+  text-align: center;
+}
+
+.activity-header {
+  background-color: pink;
+  border-radius: 0.5rem;
+  align-items: center;
+
+  min-width: 40rem;
+  height: 3rem;
+  display: inline-flex;
+  justify-content: center;
 }

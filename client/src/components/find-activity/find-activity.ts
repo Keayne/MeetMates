@@ -36,7 +36,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
   async firstUpdated() {
     try {
       this.startAsyncInit();
-      const response = await httpClient.get('activities' + location.search);
+      const response = await httpClient.get('activity' + location.search);
       this.activityList = (await response.json()).results;
     } catch (e) {
       this.showNotification((e as Error).message, 'error');
@@ -48,15 +48,21 @@ class FindActivityComponent extends PageMixin(LitElement) {
   render() {
     return html`${this.renderNotification()}
       <h3>Find Actitity Component start</h3>
+      <div class="activity-header">
+        <h2>Available Activities</h2>
+      </div>
+
       ${repeat(
         this.activityList,
         activity =>
-          html` <div class="activity">
+          html` <div class="activity-container">
+            <div class="activity">
               <activity-info .activity=${activity}></activity-info>
             </div>
             <div class="activity">
               <activity-rating .activity=${activity}></activity-rating>
-            </div>`
+            </div>
+          </div>`
       )}
 
       <h3>Find Actitity Component finish</h3>`;
