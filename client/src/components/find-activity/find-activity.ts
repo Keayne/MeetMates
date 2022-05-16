@@ -10,23 +10,11 @@ export interface Actitity {
   title: string;
   description: string;
   tooltip: string;
-  motivationTitle: string;
+  tooltipcreatedby: string;
+  motivationtitle: string;
+  rating: number;
 }
 
-let activity_array: { title: String; description: String; tooltip: String; motivationTitle: String }[] = [
-  {
-    title: 'title1',
-    description: 'description1',
-    tooltip: 'tooltip desc1',
-    motivationTitle: 'Wie viel Lust hast du auf title1?'
-  },
-  {
-    title: 'title2',
-    description: 'description2',
-    tooltip: 'tooltip desc2',
-    motivationTitle: 'Wie viel Lust hast du auf title2?'
-  }
-];
 @customElement('find-activity')
 class FindActivityComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
@@ -47,24 +35,23 @@ class FindActivityComponent extends PageMixin(LitElement) {
 
   render() {
     return html`${this.renderNotification()}
-      <h3>Find Actitity Component start</h3>
-      <div class="activity-header">
-        <h2>Available Activities</h2>
-      </div>
-
-      ${repeat(
-        this.activityList,
-        activity =>
-          html` <div class="activity-container">
-            <div class="activity">
-              <activity-info .activity=${activity}></activity-info>
+      <div class="activity-outer">
+        <div class="activity-header">
+          <h2>Available Activities</h2>
+        </div>
+        ${repeat(
+          this.activityList,
+          activity =>
+            html` <div class="activity-container">
+              <div class="activity">
+                <activity-info .activity=${activity}></activity-info>
+              </div>
+              <div class="activity">
+                <activity-rating .activity=${activity}></activity-rating>
+              </div>
             </div>
-            <div class="activity">
-              <activity-rating .activity=${activity}></activity-rating>
-            </div>
-          </div>`
-      )}
-
-      <h3>Find Actitity Component finish</h3>`;
+        </div>`
+        )}
+      </div>`;
   }
 }

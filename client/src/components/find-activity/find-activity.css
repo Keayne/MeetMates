@@ -1,11 +1,12 @@
 /* Arne Schaper */
-
-.activity-container {
-  margin: 0 auto;
+.activity-outer {
+  text-align: center;
 }
 
-.activity {
-  text-align: center;
+.activity-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .activity-header {

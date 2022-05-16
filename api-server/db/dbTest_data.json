@@ -301,6 +301,7 @@
       "title": "dbTestTitle1",
       "description": "dbTestDescription1",
       "tooltip": "dbTestTooltip1",
+      "tooltipCreatedBy": "Arne",
       "motivationTitle": "dbTestMotivationTitle1",
       "rating": 50
     },
@@ -309,6 +310,7 @@
       "title": "dbTestTitle2",
       "description": "dbTestDescription2",
       "tooltip": "dbTestTooltip2",
+      "tooltipCreatedBy": "Arne",
       "motivationTitle": "dbTestMotivationTitle2",
       "rating": 50
     },
@@ -317,6 +319,7 @@
       "title": "dbTestTitle3",
       "description": "dbTestDescription3",
       "tooltip": "dbTestTooltip3",
+      "tooltipCreatedBy": "Arne",
       "motivationTitle": "dbTestMotivationTitle3",
       "rating": 50
     }

@@ -12,13 +12,18 @@ class CardComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
 
   @property({ reflect: true }) activity = {} as Actitity;
+  @property({ type: String }) imgSrc = './kino.jpg';
 
   render() {
     return html`
+      ${console.log(this.activity)}
       <div id="card" class="card" style="width: 18rem">
-        <img src="./pic.jpg" class="card-image" />
+        <img src=${this.imgSrc} class="card-image" />
         <div class="card-body">
-          <div class="card-title">${this.activity.title}</div>
+          <div class="tooltip">
+            <div class="card-title">${this.activity.title}</div>
+            <span class="tooltiptext">${this.activity.tooltipcreatedby}</span>
+          </div>
           <div class="tooltip">
             <div class="card-content">${this.activity.description}</div>
             <span class="tooltiptext">${this.activity.tooltip}</span>
