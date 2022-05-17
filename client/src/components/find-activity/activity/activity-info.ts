@@ -22,7 +22,7 @@ class CardComponent extends PageMixin(LitElement) {
         <div class="card-body">
           <div class="tooltip">
             <div class="card-title">${this.activity.title}</div>
-            <span class="tooltiptext">${this.activity.tooltipcreatedby}</span>
+            <span class="tooltiptext">Autor: ${this.activity.tooltipcreatedby}</span>
           </div>
           <div class="tooltip">
             <div class="card-content">${this.activity.description}</div>
