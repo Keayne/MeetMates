@@ -105,7 +105,9 @@ async function createPsqlScheme(client: ClientType) {
       tooltip Varchar(255) NOT NULL,
       tooltipCreatedBy Varchar(255) NOT NULL,
       motivationTitle Varchar(255) NOT NULL,
-      rating int
+      rating int,
+      chosen int NOT NULL,
+      meetId Varchar(40) NOT NULL references meet(id)
     )`
   );
 
@@ -241,6 +243,9 @@ async function fillSchemeWithData(client: ClientType) {
         tooltip: String;
         tooltipCreatedBy: String;
         motivationTitle: String;
+        rating: number;
+        chosen: number;
+        meetId: String;
       }) => {
         const query = `insert into activity(
         id,
@@ -249,7 +254,10 @@ async function fillSchemeWithData(client: ClientType) {
         description,
         tooltip,
         tooltipCreatedBy,
-        motivationTitle
+        motivationTitle,
+        rating,
+        chosen,
+        meetId
       )
       values(
         '${element.id}',
@@ -258,7 +266,10 @@ async function fillSchemeWithData(client: ClientType) {
         '${element.description}',
         '${element.tooltip}',
         '${element.tooltipCreatedBy}',
-        '${element.motivationTitle}'
+        '${element.motivationTitle}',
+        '${element.rating}',
+        '${element.chosen}',
+        '${element.meetId}'
       )`;
 
         await client.query(query);

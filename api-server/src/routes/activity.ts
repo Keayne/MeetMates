@@ -39,10 +39,14 @@ router.post('/', authService.authenticationMiddleware, async (req, res) => {
   const activityDAO: GenericDAO<Activity> = req.app.locals.activitiesDAO;
 
   const createdActivity = await activityDAO.create({
-    title: 'datenbankAktivity1',
-    description: 'datenbankDescription1',
-    tooltip: 'dbtooltip1',
-    motivationTitle: 'dbmotionvationtitle1'
+    title: req.body.title,
+    description: req.body.description,
+    tooltip: req.body.tooltip,
+    tooltipcreatedby: res.locals.user.id,
+    motivationTitle: req.body.motivationTitle,
+    rating: 1,
+    chosen: 0,
+    meetId: req.body.meetId
   });
   res.status(201).json(createdActivity);
 });

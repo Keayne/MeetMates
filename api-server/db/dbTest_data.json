@@ -298,30 +298,36 @@
   "activity": [
     {
       "id": "259c7697-1697-4dd1-8b74-088019fbf30f",
-      "title": "dbTestTitle1",
+      "title": "dbTitleForSpecificMeet",
       "description": "dbTestDescription1",
       "tooltip": "dbTestTooltip1",
       "tooltipCreatedBy": "Arne",
       "motivationTitle": "dbTestMotivationTitle1",
-      "rating": 50
+      "rating": 1,
+      "chosen": 0,
+      "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb"
     },
     {
       "id": "adaa1bb0-e223-4f77-a667-ae0d6f204062",
-      "title": "dbTestTitle2",
+      "title": "dbTestTitleForMeetId1",
       "description": "dbTestDescription2",
       "tooltip": "dbTestTooltip2",
       "tooltipCreatedBy": "Arne",
       "motivationTitle": "dbTestMotivationTitle2",
-      "rating": 50
+      "rating": 50,
+      "chosen": 0,
+      "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb"
     },
     {
       "id": "795f59da-91cd-4ce4-b1db-500864fca083",
-      "title": "dbTestTitle3",
+      "title": "dbTestTitle2ForMeetId1",
       "description": "dbTestDescription3",
       "tooltip": "dbTestTooltip3",
       "tooltipCreatedBy": "Arne",
       "motivationTitle": "dbTestMotivationTitle3",
-      "rating": 50
+      "rating": 50,
+      "chosen": 0,
+      "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb"
     }
   ]
 }

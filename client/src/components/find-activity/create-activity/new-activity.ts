@@ -4,6 +4,7 @@ import { LitElement, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { PageMixin } from '../../page.mixin';
 import { Actitity } from '../find-activity';
+import { httpClient } from '../../../http-client';
 
 import componentStyle from './new-activity.css';
 
@@ -14,12 +15,16 @@ class CardComponent extends PageMixin(LitElement) {
   @property({ reflect: true }) activity = {} as Actitity;
   @query('#myForm') private myForm!: HTMLDivElement;
 
+  async postActivity() {
+    await httpClient.get('activity' + location.search);
+  }
+
   render() {
     return html`
       <!-- Pop up -->
       <button class="open-button" @click="${this.openForm}">Create Activity</button>
       <div class="form-popup" id="myForm">
-        <form action="/action_page.php" class="form-container">
+        <form action="${this.postActivity}" class="form-container">
           <h1>New Activity</h1>
 
           <label for="title"><b>Title</b></label>
@@ -29,7 +34,7 @@ class CardComponent extends PageMixin(LitElement) {
           <input type="text" placeholder="Enter Description" name="description" required />
 
           <label for="description"><b>Motivation Title</b></label>
-          <input type="text" placeholder="Enter Motivation Title" name="description" required />
+          <input type="text" placeholder="Enter Motivation Title" name="motivationTitle" required />
 
           <button type="submit" class="btn">Create Actitity</button>
           <button type="button" class="btn cancel" @click="${this.closeForm}">Close</button>

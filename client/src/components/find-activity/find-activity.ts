@@ -13,6 +13,8 @@ export interface Actitity {
   tooltipcreatedby: string;
   motivationtitle: string;
   rating: number;
+  chosen: boolean;
+  meetId: string;
 }
 
 @customElement('find-activity')
