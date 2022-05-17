@@ -46,7 +46,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
               <div class="activity">
                 <activity-info .activity=${activity}></activity-info>
               </div>
-              <div class="activity">
+              <div class="activity" class="rating">
                 <activity-rating .activity=${activity}></activity-rating>
               </div>
             </div>

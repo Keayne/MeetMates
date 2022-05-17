@@ -16,7 +16,6 @@ class CardComponent extends PageMixin(LitElement) {
 
   render() {
     return html`
-      ${console.log(this.activity)}
       <div id="card" class="card" style="width: 18rem">
         <img src=${this.imgSrc} class="card-image" />
         <div class="card-body">

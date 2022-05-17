@@ -1,16 +1,28 @@
 /* Arne Schaper */
 .activity-outer {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.activity:nth-child(even) {
+  margin-left: 1rem;
 }
 
 .activity-container {
+  margin-top: 1rem;
   display: flex;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
+}
+
+.activity-container:last-child {
+  margin-bottom: 1rem;
 }
 
 .activity-header {
-  background-color: pink;
+  background-color: #ffc0cb;
   border-radius: 0.5rem;
   align-items: center;
 
