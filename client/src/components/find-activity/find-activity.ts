@@ -1,6 +1,6 @@
 /* Autor: Arne Schaper */
-import { LitElement, html, getCompatibleStyle } from 'lit';
-import { query, customElement, state, property } from 'lit/decorators.js';
+import { LitElement, html } from 'lit';
+import { query, customElement, property } from 'lit/decorators.js';
 import { PageMixin } from '../page.mixin';
 import componentStyle from './find-activity.css';
 import { repeat } from 'lit/directives/repeat.js';
@@ -39,6 +39,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
         <div class="activity-header">
           <h2>Available Activities</h2>
         </div>
+
         ${repeat(
           this.activityList,
           activity =>
@@ -52,6 +53,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
             </div>
         </div>`
         )}
-      </div>`;
+      </div>
+      <new-activity></new-activity> `;
   }
 }
