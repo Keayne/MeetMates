@@ -19,4 +19,3 @@ import './components/chat/chat-message.ts';
 import './components/find-activity/find-activity.ts';
 import './components/find-activity/activity/activity-info.ts';
 import './components/find-activity/activity-rating/activity-rating.ts';
-import './components/find-activity/create-activity/new-activity.ts';

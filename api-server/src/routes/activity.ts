@@ -34,19 +34,16 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', authService.authenticationMiddleware, async (req, res) => {
-  //TODO integrate post option
-  console.log('POST REQUEST');
-  const activityDAO: GenericDAO<Activity> = req.app.locals.activitiesDAO;
-
+  const activityDAO: GenericDAO<Activity> = req.app.locals.activityDAO;
   const createdActivity = await activityDAO.create({
     title: req.body.title,
     description: req.body.description,
-    tooltip: req.body.tooltip,
+    tooltip: String(new Date().getDate()), //todo fix date
     tooltipcreatedby: res.locals.user.id,
-    motivationTitle: req.body.motivationTitle,
+    motivationtitle: req.body.motivationtitle,
     rating: 1,
     chosen: 0,
-    meetId: req.body.meetId
+    meetid: '0ea6639d-c6d5-4030-bb1b-e687ecb850fb' //todo meetId needs to be handed over on submit
   });
   res.status(201).json(createdActivity);
 });

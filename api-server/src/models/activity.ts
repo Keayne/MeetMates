@@ -5,8 +5,8 @@ export interface Activity extends Entity {
   description: String;
   tooltip: String;
   tooltipcreatedby: String;
-  motivationTitle: String;
+  motivationtitle: String;
   rating: number;
   chosen: number;
-  meetId: String;
+  meetid: String;
 }
