@@ -66,10 +66,16 @@ class YourMeetComponent extends PageMixin(LitElement) {
             </button>
           </div>
           <div class="meetingUsers">${matesTemp}</div>
+          <button type="button" @click="${this.routeToActiviySeelction}">Find Actitity</button>
           <meet-chat></meet-chat>
         </div>`;
     }
   }
+
+  async routeToActiviySeelction() {
+    router.navigate('meet/find-activity/' + this.meetId);
+  }
+
   async deleteMeetClicked(e: Event) {
     if (confirm('Do you realy wish to quit the Meet ?')) {
       try {

@@ -28,19 +28,12 @@ class SignInComponent extends PageMixin(LitElement) {
       <form>
         <div>
           <label for="email">E-Mail</label>
-          <input
-            id="email"
-            type="email"
-            placeholder="E-Mail"
-            value="arne.schaper@online.de"
-            autofocus
-            required
-            id="email"
-          />
+          <input id="email" type="email" placeholder="E-Mail" autofocus required id="email" />
         </div>
         <div>
           <label for="password">Passwort</label>
-          <input type="password" placeholder="Passwort" value="123456789" required id="password" />
+          <input type="password" placeholder="Passwort" required id="password" />
+          <!-- TODO: remove autofillbehaviour from browser-->
         </div>
         <div>
           <button type="button" @click="${this.submit}">Anmelden</button>
