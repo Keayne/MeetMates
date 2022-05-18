@@ -1,8 +1,9 @@
 /* Autor: Valentin Lieberknecht */
 
 export interface Message {
-  own: string;
   id: string;
+  createdAt: number;
   author: string;
   body: string;
+  own: string;
 }

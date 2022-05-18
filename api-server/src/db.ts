@@ -11,6 +11,7 @@ import { PsqlUniversalDAO } from './models/psql-universal.dao.js';
 import { MateDescription } from './models/matedescription.js';
 import { MateInterest } from './models/mateinterest.js';
 import { Activity } from './models/activity.js';
+import { Chat } from './models/message.js';
 
 const config = JSON.parse(fs.readFileSync(new URL('../config.json', import.meta.url), 'utf-8'));
 const { Client } = pg;
@@ -54,6 +55,7 @@ async function startPsql(app: Express) {
   app.locals.interestDAO = new PsqlGenericDAO<Interest>(client!, 'interest');
   app.locals.mateinterestDAO = new PsqlUniversalDAO<MateInterest>(client!, 'mateinterest');
   app.locals.activityDAO = new PsqlGenericDAO<Activity>(client!, 'activity');
+  app.locals.chatDAO = new PsqlGenericDAO<Chat>(client!, 'chat');
   return async () => await client.end();
 }
 

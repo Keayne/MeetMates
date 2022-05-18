@@ -106,6 +106,10 @@ router.delete('/', authService.authenticationMiddleware, async (req, res) => {
   res.status(200).end();
 });
 
+router.get('/verify', authService.authenticationMiddleware, async (req, res) => {
+  res.status(200).end();
+});
+
 function hasRequiredFields(object: { [key: string]: unknown }, requiredFields: string[], errors: string[]) {
   let hasErrors = false;
   requiredFields.forEach(fieldName => {

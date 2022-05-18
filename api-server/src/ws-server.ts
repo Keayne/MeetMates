@@ -9,6 +9,7 @@ import { Mate } from './models/mate.js';
 interface WebSocketExt extends WebSocket {
   isAlive: boolean;
   claimsSet: Partial<Mate>;
+  room: string;
 }
 
 class WebSocketServer {
@@ -20,11 +21,12 @@ class WebSocketServer {
 
     this.wss.on('connection', (ws: WebSocketExt, req) => this.onConnection(ws, req));
   }
-  public async onMessage(ws: WebSocketExt, data: any) {
+  public async onMessage(ws: WebSocketExt, data: string) {
     this.wss.clients.forEach(client => {
-      if (client !== ws && client.readyState === WebSocket.OPEN) {
-        client.send(data);
-      }
+      client.send('reload');
+      // if (client !== ws && ws.room === data) {
+      //   client.send('reload');
+      // }
     });
   }
 
@@ -39,26 +41,7 @@ class WebSocketServer {
   }
 
   private async onConnection(ws: WebSocketExt, req: IncomingMessage) {
-    ws.on('message', (data: any) => this.onMessage(ws, data));
-    // const valid = await this.validateConnection(ws, req);
-    // if (valid) {
-    //   ws.isAlive = true;
-    //   ws.on('pong', () => {
-    //     ws.isAlive = true;
-    //   });
-    // } else {
-    //   ws.close();
-    // }
-  }
-
-  private async validateConnection(ws: WebSocketExt, req: IncomingMessage) {
-    const token = cookie.parse(req.headers.cookie as string)['jwt-token'];
-    try {
-      ws.claimsSet = authService.verifyToken(token) as Partial<Mate>;
-      return true;
-    } catch (error) {
-      return false;
-    }
+    ws.on('message', (data: string) => this.onMessage(ws, data));
   }
 
   private setupHeartBeat() {

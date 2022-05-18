@@ -1,6 +1,9 @@
 /* Autor: Valentin LIeberknecht */
 import { Entity } from './entity.js';
 
-export interface Message extends Entity {
-  text: string;
+export interface Chat extends Entity {
+  author: string;
+  room: string;
+  body: string;
+  own?: string;
 }
