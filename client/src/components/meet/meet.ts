@@ -1,6 +1,6 @@
 /* Autor: Jonathan Hüls */
 import { LitElement, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { PageMixin } from '../page.mixin';
 import { router } from '../../router/router.js';
 import componentStyle from './meet.css';
@@ -23,6 +23,7 @@ interface Meet {
 class YourMeetComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
   @property() meetId!: string;
+  @query('#meetName') private meetName: HTMLInputElement | undefined;
 
   private meet!: Meet;
 
@@ -50,14 +51,22 @@ class YourMeetComponent extends PageMixin(LitElement) {
       return html`${this.renderNotification()}
         <div class="meeting">
           <div class="meet-header">
-            <h1 class="meetName">${this.meet.name}</h1>
+            <input
+              type="text"
+              class="meetName"
+              id="meetName"
+              name="meetHeading"
+              @blur="${this.meetNameChanged}"
+              value="${this.meet.name}"
+            />
             <button type="button" class="meet-Delete" @click=${(e: Event) => this.deleteMeetClicked(e)}>
               &#10006;
             </button>
           </div>
           <div class="meetingUsers">${matesTemp}</div>
-          <button type="button" @click="${this.routeToActiviySeelction}">Find Actitity</button>
-          <button type="button" @click="${console.log('open chat')}">Chat</button>
+          <div>
+            <button type="button" class="routeBtn" @click="${this.routeToActiviySeelction}">Find Actitity</button>
+          </div>
           <meet-chat></meet-chat>
         </div>`;
     }
@@ -65,6 +74,24 @@ class YourMeetComponent extends PageMixin(LitElement) {
 
   async routeToActiviySeelction() {
     router.navigate('meet/find-activity/' + this.meetId);
+  }
+  async meetNameChanged() {
+    if (this.meetName?.value !== this.meet.name) {
+      console.log(this.meetName?.value);
+      console.log('old value: ' + this.meet.name);
+
+      try {
+        const response = await httpClient.post('/meet/changedName' + location.search, {
+          meetId: this.meetId,
+          newName: this.meetName?.value
+        });
+
+        await response.json();
+        this.meet.name = this.meetName === undefined ? this.meet.name : this.meetName?.value;
+      } catch (err) {
+        console.log(err);
+      }
+    }
   }
 
   async deleteMeetClicked(e: Event) {

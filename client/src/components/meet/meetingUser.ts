@@ -20,7 +20,6 @@ class MeetUserComponent extends PageMixin(LitElement) {
   @property({ reflect: true }) mate = {} as Mate;
 
   render() {
-    console.log(this.mate);
     return html`<button type="button" class="meetingUser" @click=${(e: Event) => this.mateClicked(e)}>
       <img src=${this.mate.src} />
       <span class="h3">${this.mate.name}, ${this.mate.firstName}</span>
