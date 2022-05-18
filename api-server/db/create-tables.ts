@@ -121,6 +121,15 @@ async function createPsqlScheme(client: ClientType) {
     )
   `
   );*/
+  await client.query(
+    `create table chat(
+      id Varchar(40) PRIMARY KEY,
+      "createdAt" bigint Not Null,
+      author Varchar(40) NOT NULL references mate(id),
+      room Varchar(40) NOT NULL references meet(id),
+      body Varchar(255) NOT NULL
+    )`
+  );
 }
 
 async function fillSchemeWithData(client: ClientType) {
@@ -238,14 +247,14 @@ async function fillSchemeWithData(client: ClientType) {
       async (element: {
         id: string;
         createdAt: number;
-        title: String;
-        description: String;
-        tooltip: String;
-        tooltipCreatedBy: String;
-        motivationTitle: String;
+        title: string;
+        description: string;
+        tooltip: string;
+        tooltipCreatedBy: string;
+        motivationTitle: string;
         rating: number;
         chosen: number;
-        meetId: String;
+        meetId: string;
       }) => {
         const query = `insert into activity(
         id,

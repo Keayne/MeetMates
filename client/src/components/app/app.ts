@@ -1,12 +1,12 @@
 import { LitElement, html } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { router } from '../../router/router.js';
 import { httpClient } from '../../http-client.js';
-import { EventEmitter } from 'events';
 
 @customElement('app-root')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class AppComponent extends LitElement {
+  @property() loggedIn = false;
   @state() private headerOptions = [
     { title: 'Register', routePath: 'mates/sign-up' },
     { title: 'Login', routePath: 'mates/sign-in' }
@@ -27,36 +27,41 @@ class AppComponent extends LitElement {
   firstUpdated() {
     router.subscribe(() => this.requestUpdate());
   }
+  async checkLoggedIn() {
+    try {
+      const response = await httpClient.get('mates/verify');
+      if (response.status === 200) {
+        this.loggedIn = true;
+      }
+    } catch (error) {
+      console.log('Not logged in!');
+    }
+  }
 
   renderRouterOutlet() {
     return router.select(
       {
         // integrate other pages here
-        'mates/sign-in': () =>
-          html`<app-header .headerOptions=${this.headerOptions}></app-header><app-sign-in></app-sign-in>`,
-        'mates/sign-up': () =>
-          html`<app-header .headerOptions=${this.headerOptions}></app-header><app-sign-up></app-sign-up>`,
-        'about': () => html`<app-header .headerOptions=${this.headerOptions}></app-header><app-about></app-about>`,
-        'mates/profile': () =>
-          html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><user-profile></user-profile>`,
-        'meets': () =>
-          html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><app-meets></app-meets>`,
-        'meet/find-activity/:meetId': params =>
-          html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header
-            ><find-activity .meetId=${params.meetId}></find-activity>`,
-        'meet/:meetId': params =>
-          html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header>
-            <app-your-meet .meetId=${params.meetId}></app-your-meet>`,
-        'chat': () => html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><app-chat></app-chat>`,
-        'meet': () =>
-          html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><app-your-meet></app-your-meet>`
+        'mates/sign-in': () => html`</app-header><app-sign-in></app-sign-in>`,
+        'mates/sign-up': () => html`</app-header><app-sign-up></app-sign-up>`,
+        'about': () => html`</app-header><app-about></app-about>`,
+        'mates/profile': () => html`<user-profile></user-profile>`,
+        'meets': () => html`<app-meets></app-meets>`,
+        'meet/find-activity/:meetId': params => html`<find-activity .meetId=${params.meetId}></find-activity>`,
+        'meet/:meetId': params => html` <app-your-meet .meetId=${params.meetId}></app-your-meet>`,
+        'chat': () => html`<app-chat></app-chat>`,
+        'meet': () => html`<app-your-meet></app-your-meet>`
       },
-      () => html`<app-header .headerOptions=${this.loggedInHeaderOptions}></app-header><landing-page></landing-page>`
+      () => html`<landing-page></landing-page>`
     );
   }
 
   render() {
-    return html` <div class="main">${this.renderRouterOutlet()}</div>
+    this.checkLoggedIn();
+    return html` <app-header
+        .headerOptions=${this.loggedIn ? this.loggedInHeaderOptions : this.headerOptions}
+      ></app-header>
+      <div class="main">${this.renderRouterOutlet()}</div>
       <app-footer></app-footer>`;
   }
 }

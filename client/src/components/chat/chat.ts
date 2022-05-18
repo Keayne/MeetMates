@@ -5,6 +5,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { PageMixin } from '../page.mixin';
 import { Message } from './message';
 import componentStyle from './chat.css';
+import { httpClient } from '../../http-client';
 
 @customElement('app-chat')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -12,6 +13,7 @@ class ChatComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
 
   @property() private messages: Message[] = [];
+  @property() private room = 'be8ce656-875a-4b56-8c7f-8b071fe87e01';
   private ws!: WebSocket;
 
   async firstUpdated() {
@@ -19,16 +21,27 @@ class ChatComponent extends PageMixin(LitElement) {
     this.ws.onopen = () => {
       console.log('Connection Opened!');
     };
-    this.ws.onmessage = ({ data }) =>
-      (this.messages = [...this.messages, { own: 'msg-remote', id: 'test', author: 'Valentin', body: data }]);
+    const messages = await httpClient.get('/chat/messages/' + this.room);
+    this.messages = await messages.json();
+    this.ws.onmessage = async () => {
+      const messages = await httpClient.get('/chat/messages/' + this.room);
+      this.messages = await messages.json();
+    };
   }
 
   async messageSubmit(e: SubmitEvent) {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     if (form.message.value) {
-      this.ws.send(form.message.value);
-      this.messages = [...this.messages, { own: 'msg-self', id: 'test', author: 'Valentin', body: form.message.value }];
+      this.ws.send(this.room);
+      try {
+        httpClient.post('chat/message', {
+          room: this.room,
+          body: form.message.value
+        });
+      } catch (e) {
+        this.showNotification((e as Error).message, 'error');
+      }
       form.message.value = '';
     } else {
       this.showNotification('Nachricht darf nicht leer sein!');
@@ -39,7 +52,6 @@ class ChatComponent extends PageMixin(LitElement) {
     return html`
       ${this.renderNotification()}
       <body>
-        <h1>Chat</h1>
         <div class="chat-window">
           ${this.messages.map(
             e => html`<app-chat-message own=${e.own} author=${e.author} body=${e.body}></app-chat-message>`

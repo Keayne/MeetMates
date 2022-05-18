@@ -7,6 +7,8 @@ export interface GenericDAO<T extends Entity> {
 
   findAll(entityFilter?: Partial<T>): Promise<T[]>;
 
+  findAllASC(entityFilter?: Partial<T>): Promise<T[]>;
+
   findOne(entityFilter: Partial<T>): Promise<T | null>;
 
   update(entity: Partial<T>): Promise<boolean>;
