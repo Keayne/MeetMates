@@ -5,26 +5,31 @@ import { router } from '../../router/router';
 import { PageMixin } from '../page.mixin';
 import componentStyle from './meetingUser.css';
 
+interface Mate {
+  id: string;
+  name: string;
+  firstName: string;
+  src: string;
+  age: string;
+}
+
 @customElement('meet-user')
 class MeetUserComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
 
-  @property({ type: String }) mateId = '';
-  @property({ type: String }) firstname = '';
-  @property({ type: String }) name = '';
-  @property({ type: String }) age = '';
-  @property({ type: String }) imgSrc = './temp_logo.jpg';
+  @property({ reflect: true }) mate = {} as Mate;
 
   render() {
+    console.log(this.mate);
     return html`<button type="button" class="meetingUser" @click=${(e: Event) => this.mateClicked(e)}>
-      <img src=${this.imgSrc} />
-      <span class="h3">${this.name}, ${this.firstname}</span>
-      <span>${this.age}</span>
+      <img src=${this.mate.src} />
+      <span class="h3">${this.mate.name}, ${this.mate.firstName}</span>
+      <span>${this.mate.age}</span>
     </button>`;
   }
 
   private mateClicked(e: Event) {
-    console.log("router.navigate('mates/profile/'" + this.mateId + ');');
-    router.navigate('mates/profile/' + this.mateId);
+    console.log("router.navigate('mates/profile/'" + this.mate.id + ');');
+    router.navigate('mates/profile/' + this.mate.id);
   }
 }

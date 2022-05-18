@@ -4,12 +4,12 @@ import express from 'express';
 import { GenericDAO } from '../models/generic.dao';
 
 import { MateMeet } from '../models/matemeet';
-import { Meet } from '../models/meet';
+//import { Meet } from '../models/meet';
 import { UniversalDAO } from '../models/universal.dao';
 const router = express.Router();
-/*
+
 interface Mate {
-  mateId: string;
+  id: string;
   name: string;
   firstName: string;
   src: string;
@@ -18,26 +18,27 @@ interface Mate {
 interface Meet {
   id: string;
   name: string;
+  activityId: string;
   mates: Mate[];
 }
 
 const mates: Mate[] = [
   {
-    mateId: '123123',
+    id: '123123',
     name: 'Müller',
     firstName: 'Peter',
     src: '/favicon.png',
     age: '15'
   },
   {
-    mateId: 'sdgwegsd',
+    id: 'sdgwegsd',
     name: 'Bach',
     firstName: 'Jürgen',
     src: '',
     age: '123'
   },
   {
-    mateId: 'dvbnkjdfbhgi',
+    id: 'dvbnkjdfbhgi',
     name: 'Meyer',
     firstName: 'Lisa',
     src: '',
@@ -48,21 +49,24 @@ const mates: Mate[] = [
 const meet: Meet = {
   id: '12341245',
   name: 'SoccerKings',
+  activityId: '1234567890',
   mates: mates
 };
-*/
 
 router.get('/', async (req, res) => {
+  /*
   const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;
   const meets = await meetDAO.findAll();
-
-  res.status(201).json(meets);
+  */
+  res.status(201).json(meet);
 });
 
 router.get('/:id', async (req, res) => {
+  /*
   const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;
   const filter: Partial<Meet> = { id: req.params.id };
   const meet = await meetDAO.findOne(filter);
+  */
 
   res.status(201).json(meet);
 });
@@ -78,8 +82,9 @@ router.post('/create', async (req, res) => {
 */
 
 // remove Mate from Meet
-router.delete('/:meetid/:userid', async (req, res) => {
-  console.log(`Remove User: ${req.params.userid} from Meet: ${req.params.meetid}`);
+router.delete('/:meetid', async (req, res) => {
+  console.log(`Remove User: userid{req.params.userid} from Meet: ${req.params.meetid}`);
+  /*
   const mateMeetDAO: UniversalDAO<MateMeet> = req.app.locals.matemeetDAO;
   const filter: Partial<MateMeet> = { meetid: req.params.meetid, userid: req.params.userid };
 
@@ -88,6 +93,7 @@ router.delete('/:meetid/:userid', async (req, res) => {
   const result = await mateMeetDAO.deleteOne(filter);
   if (result) res.status(200).send();
   res.status(400).send;
+  */
 });
 
 export default router;

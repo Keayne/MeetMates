@@ -11,6 +11,7 @@ interface Mate {
   src: string;
 }
 @customElement('meets-mate-icon')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class UserIconComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
   @property({ reflect: true }) mate = {} as Mate;

@@ -30,7 +30,6 @@ class YourMeetComponent extends PageMixin(LitElement) {
     try {
       const response = await httpClient.get('/meet/' + this.meetId + location.search);
       this.meet = await response.json();
-      console.log(this.meet);
       this.requestUpdate();
       await this.updateComplete;
     } catch (err) {
@@ -46,16 +45,7 @@ class YourMeetComponent extends PageMixin(LitElement) {
     if (this.meet !== undefined) {
       const matesTemp = [];
       for (const m of this.meet.mates) {
-        matesTemp.push(
-          html`<meet-user
-            class="meetMate"
-            mateId="${m.id}"
-            name="${m.name}"
-            firstName="${m.firstName}"
-            age="${m.age}"
-            imgSrc="${m.src}"
-          />`
-        );
+        matesTemp.push(html`<meet-user class="meetMate" .mate=${m} />`);
       }
       return html`${this.renderNotification()}
         <div class="meeting">
@@ -67,6 +57,7 @@ class YourMeetComponent extends PageMixin(LitElement) {
           </div>
           <div class="meetingUsers">${matesTemp}</div>
           <button type="button" @click="${this.routeToActiviySeelction}">Find Actitity</button>
+          <button type="button" @click="${console.log('open chat')}">Chat</button>
           <meet-chat></meet-chat>
         </div>`;
     }
