@@ -26,6 +26,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
   @query('#title') private titlee!: HTMLInputElement;
   @query('#description') private description!: HTMLInputElement;
   @query('#motivationTitle') private motivationTitle!: HTMLInputElement;
+  @property() meetId!: string;
 
   async submit(event: Event) {
     event.preventDefault();
@@ -36,7 +37,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
     };
     try {
       const response = await httpClient.post('/activity', partialActivity);
-      const activity: Actitity = await response.json(); //TODO this needs to be appended to the above component
+      const activity: Actitity = await response.json();
       console.log('published new Activity');
       this.titlee.value = '';
       this.description.value = '';
@@ -50,7 +51,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
   async firstUpdated() {
     try {
       this.startAsyncInit();
-      const response = await httpClient.get('activity' + location.search);
+      const response = await httpClient.get(`activity/${this.meetId}` + location.search);
       this.activityList = (await response.json()).results;
     } catch (e) {
       this.showNotification((e as Error).message, 'error');

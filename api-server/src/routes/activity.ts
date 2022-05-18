@@ -26,10 +26,12 @@ function decrypt(ivPlusCipherTextBase64: string) {
   const decipher = crypto.createDecipheriv(algorithm, key, iv);
   return decipher.update(ciphertext, undefined, 'utf8') + decipher.final('utf8');
 }
+//TODO implement encription/decription
 
-router.get('/', async (req, res) => {
+router.get('/:id', async (req, res) => {
   const activityDAO: GenericDAO<Activity> = req.app.locals.activityDAO;
-  const activites = await activityDAO.findAll();
+  const filter: Partial<Activity> = { meetid: req.params.id }; //TODO NEEDS TO CHECK IF USER IS ALLOWED TO MAKE REQUEST
+  const activites = await activityDAO.findAll(filter);
   res.json({ results: activites });
 });
 
