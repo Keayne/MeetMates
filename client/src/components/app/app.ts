@@ -15,7 +15,8 @@ class AppComponent extends LitElement {
   @state() private loggedInHeaderOptions = [
     { title: 'Meets', routePath: 'meets' },
     { title: 'Profil', routePath: 'mates/profile' },
-    { title: 'Activity', routePath: 'meet/find-activity' }
+    { title: 'Activity', routePath: 'meet/find-activity' },
+    { title: 'Logout', routePath: 'mates/sign-out' }
   ];
 
   constructor() {
@@ -29,7 +30,7 @@ class AppComponent extends LitElement {
   }
   async checkLoggedIn() {
     try {
-      const response = await httpClient.get('mates/verify');
+      const response = await httpClient.get('verify');
       if (response.status === 200) {
         this.loggedIn = true;
       }
@@ -42,9 +43,10 @@ class AppComponent extends LitElement {
     return router.select(
       {
         // integrate other pages here
-        'mates/sign-in': () => html`</app-header><app-sign-in></app-sign-in>`,
-        'mates/sign-up': () => html`</app-header><app-sign-up></app-sign-up>`,
-        'about': () => html`</app-header><app-about></app-about>`,
+        'mates/sign-in': () => html`<app-sign-in></app-sign-in>`,
+        'mates/sign-up': () => html`<app-sign-up></app-sign-up>`,
+        'mates/sign-out': () => html`<app-sign-out></app-sign-out>`,
+        'about': () => html`<app-about></app-about>`,
         'mates/profile': () => html`<user-profile></user-profile>`,
         'meets': () => html`<app-meets></app-meets>`,
         'meet/find-activity/:meetId': params => html`<find-activity .meetId=${params.meetId}></find-activity>`,

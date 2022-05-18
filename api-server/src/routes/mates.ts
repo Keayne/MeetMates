@@ -90,7 +90,9 @@ router.post('/sign-in', async (req, res) => {
   }
 });
 
-router.delete('/sign-out', (req, res) => {
+router.delete('/sign-out', authService.authenticationMiddleware, (req, res) => {
+  console.log('test');
+
   //sign user out
   authService.removeToken(res);
   res.status(200).end();
