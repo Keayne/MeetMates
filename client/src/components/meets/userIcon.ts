@@ -4,14 +4,18 @@ import { customElement, property } from 'lit/decorators.js';
 import { PageMixin } from '../page.mixin';
 import componentStyle from './userIcon.css';
 
-@customElement('user-icon')
+interface Mate {
+  id: string;
+  name: string;
+  firstName: string;
+  src: string;
+}
+@customElement('meets-mate-icon')
 class UserIconComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
-  @property({ type: String }) src = '/temp_logo.jpg';
-  @property({ type: String }) name = '';
-  @property({ type: String }) firstName = '';
+  @property({ reflect: true }) mate = {} as Mate;
 
   render() {
-    return html`<img src="${this.src}" alt="${this.firstName.charAt(0)}.${this.name.charAt(0)}" />`;
+    return html`<img src="${this.mate.src}" alt="${this.mate.firstName.charAt(0)}.${this.mate.name.charAt(0)} " />`;
   }
 }

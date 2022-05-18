@@ -1,6 +1,8 @@
 /* Autor: Jonathan Hüls */
 
 import express from 'express';
+import { GenericDAO } from '../models/generic.dao';
+//import { Meet } from '../models/meet.js';
 /*import bcrypt from 'bcryptjs';
 import { GenericDAO } from '../models/generic.dao.js';
 import { Mate } from '../models/mate.js';
@@ -17,50 +19,55 @@ interface Mate {
   name: string;
   firstName: string;
   src: string;
+  age: string;
 }
 
-const userJson: Mate[] = [
+const mates: Mate[] = [
   {
-    id: '12123',
+    id: '123123',
     name: 'Müller',
     firstName: 'Peter',
-    src: 'https://lh3.googleusercontent.com/ogw/ADea4I4oHiicNWrPtZiaZzAMB-Nl35i4NbU4ymarKsVN=s32-c-mo'
+    src: '/favicon.png',
+    age: '15'
   },
   {
-    id: '134534',
+    id: 'sdgwegsd',
     name: 'Bach',
     firstName: 'Jürgen',
-    src: '/favicon.png'
+    src: '',
+    age: '123'
   },
   {
-    id: '768967',
+    id: 'dvbnkjdfbhgi',
     name: 'Meyer',
     firstName: 'Lisa',
-    src: 'team_10/client/public/temp_logo.jpg'
+    src: '',
+    age: '23'
   }
 ];
 
-const meets: Meet[] = [
-  {
-    id: '23423',
-    name: 'Flunkyball-Pros',
-    mates: userJson
-  },
-  {
-    id: '6798',
-    name: 'Kitchen-Killer',
-    mates: userJson
-  }
-];
+const meet: Meet = {
+  id: '12341245',
+  name: 'SoccerKings',
+  mates: mates
+};
+const meets: Array<Meet> = [meet, meet];
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
+  //const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;
+  //const meets = await meetDAO.findAll();
   res.status(201).json(meets);
 });
 
+/*
 router.get('/userIcons/:id', async (req, res) => {
-  res.status(201).json(userJson);
-});
+  const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;
+  const filter: Partial<Meet> = { id: req.params.id };
 
+  const meets = await meetDAO.findOne(filter);
+  res.status(201).json(meets);
+});
+*/
 export default router;

@@ -47,6 +47,12 @@ export class PsqlUniversalDAO<T extends Universal> implements UniversalDAO<T> {
     return true;
   }
 
+  public async deleteOne(entityFilter: Partial<T>) {
+    const query = 'DELETE FROM ' + this.table + ' ' + createWhereClause(entityFilter);
+    await this.db.query(query);
+    return true;
+  }
+
   public async deleteAll(entityFilter?: Partial<T>) {
     const query = 'DELETE FROM ' + this.table + ' ' + createWhereClause(entityFilter);
     const result = await this.db.query(query);

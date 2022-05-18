@@ -13,5 +13,7 @@ export interface UniversalDAO<T extends Universal> {
 
   delete(id: string): Promise<boolean>;
 
+  deleteOne(entityFilter: Partial<T>): Promise<boolean>;
+
   deleteAll(entityFilter?: Partial<T>): Promise<number>;
 }

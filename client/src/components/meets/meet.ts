@@ -1,11 +1,17 @@
 /* Autor: Jonathan Hüls */
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { repeat } from 'lit/directives/repeat.js';
 import { PageMixin } from '../page.mixin';
 import { router } from '../../router/router.js';
 import { httpClient } from '../../http-client';
 import componentStyle from './meet.css';
 
+interface Meet {
+  id: string;
+  name: string;
+  mates: Mate[];
+}
 interface Mate {
   id: string;
   name: string;
@@ -16,38 +22,14 @@ interface Mate {
 class MeetsMeetComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
 
-  @property({ type: String }) id = '';
-  @property({ type: String }) name = '';
-  @property() userIcons: Mate[] = [];
-
-  async firstUpdated() {
-    console.log('firstUpdated id:' + this.id);
-
-    try {
-      this.startAsyncInit();
-      const response = await httpClient.get(`/meets/userIcons/:${this.id}` + location.search);
-      this.userIcons = await response.json();
-    } catch (err) {
-      if ((err as { statusCode: number }).statusCode === 401) {
-        router.navigate('mates/sign-in');
-      } else {
-        this.showNotification((err as Error).message, 'error');
-      }
-    }
-  }
+  @property({ reflect: true }) meet = {} as Meet;
 
   render() {
-    const mateTemp = [];
-    console.log(this.userIcons);
-    for (const m of this.userIcons) {
-      mateTemp.push(
-        html`<user-icon class="userIcon" name="${m.name}" firstName="${m.firstName}" src="${m.src}"></user-icon>`
-      );
-    }
+    console.log(this.meet.mates);
 
-    return html`<button type="button" class="meet" @click=${() => router.navigate(`/meet/${this.id}`)}>
-      <h2 class="name">${this.name}</h2>
-      <div>${mateTemp}</div>
+    return html`<button type="button" class="meet" @click=${() => router.navigate(`/meet/${this.meet.id}`)}>
+      <h2 class="name">${this.meet.name}</h2>
+      <div>${repeat(this.meet.mates, mate => html`<meets-mate-icon .mate=${mate} />`)}</div>
     </button>`;
   }
 }
