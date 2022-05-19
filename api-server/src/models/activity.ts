@@ -9,4 +9,5 @@ export interface Activity extends Entity {
   rating: number;
   chosen: number;
   meetid: String;
+  image: String;
 }

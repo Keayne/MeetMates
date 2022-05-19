@@ -37,15 +37,17 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', authService.authenticationMiddleware, async (req, res) => {
   const activityDAO: GenericDAO<Activity> = req.app.locals.activityDAO;
+  var utc = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
   const createdActivity = await activityDAO.create({
     title: req.body.title,
     description: req.body.description,
-    tooltip: String(new Date().getDate()), //todo fix date
-    tooltipcreatedby: res.locals.user.id,
+    tooltip: 'Description Tooltip',
+    tooltipcreatedby: `Created by ${res.locals.user.id} on ${String(utc)}`,
     motivationtitle: req.body.motivationtitle,
     rating: 1,
     chosen: 0,
-    meetid: '0ea6639d-c6d5-4030-bb1b-e687ecb850fb' //todo meetId needs to be handed over on submit
+    meetid: '0ea6639d-c6d5-4030-bb1b-e687ecb850fb', //todo meetId needs to be handed over on submit
+    image: req.body.image
   });
   res.status(201).json(createdActivity);
 });

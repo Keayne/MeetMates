@@ -1,6 +1,6 @@
 /* Autor: Arne Schaper */
 import { LitElement, html } from 'lit';
-import { query, customElement, property } from 'lit/decorators.js';
+import { query, customElement, property, state } from 'lit/decorators.js';
 import { PageMixin } from '../page.mixin';
 import componentStyle from './find-activity.css';
 import { repeat } from 'lit/directives/repeat.js';
@@ -15,6 +15,7 @@ export interface Actitity {
   rating: number;
   chosen: boolean;
   meetId: string;
+  image: string;
 }
 
 @customElement('find-activity')
@@ -26,6 +27,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
   @query('#title') private titlee!: HTMLInputElement;
   @query('#description') private description!: HTMLInputElement;
   @query('#motivationTitle') private motivationTitle!: HTMLInputElement;
+  @state() private imgSrc!: string;
   @property() meetId!: string;
 
   async submit(event: Event) {
@@ -33,12 +35,12 @@ class FindActivityComponent extends PageMixin(LitElement) {
     const partialActivity: Partial<Actitity> = {
       title: this.titlee.value,
       description: this.description.value,
-      motivationtitle: this.motivationTitle.value
+      motivationtitle: this.motivationTitle.value,
+      image: this.imgSrc
     };
     try {
       const response = await httpClient.post('/activity', partialActivity);
       const activity: Actitity = await response.json();
-      console.log('published new Activity');
       this.titlee.value = '';
       this.description.value = '';
       this.motivationTitle.value = '';
@@ -60,6 +62,18 @@ class FindActivityComponent extends PageMixin(LitElement) {
     }
   }
 
+  async updateImage(e: InputEvent) {
+    const toBase64 = (file: Blob): Promise<string> =>
+      new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = error => reject(error);
+      });
+    const input = e.target as HTMLInputElement;
+    this.imgSrc = await toBase64(input.files![0]);
+  }
+
   render() {
     return html`${this.renderNotification()}
       <div class="activity-outer">
@@ -77,6 +91,11 @@ class FindActivityComponent extends PageMixin(LitElement) {
 
             <label for="description"><b>Description</b></label>
             <input type="text" placeholder="Enter Description" name="description" id="description" required />
+
+            <label for="Image"><b>Image</b></label>
+            <input @change="${this.updateImage}" type="file" accept="image/png, image/jpeg" required />
+            <br />
+            <img style="max-width: 200px; max-height: 200px" src="${this.imgSrc}" />
 
             <label for="description"><b>Motivation Title</b></label>
             <input
