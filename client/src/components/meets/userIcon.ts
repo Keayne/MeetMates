@@ -17,6 +17,9 @@ class UserIconComponent extends PageMixin(LitElement) {
   @property({ reflect: true }) mate = {} as Mate;
 
   render() {
-    return html`<img src="${this.mate.src}" alt="${this.mate.firstName.charAt(0)}.${this.mate.name.charAt(0)} " />`;
+    return html` <div class="tooltip">
+      <img src="${this.mate.src}" alt="${this.mate.firstName.charAt(0)}.${this.mate.name.charAt(0)}" />
+      <span class="tooltiptext">${this.mate.firstName}, ${this.mate.name}</span>
+    </div>`;
   }
 }
