@@ -107,7 +107,8 @@ async function createPsqlScheme(client: ClientType) {
       motivationTitle Varchar(255) NOT NULL,
       rating int,
       chosen int NOT NULL,
-      meetId Varchar(40) NOT NULL references meet(id)
+      meetId Varchar(40) NOT NULL references meet(id),
+      image BYTEA
     )`
   );
 
@@ -255,6 +256,7 @@ async function fillSchemeWithData(client: ClientType) {
         rating: number;
         chosen: number;
         meetId: string;
+        image: string;
       }) => {
         const query = `insert into activity(
         id,
@@ -266,7 +268,8 @@ async function fillSchemeWithData(client: ClientType) {
         motivationTitle,
         rating,
         chosen,
-        meetId
+        meetId,
+        image
       )
       values(
         '${element.id}',
@@ -278,7 +281,8 @@ async function fillSchemeWithData(client: ClientType) {
         '${element.motivationTitle}',
         '${element.rating}',
         '${element.chosen}',
-        '${element.meetId}'
+        '${element.meetId}',
+        '${element.image}'
       )`;
 
         await client.query(query);

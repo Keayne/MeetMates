@@ -305,7 +305,8 @@
       "motivationTitle": "dbTestMotivationTitle1",
       "rating": 1,
       "chosen": 0,
-      "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb"
+      "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
+      "image": ""
     },
     {
       "id": "adaa1bb0-e223-4f77-a667-ae0d6f204062",
@@ -316,7 +317,8 @@
       "motivationTitle": "dbTestMotivationTitle2",
       "rating": 50,
       "chosen": 0,
-      "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb"
+      "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
+      "image": ""
     },
     {
       "id": "795f59da-91cd-4ce4-b1db-500864fca083",
@@ -327,7 +329,8 @@
       "motivationTitle": "dbTestMotivationTitle3",
       "rating": 50,
       "chosen": 0,
-      "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb"
+      "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
+      "image": ""
     }
   ]
 }
