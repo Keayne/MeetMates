@@ -24,7 +24,7 @@ router.post('/sign-up', async (req, res) => {
     res.status(400).json({ message });
   };
 
-  if (!hasRequiredFields(req.body, ['name', 'firstname', 'email', 'birthday', 'gender', 'password'], errors)) {
+  if (!hasRequiredFields(req.body, ['name', 'firstname', 'email', 'birthday', 'gender', 'image', 'password'], errors)) {
     console.log(req.body);
 
     return sendErrorMessage(errors.join('\n'));
@@ -34,7 +34,13 @@ router.post('/sign-up', async (req, res) => {
   if (await mateDAO.findOne(filter)) {
     return sendErrorMessage('Es existiert bereits ein Konto mit der angegebenen E-Mail-Adresse.');
   }
-
+  if (
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      String(req.body.email)
+    ) == false
+  ) {
+    return sendErrorMessage('Email Format ungültig');
+  }
   const createdUser = await mateDAO.create({
     name: req.body.name,
     firstname: req.body.firstname,

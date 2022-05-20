@@ -20,8 +20,8 @@ class SignUpComponent extends PageMixin(LitElement) {
   @query('#gender') private genderElement!: HTMLInputElement;
   @query('#password') private passwordElement!: HTMLInputElement;
 
-  @state() private descriptions: Array<{ id: string; ltext: string; rtext: string }> = [];
-  @state() private interests: Array<{ id: string; text: string }> = [];
+  @state() private descriptions: { id: string; ltext: string; rtext: string }[] = [];
+  @state() private interests: { id: string; text: string }[] = [];
   @state() private imgSrc!: string;
   private selectedInterests: string[] = [];
   private selectedDescriptions: { id: string; value: number }[] = [];
@@ -35,7 +35,7 @@ class SignUpComponent extends PageMixin(LitElement) {
       this.descriptions.forEach((e: { id: string }) => {
         this.selectedDescriptions.push({
           id: e.id,
-          value: 0
+          value: 6
         });
       });
     } catch (e) {

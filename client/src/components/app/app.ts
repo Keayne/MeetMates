@@ -47,7 +47,7 @@ class AppComponent extends LitElement {
         'mates/sign-up': () => html`<app-sign-up></app-sign-up>`,
         'mates/sign-out': () => html`<app-sign-out></app-sign-out>`,
         'about': () => html`<app-about></app-about>`,
-        'mates/profile': () => html`<user-profile></user-profile>`,
+        'mates/profile/:profileId': params => html`<user-profile .profileId=${params.profileId}></user-profile>`,
         'meets': () => html`<app-meets></app-meets>`,
         'meet/find-activity/:meetId': params => html`<find-activity .meetId=${params.meetId}></find-activity>`,
         'meet/:meetId': params => html` <app-your-meet .meetId=${params.meetId}></app-your-meet>`,

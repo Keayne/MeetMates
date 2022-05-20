@@ -27,10 +27,9 @@ class RatingComponent extends LitElement {
       cursor: pointer;
     }
   `;
-  @property({ type: Function }) function = {};
-  @property({ type: String }) ltext = '';
-  @property({ type: String }) rtext = '';
-  @property({ type: String }) id = '';
+  @property() ltext = '';
+  @property() rtext = '';
+  @property() id = '';
   @state() private value = 6;
 
   updateDescription(e: Event) {
