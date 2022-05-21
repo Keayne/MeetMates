@@ -1,7 +1,6 @@
 /* Autor: Jonathan Hüls */
 
 import express from 'express';
-import { rm } from 'fs';
 import { GenericDAO } from '../models/generic.dao.js';
 import { Mate } from '../models/mate.js';
 import { MateMeet } from '../models/matemeet.js';
@@ -29,7 +28,7 @@ interface ReturnMate {
 const router = express.Router();
 
 router.get('/', authService.authenticationMiddleware, async (req, res) => {
-  const mateId = '34f1c033-557d-4415-9444-505d350bdd93';
+  const mateId = res.locals.user.id;
 
   if (!checkParamsAsUuIdv4(mateId)) {
     res.status(401).send;
