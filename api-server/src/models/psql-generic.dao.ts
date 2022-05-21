@@ -41,6 +41,27 @@ export class PsqlGenericDAO<T extends Entity> implements GenericDAO<T> {
     return result && result.rows ? (result.rows[0] as T) : null;
   }
 
+  //Jonathan Hüls
+  public async findMultiple(...entityFilters: Partial<T>[]): Promise<T[]> {
+    const query = 'SELECT * FROM ' + this.table + ' ';
+    let whereClaus = 'Where ';
+
+    for (let i = 0; i <= entityFilters.length - 1; i++) {
+      if (!entityFilters[i] || !Object.getOwnPropertyNames(entityFilters[i]).length) {
+        whereClaus = '';
+      }
+      const parts = getPropertyNames(entityFilters[i]).map(propertyName => {
+        const propertyValue = entityFilters[i][propertyName];
+        return toColumnName(propertyName) + ' = ' + toColumnValue(propertyValue);
+      });
+      whereClaus =
+        i === entityFilters.length - 1 ? whereClaus + parts.join(' AND ') : whereClaus + parts.join(' AND ') + ' OR ';
+    }
+
+    const result = await this.db.query(query + whereClaus);
+    return result.rows as T[];
+  }
+
   public async update(entity: Partial<T> & Pick<Entity, 'id'>) {
     const query = 'UPDATE ' + this.table + ' ' + createSetClause(entity) + ' WHERE id = ' + toColumnValue(entity.id);
     await this.db.query(query);
