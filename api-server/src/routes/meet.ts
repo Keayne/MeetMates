@@ -54,11 +54,15 @@ const meet: Meet = {
 };
 
 router.get('/', async (req, res) => {
+  const matemeetDAO: UniversalDAO<MateMeet> = req.app.locals.matemeetDAO;
+  const mateMeetFilter: Partial<MateMeet> = { userid: res.locals.user.id };
+  const mateMeets = await matemeetDAO.findAll(mateMeetFilter);
+
   /*
   const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;
   const meets = await meetDAO.findAll();
   */
-  res.status(201).json(meet);
+  res.status(201).json(mateMeets);
 });
 
 router.get('/:id', async (req, res) => {

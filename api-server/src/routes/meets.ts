@@ -1,20 +1,24 @@
 /* Autor: Jonathan Hüls */
 
 import express from 'express';
-import { GenericDAO } from '../models/generic.dao';
-//import { Meet } from '../models/meet.js';
-/*import bcrypt from 'bcryptjs';
+import { rm } from 'fs';
 import { GenericDAO } from '../models/generic.dao.js';
 import { Mate } from '../models/mate.js';
+import { MateMeet } from '../models/matemeet.js';
+import { Meet } from '../models/meet.js';
+import { UniversalDAO } from '../models/universal.dao.js';
 import { authService } from '../services/auth.service.js';
+
+/*
+import bcrypt from 'bcryptjs';
 */
 
-interface Meet {
+interface FullMeet {
   id: string;
   name: string;
-  mates: Mate[];
+  mates: ReturnMate[];
 }
-interface Mate {
+interface ReturnMate {
   id: string;
   name: string;
   firstName: string;
@@ -22,52 +26,79 @@ interface Mate {
   age: string;
 }
 
-const mates: Mate[] = [
-  {
-    id: '123123',
-    name: 'Müller',
-    firstName: 'Peter',
-    src: '/favicon.png',
-    age: '15'
-  },
-  {
-    id: 'sdgwegsd',
-    name: 'Bach',
-    firstName: 'Jürgen',
-    src: '',
-    age: '123'
-  },
-  {
-    id: 'dvbnkjdfbhgi',
-    name: 'Meyer',
-    firstName: 'Lisa',
-    src: '',
-    age: '23'
-  }
-];
-
-const meet: Meet = {
-  id: '12341245',
-  name: 'SoccerKings',
-  mates: mates
-};
-const meets: Array<Meet> = [meet, meet];
-
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-  //const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;
-  //const meets = await meetDAO.findAll();
-  res.status(201).json(meets);
-});
+router.get('/', authService.authenticationMiddleware, async (req, res) => {
+  const mateId = '34f1c033-557d-4415-9444-505d350bdd93';
 
-/*
-router.get('/userIcons/:id', async (req, res) => {
+  if (!checkParamsAsUuIdv4(mateId)) {
+    res.status(401).send;
+    console.log('Wrong Parameter');
+    return;
+  }
+
+  const matemeetDAO: UniversalDAO<MateMeet> = req.app.locals.matemeetDAO;
   const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;
-  const filter: Partial<Meet> = { id: req.params.id };
+  const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
 
-  const meets = await meetDAO.findOne(filter);
+  //Get all Meet-Ids from User
+  const mateMeets = await matemeetDAO.findAll({ userid: mateId });
+
+  //Build all Meets with Mates
+  const meets = (
+    await Promise.all(
+      mateMeets.map(async (mateMeet): Promise<FullMeet | null> => {
+        //Get Meet
+        const meetFilter: Partial<Meet> = { id: mateMeet.meetid };
+        const meet: Meet | null = await meetDAO.findOne(meetFilter);
+        let mates: Mate[];
+        const rMates: ReturnMate[] = [];
+
+        if (meet === null) return null;
+
+        //Get Mates for Meet
+        const meetmates = await matemeetDAO.findAll({ meetid: meet.id });
+        if (meetmates !== null) {
+          const matesFilter: Partial<Mate>[] = [];
+          meetmates.forEach(meetMate => {
+            matesFilter.push({ id: meetMate.userid });
+          });
+
+          mates! = await mateDAO.findMultiple(...matesFilter);
+
+          mates.forEach(mate => {
+            rMates.push({
+              id: mate.id,
+              name: mate.name,
+              firstName: mate.firstname,
+              src: mate.image,
+              age: mate.birthday
+            });
+          });
+        }
+        return { id: meet.id, name: meet.name, mates: rMates };
+      })
+    )
+  ).filter(fullMeet => !!fullMeet) as FullMeet[];
+
   res.status(201).json(meets);
 });
-*/
+
+function checkParamsAsUuIdv4(...Ids: string[]): boolean {
+  const regexp = new RegExp('^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$', 'i'); //Regex vor UuidV4 lo
+
+  //check for values
+  if (Ids.length === 0) return false;
+
+  //check Ids
+  let result = true;
+  Ids.forEach(id => {
+    if (!regexp.test(id)) {
+      result = false;
+    }
+  });
+
+  return result;
+}
+
 export default router;
