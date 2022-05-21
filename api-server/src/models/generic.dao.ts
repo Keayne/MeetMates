@@ -11,7 +11,7 @@ export interface GenericDAO<T extends Entity> {
 
   findOne(entityFilter: Partial<T>): Promise<T | null>;
 
-  findMultiple(entityFilters: Partial<T>[]): Promise<T[]>;
+  findMultiple(...entityFilters: Partial<T>[]): Promise<T[]>;
 
   update(entity: Partial<T>): Promise<boolean>;
 
