@@ -31,7 +31,7 @@ router.get('/:id', async (req, res) => {
   const descriptionDAO: GenericDAO<Description> = req.app.locals.descriptionDAO;
 
   const mate = await mateDAO.findOne({ id: req.params.id });
-  const interests = await mateinterestDAO.findAll({ userid: req.params.id });
+  const interests = await mateinterestDAO.findAll({ mateid: req.params.id });
   const mateInterests: string[] = [];
   const mateDescriptions: { ltext: string; rtext: string; value: number }[] = [];
   for (const e of interests) {
@@ -40,15 +40,14 @@ router.get('/:id', async (req, res) => {
       mateInterests.push(interest.text);
     }
   }
-  const descriptions = await matedescriptionDAO.findAll({ userid: req.params.id });
+  const descriptions = await matedescriptionDAO.findAll({ mateid: req.params.id });
   for (const e of descriptions) {
     const description = await descriptionDAO.findOne({ id: e.descriptionid });
     if (description) {
       mateDescriptions.push({ ltext: description.ltext, rtext: description.rtext, value: e.value });
     }
   }
-
-  if (mate != null) {
+  if (mate) {
     res.json({
       mate: {
         name: mate.name,

@@ -1,4 +1,4 @@
-/* Autor: Prof. Dr. Norman Lahme-Hütig (FH Münster) */
+/* Autor: Valentin Lieberknecht */
 
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
@@ -25,8 +25,27 @@ class AuthService {
     res.cookie('jwt-token', token);
   }
 
-  verifyToken(token: string) {
-    return jwt.verify(token, SECRET);
+  verifyToken(req: Request, res: Response) {
+    const token = req.cookies['jwt-token'] || '';
+    if (token) {
+      try {
+        const decode = jwt.verify(token, SECRET);
+        res.json({
+          login: true,
+          data: decode
+        });
+      } catch (error) {
+        res.json({
+          login: false,
+          data: 'error'
+        });
+      }
+    } else {
+      res.json({
+        login: false,
+        data: 'error'
+      });
+    }
   }
 
   removeToken(res: Response) {

@@ -1,8 +1,8 @@
-/* Autor: Valentin LIeberknecht */
+/* Autor: Valentin Lieberknecht */
 
 import { Universal } from './universal.js';
 
 export interface MateInterest extends Universal {
-  userid: string;
+  mateid: string;
   interestid: string;
 }

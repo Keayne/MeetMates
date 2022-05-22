@@ -41,7 +41,7 @@ router.get('/', authService.authenticationMiddleware, async (req, res) => {
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
 
   //Get all Meet-Ids from User
-  const mateMeets = await matemeetDAO.findAll({ userid: mateId });
+  const mateMeets = await matemeetDAO.findAll({ mateid: mateId });
 
   //Build all Meets with Mates
   const meets = (
@@ -60,7 +60,7 @@ router.get('/', authService.authenticationMiddleware, async (req, res) => {
         if (meetmates !== null) {
           const matesFilter: Partial<Mate>[] = [];
           meetmates.forEach(meetMate => {
-            matesFilter.push({ id: meetMate.userid });
+            matesFilter.push({ id: meetMate.mateid });
           });
 
           mates! = await mateDAO.findMultiple(...matesFilter);

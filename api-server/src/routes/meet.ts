@@ -55,7 +55,7 @@ const meet: Meet = {
 
 router.get('/', async (req, res) => {
   const matemeetDAO: UniversalDAO<MateMeet> = req.app.locals.matemeetDAO;
-  const mateMeetFilter: Partial<MateMeet> = { userid: res.locals.user.id };
+  const mateMeetFilter: Partial<MateMeet> = { mateid: res.locals.user.id };
   const mateMeets = await matemeetDAO.findAll(mateMeetFilter);
 
   /*
@@ -87,7 +87,7 @@ router.post('/create', async (req, res) => {
 
 // remove Mate from Meet
 router.delete('/:meetid', async (req, res) => {
-  console.log(`Remove User: userid{req.params.userid} from Meet: ${req.params.meetid}`);
+  console.log(`Remove User: mateid{req.params.mateid} from Meet: ${req.params.meetid}`);
   /*
   const mateMeetDAO: UniversalDAO<MateMeet> = req.app.locals.matemeetDAO;
   const filter: Partial<MateMeet> = { meetid: req.params.meetid, userid: req.params.userid };

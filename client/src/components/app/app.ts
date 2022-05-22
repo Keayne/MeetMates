@@ -14,7 +14,7 @@ class AppComponent extends LitElement {
 
   @state() private loggedInHeaderOptions = [
     { title: 'Meets', routePath: 'meets' },
-    { title: 'Profil', routePath: 'mates/profile' },
+    { title: 'Edit Profil', routePath: 'mates/edit-profile' },
     { title: 'Activity', routePath: 'meet/find-activity' },
     { title: 'Logout', routePath: 'mates/sign-out' }
   ];
@@ -31,11 +31,12 @@ class AppComponent extends LitElement {
   async checkLoggedIn() {
     try {
       const response = await httpClient.get('verify');
-      if (response.status === 200) {
+      const json = await response.json();
+      if (json.login) {
         this.loggedIn = true;
       }
     } catch (error) {
-      console.log('Not logged in!');
+      console.log(error);
     }
   }
 
@@ -46,6 +47,7 @@ class AppComponent extends LitElement {
         'mates/sign-in': () => html`<app-sign-in></app-sign-in>`,
         'mates/sign-up': () => html`<app-sign-up></app-sign-up>`,
         'mates/sign-out': () => html`<app-sign-out></app-sign-out>`,
+        'mates/edit-profile': () => html`<app-edit-profile></app-edit-profile>`,
         'about': () => html`<app-about></app-about>`,
         'mates/profile/:profileId': params => html`<user-profile .profileId=${params.profileId}></user-profile>`,
         'meets': () => html`<app-meets></app-meets>`,

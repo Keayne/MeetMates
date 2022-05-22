@@ -1,4 +1,4 @@
-/* Autor: Valentin LIeberknecht */
+/* Autor: Valentin Lieberknecht */
 
 import { Entity } from './entity.js';
 

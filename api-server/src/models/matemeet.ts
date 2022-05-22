@@ -3,7 +3,7 @@
 import { Universal } from './universal.js';
 
 export interface MateMeet extends Universal {
-  userid: string;
+  mateid: string;
   meetid: string;
   rating: number;
 }

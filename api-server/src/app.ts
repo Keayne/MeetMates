@@ -4,7 +4,7 @@ import express, { Express } from 'express';
 import cookieParser from 'cookie-parser';
 import http from 'http';
 import https from 'https';
-import mates from './routes/mates.js';
+import mates from './routes/mate.js';
 import profile from './routes/profile.js';
 import meets from './routes/meets.js';
 import meet from './routes/meet.js';

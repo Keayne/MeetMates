@@ -1,7 +1,7 @@
 /* Autor: Valentin Lieberknecht */
 
 import { LitElement, html, css } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 
 @customElement('sign-slider')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -30,7 +30,7 @@ class RatingComponent extends LitElement {
   @property() ltext = '';
   @property() rtext = '';
   @property() id = '';
-  @state() private value = 6;
+  @property() value = 6;
 
   updateDescription(e: Event) {
     if (e.target instanceof HTMLInputElement) {

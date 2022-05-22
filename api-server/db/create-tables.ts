@@ -54,7 +54,7 @@ async function createPsqlScheme(client: ClientType) {
 
   await client.query(
     `create table matemeet(
-      userId Varchar(40) NOT NULL references mate(id),
+      mateId Varchar(40) NOT NULL references mate(id),
       meetId Varchar(40) NOT NULL references meet(id),
       "createdAt" bigint Not Null,
       rating int
@@ -72,7 +72,7 @@ async function createPsqlScheme(client: ClientType) {
 
   await client.query(
     `create table mateinterest(
-      userId Varchar(40) NOT NULL references mate(id),
+      mateId Varchar(40) NOT NULL references mate(id),
       interestId Varchar(40) NOT NULL references interest(id),
       "createdAt" bigint Not Null
     )`
@@ -89,7 +89,7 @@ async function createPsqlScheme(client: ClientType) {
 
   await client.query(
     `create table matedescription(
-      userId Varchar(40) NOT NULL references mate(id),
+      mateId Varchar(40) NOT NULL references mate(id),
       descriptionId Varchar(40) NOT NULL references description(id),
       "createdAt" bigint Not Null,
       value int NOT NULL
@@ -122,6 +122,7 @@ async function createPsqlScheme(client: ClientType) {
     )
   `
   );*/
+
   await client.query(
     `create table chat(
       id Varchar(40) PRIMARY KEY,
@@ -178,14 +179,14 @@ async function fillSchemeWithData(client: ClientType) {
     });
 
     //fill mateMeet-DBTable
-    testData.mateMeet.forEach(async (element: { userId: string; meetId: string }) => {
+    testData.mateMeet.forEach(async (element: { mateId: string; meetId: string }) => {
       const query = `insert into matemeet(
-        userid,
+        mateId,
         meetid,
         "createdAt"
       )
       values(
-        '${element.userId}',
+        '${element.mateId}',
         '${element.meetId}',
         '${Date.now()}'
       )`;
@@ -194,14 +195,14 @@ async function fillSchemeWithData(client: ClientType) {
     });
 
     //fill MateInterest-DBTable
-    testData.mateInterest.forEach(async (element: { userId: string; interestId: string }) => {
+    testData.mateInterest.forEach(async (element: { mateId: string; interestId: string }) => {
       const query = `insert into mateinterest(
-        userid,
+        mateId,
         interestid,
         "createdAt"
       )
       values(
-        '${element.userId}',
+        '${element.mateId}',
         '${element.interestId}',
         '${Date.now()}'
       )`;
@@ -227,15 +228,15 @@ async function fillSchemeWithData(client: ClientType) {
       await client.query(query);
     });
 
-    testData.matedescription.forEach(async (element: { userId: string; descriptionId: string; value: number }) => {
+    testData.matedescription.forEach(async (element: { mateId: string; descriptionId: string; value: number }) => {
       const query = `insert into matedescription(
-        userId,
+        mateId,
         descriptionId,
         "createdAt",
         value
       )
       values(
-        '${element.userId}',
+        '${element.mateId}',
         '${element.descriptionId}',
         '${Date.now()}',
         '${element.value}'

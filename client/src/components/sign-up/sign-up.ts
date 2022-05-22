@@ -101,26 +101,26 @@ class SignUpComponent extends PageMixin(LitElement) {
   render() {
     return html`
       ${this.renderNotification()}
-      <h1>Registrieren</h1>
+      <h1>Register</h1>
       <form>
-        <label>Vorname:</label>
+        <label>Firstname:</label>
         <input type="text" id="firstname" required />
-        <label>Nachname:</label>
+        <label>Name:</label>
         <input type="text" id="name" required />
-        <label>Geschlecht:</label>
+        <label>Gender:</label>
         <select id="gender" required>
           <option></option>
-          <option value="male">Männlich</option>
-          <option value="female">Weiblich</option>
-          <option value="diverse">Divers</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="diverse">Diverse</option>
         </select>
-        <label>Geburtstag:</label>
+        <label>Birthday:</label>
         <input type="date" id="birthday" required>
         <label>Email:</label>
         <input type="email" id="email" required />
-        <label>Passwort:</label>
+        <label>Password:</label>
         <input type="password" id="password" required />
-        <h3>Rate hier dich selbst<h3>
+        <h3>Rate yourself here<h3>
         ${this.descriptions.map(
           e =>
             html` <sign-slider
@@ -130,14 +130,14 @@ class SignUpComponent extends PageMixin(LitElement) {
               rtext="${e.rtext}"
             ></sign-slider>`
         )}
-        <h3>Wähle hier ein paar Hobbys aus</h3>
+        <h3>Choose your hobbies</h3>
         ${this.interests.map(
           interst =>
             html`<div class="pill" @click=${(e: MouseEvent) => this.selectHobby(e, interst.id)}>
               <span>${interst.text}</span>
             </div>`
         )}
-        <h3>Profilbild auswählen</h3>
+        <h3>Select profile picture</h3>
         <input @change="${this.updateImage}" type="file" accept="image/png, image/jpeg" required>
         <br>
         <img style="max-width: 200px; max-height: 200px" src="${this.imgSrc}">
