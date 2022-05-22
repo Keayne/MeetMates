@@ -81,7 +81,7 @@ class YourMeetComponent extends PageMixin(LitElement) {
       console.log('old value: ' + this.meet.name);
 
       try {
-        const response = await httpClient.post('/meet/changedName' + location.search, {
+        const response = await httpClient.post('/meet/changeName' + location.search, {
           meetId: this.meetId,
           newName: this.meetName?.value
         });
