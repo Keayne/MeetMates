@@ -34,13 +34,10 @@ function configureApp(app: Express) {
     res.set('Referrer-Policy', 'no-referrer');
     res.set('Cross-Origin-Resource-Policy', 'same-origin');
     res.set('Permissions-Policy', 'none');
-    next();
-  });
-
-  app.use((req, res, next) => {
     res.set('Content-Security-Policy-Report-Only', "script-src 'self'; report-uri /reports");
     next();
   });
+
 
   app.use('/api', mates);
   app.use('/api/profile', profile);
