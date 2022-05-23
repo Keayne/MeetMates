@@ -27,11 +27,7 @@ type Mate = {
 async function createPsqlScheme(client: ClientType) {
   await client.connect();
   await client.query(
-<<<<<<< HEAD
-    'drop table if exists matemeet, matedescription , mateinterest , interest, meet, chat, mate, matedescription, description, servicedata, activitymeet, activity'
-=======
     'drop table if exists matemeet, matedescription , mateinterest , meet,  mate, interest, matedescription, description, servicedata, activitymeet, activity, report'
->>>>>>> d2ed9233ed819cd9f4210951b73e16389207c44c
   );
   await client.query(
     `create table meet(
