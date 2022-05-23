@@ -27,6 +27,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
             id="myRange"
             @change="${(e: Event) => this.readSliderValue(e)}"
           />
+          <span>Current overall rating: TODO</span>
           <p>Value: ${this.sliderValue}</p>
         </div>
       </div>

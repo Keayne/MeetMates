@@ -16,7 +16,7 @@ class CardComponent extends PageMixin(LitElement) {
   render() {
     return html`
       <div id="card" class="card" style="width: 18rem">
-        <img src="${this.activity.image}" class="card-image" />
+        <img src="${this.activity.image}" class="card-image" style="max-height: 190px" />
 
         <div class="card-body">
           <div class="tooltip">

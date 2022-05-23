@@ -15,7 +15,6 @@ class AppComponent extends LitElement {
   @state() private loggedInHeaderOptions = [
     { title: 'Meets', routePath: 'meets' },
     { title: 'Edit Profil', routePath: 'mates/edit-profile' },
-    { title: 'Activity', routePath: 'meet/find-activity' },
     { title: 'Logout', routePath: 'mates/sign-out' }
   ];
 

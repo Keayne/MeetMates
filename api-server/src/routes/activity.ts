@@ -32,6 +32,9 @@ router.get('/:id', async (req, res) => {
   const activityDAO: GenericDAO<Activity> = req.app.locals.activityDAO;
   const filter: Partial<Activity> = { meetid: req.params.id }; //TODO NEEDS TO CHECK IF USER IS ALLOWED TO MAKE REQUEST
   const activites = await activityDAO.findAll(filter);
+  for (const e of activites) {
+    e.image = Buffer.from(e.image).toString();
+  }
   res.json({ results: activites });
 });
 

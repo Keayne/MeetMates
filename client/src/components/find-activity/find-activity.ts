@@ -111,6 +111,14 @@ class FindActivityComponent extends PageMixin(LitElement) {
           </form>
         </div>
         <!-- Pop up end-->
+        <!-- Filters -->
+        <div id="myBtnContainer">
+          <button class="btn active" onclick="filterSelection('all')">Highest Rated</button>
+          <button class="btn active" onclick="filterSelection('all')">My Activities</button>
+          <button class="btn" onclick="filterSelection('cars')">Sport</button>
+          <button class="btn" onclick="filterSelection('animals')">Entertainment</button>
+        </div>
+        <!-- Filters -->
         ${repeat(
           this.activityList,
           activity =>
@@ -127,7 +135,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
       </div> `;
   }
   openForm() {
-    this.myForm.style.display = 'block'; //TODO can't find object
+    this.myForm.style.display = 'block';
   }
 
   closeForm() {
