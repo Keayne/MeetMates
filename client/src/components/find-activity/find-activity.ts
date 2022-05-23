@@ -16,6 +16,7 @@ export interface Actitity {
   chosen: boolean;
   meetId: string;
   image: string;
+  category: string;
 }
 
 @customElement('find-activity')
@@ -27,6 +28,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
   @query('#title') private titlee!: HTMLInputElement;
   @query('#description') private description!: HTMLInputElement;
   @query('#motivationTitle') private motivationTitle!: HTMLInputElement;
+  @query('#category') private category!: HTMLSelectElement;
   @state() private imgSrc!: string;
   @property() meetId!: string;
 
@@ -36,15 +38,20 @@ class FindActivityComponent extends PageMixin(LitElement) {
       title: this.titlee.value,
       description: this.description.value,
       motivationtitle: this.motivationTitle.value,
-      image: this.imgSrc
+      image: this.imgSrc,
+      category: this.category.value
     };
     try {
       const response = await httpClient.post('/activity', partialActivity);
       const activity: Actitity = await response.json();
+      //emty fields of form
       this.titlee.value = '';
       this.description.value = '';
       this.motivationTitle.value = '';
-      this.activityList = [...this.activityList, activity];
+      this.category.value = '';
+      //TODO empty image upload,
+      //emty fields of form end
+      this.activityList = [...this.activityList, activity]; //append activity to screen so user does not have to reload the page to see the activity
     } catch (e) {
       this.showNotification((e as Error).message, 'error');
     }
@@ -92,9 +99,17 @@ class FindActivityComponent extends PageMixin(LitElement) {
             <label for="description"><b>Description</b></label>
             <input type="text" placeholder="Enter Description" name="description" id="description" required />
 
+            <label for="category">Choose a category:</label> <br />
+            <select id="category" name="category" required>
+              <option value="Sport">Sport</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Drinking">Drinking</option>
+              <option value="Other">Other</option></select
+            ><br /><br />
+
             <label for="Image"><b>Image</b></label>
             <input @change="${this.updateImage}" type="file" accept="image/png, image/jpeg" required />
-            <br />
+
             <img style="max-width: 200px; max-height: 200px" src="${this.imgSrc}" />
 
             <label for="description"><b>Motivation Title</b></label>
@@ -114,9 +129,10 @@ class FindActivityComponent extends PageMixin(LitElement) {
         <!-- Filters -->
         <div id="myBtnContainer">
           <button class="btn active" onclick="filterSelection('all')">Highest Rated</button>
-          <button class="btn active" onclick="filterSelection('all')">My Activities</button>
-          <button class="btn" onclick="filterSelection('cars')">Sport</button>
-          <button class="btn" onclick="filterSelection('animals')">Entertainment</button>
+          <button class="btn" onclick="filterSelection('all')">My Activities</button>
+          <button class="btn" onclick="filterSelection('all')">Sport</button>
+          <button class="btn" onclick="filterSelection('all')">Entertainment</button>
+          <button class="btn" onclick="filterSelection('all')">Drinking</button>
         </div>
         <!-- Filters -->
         ${repeat(

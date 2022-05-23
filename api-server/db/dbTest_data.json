@@ -306,7 +306,8 @@
       "rating": 1,
       "chosen": 0,
       "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
-      "image": ""
+      "image": "",
+      "category": "Sport"
     },
     {
       "id": "adaa1bb0-e223-4f77-a667-ae0d6f204062",
@@ -318,7 +319,8 @@
       "rating": 50,
       "chosen": 0,
       "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
-      "image": ""
+      "image": "",
+      "category": "Sport"
     },
     {
       "id": "795f59da-91cd-4ce4-b1db-500864fca083",
@@ -330,7 +332,8 @@
       "rating": 50,
       "chosen": 0,
       "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
-      "image": ""
+      "image": "",
+      "category": "Sport"
     }
   ]
 }

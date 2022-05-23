@@ -27,7 +27,7 @@ type Mate = {
 async function createPsqlScheme(client: ClientType) {
   await client.connect();
   await client.query(
-    'drop table if exists matemeet, matedescription , mateinterest , meet,  mate, interest, matedescription, description, servicedata, activitymeet, activity, report'
+    'drop table if exists matemeet, matedescription , mateinterest , meet,  mate, interest, matedescription, description, servicedata, activitymeet, activity, chat, report'
   );
   await client.query(
     `create table meet(
@@ -108,7 +108,8 @@ async function createPsqlScheme(client: ClientType) {
       rating int,
       chosen int NOT NULL,
       meetId Varchar(40) NOT NULL references meet(id),
-      image BYTEA
+      image BYTEA,
+      category VARCHAR(40)
     )`
   );
 
@@ -273,6 +274,7 @@ async function fillSchemeWithData(client: ClientType) {
         chosen: number;
         meetId: string;
         image: string;
+        category: string;
       }) => {
         const query = `insert into activity(
         id,
@@ -285,7 +287,8 @@ async function fillSchemeWithData(client: ClientType) {
         rating,
         chosen,
         meetId,
-        image
+        image,
+        category
       )
       values(
         '${element.id}',
@@ -298,9 +301,9 @@ async function fillSchemeWithData(client: ClientType) {
         '${element.rating}',
         '${element.chosen}',
         '${element.meetId}',
-        '${element.image}'
+        '${element.image}',
+        '${element.category}'
       )`;
-
         await client.query(query);
       }
     );

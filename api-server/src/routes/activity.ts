@@ -50,7 +50,8 @@ router.post('/', authService.authenticationMiddleware, async (req, res) => {
     rating: 1,
     chosen: 0,
     meetid: '0ea6639d-c6d5-4030-bb1b-e687ecb850fb', //todo meetId needs to be handed over on submit
-    image: req.body.image
+    image: req.body.image,
+    category: req.body.category
   });
   res.status(201).json(createdActivity);
 });
