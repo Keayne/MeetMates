@@ -1,4 +1,4 @@
-/* Autor: Valentin Lieberknecht */
+/* Autor: Jonathan Hüls */
 
 import { v4 as uuidv4 } from 'uuid';
 import { Client } from 'pg';
@@ -41,7 +41,6 @@ export class PsqlGenericDAO<T extends Entity> implements GenericDAO<T> {
     return result && result.rows ? (result.rows[0] as T) : null;
   }
 
-  //Jonathan Hüls
   public async findMultiple(...entityFilters: Partial<T>[]): Promise<T[]> {
     const query = 'SELECT * FROM ' + this.table + ' ';
     let whereClaus = 'Where ';
