@@ -9,6 +9,7 @@ import profile from './routes/profile.js';
 import meets from './routes/meets.js';
 import meet from './routes/meet.js';
 import activity from './routes/activity.js';
+import reports from './routes/reports.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import startDB from './db.js';
@@ -25,6 +26,18 @@ function configureApp(app: Express) {
   app.use(express.json({ limit: '10mb' }));
   app.use(cookieParser());
   app.use(corsService.corsMiddleware);
+  app.use((req, res, next) => {
+    res.set('Content-Security-Policy', "frame-ancestors 'none'");
+    res.set('X-Frame-Options', 'DENY');
+    res.set('X-Content-Type-Options', 'nosniff');
+    res.set('X-XSS-Protection', '1');
+    res.set('Referrer-Policy', 'no-referrer');
+    res.set('Cross-Origin-Resource-Policy', 'same-origin');
+    res.set('Permissions-Policy', 'none');
+    res.set('Content-Security-Policy-Report-Only', "script-src 'self'; report-uri /reports");
+    next();
+  });
+
 
   app.use('/api', mates);
   app.use('/api/profile', profile);
@@ -32,6 +45,7 @@ function configureApp(app: Express) {
   app.use('/api/meet', meet);
   app.use('/api/activity', activity);
   app.use('/api/chat', chat);
+  app.use('/reports', reports);
 }
 
 export async function start() {

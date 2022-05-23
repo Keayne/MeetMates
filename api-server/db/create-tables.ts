@@ -27,7 +27,11 @@ type Mate = {
 async function createPsqlScheme(client: ClientType) {
   await client.connect();
   await client.query(
+<<<<<<< HEAD
     'drop table if exists matemeet, matedescription , mateinterest , interest, meet, chat, mate, matedescription, description, servicedata, activitymeet, activity'
+=======
+    'drop table if exists matemeet, matedescription , mateinterest , meet,  mate, interest, matedescription, description, servicedata, activitymeet, activity, report'
+>>>>>>> d2ed9233ed819cd9f4210951b73e16389207c44c
   );
   await client.query(
     `create table meet(
@@ -130,6 +134,21 @@ async function createPsqlScheme(client: ClientType) {
       author Varchar(40) NOT NULL references mate(id),
       room Varchar(40) NOT NULL references meet(id),
       body Varchar(255) NOT NULL
+    )`
+  );
+
+  await client.query(
+    `create table report(
+      id Varchar(40) PRIMARY KEY,
+      "createdAt" bigint Not Null,
+      document_uri Varchar(255),
+      referrer Varchar(255),
+      violated_directive Varchar(255),
+      effective_directive Varchar(255),
+      original_policy Varchar(255),
+      disposition Varchar(255),
+      blocked_uri Varchar(255),
+      status_code int
     )`
   );
 }
