@@ -5,6 +5,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- nur externe Skripte erlauben, deren Origin der Origin dieses HTML-Dokuments entspricht -->
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
+    <!-- nur externe Stylesheets erlauben, deren Origin der Origin dieses HTML-Dokuments entspricht -->
+    <meta http-equiv="Content-Security-Policy" content="style-src 'self'">
+
+    <!-- 
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'" >
+    -->
+
     <title>MeetMates</title>
     <base href="/" />
     <link rel="icon" type="image/png" href="./favicon.png" />
