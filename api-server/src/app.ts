@@ -25,6 +25,16 @@ function configureApp(app: Express) {
   app.use(express.json({ limit: '10mb' }));
   app.use(cookieParser());
   app.use(corsService.corsMiddleware);
+  app.use((req, res, next) => {
+    res.set('Content-Security-Policy', "frame-ancestors 'none'");
+    res.set('X-Frame-Options', 'DENY');
+    res.set('X-Content-Type-Options', 'nosniff');
+    res.set('X-XSS-Protection', '1');
+    res.set('Referrer-Policy', 'no-referrer');
+    res.set('Cross-Origin-Resource-Policy', 'same-origin');
+    res.set('Permissions-Policy', 'none');
+    next();
+  });
 
   app.use('/api', mates);
   app.use('/api/profile', profile);
