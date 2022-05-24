@@ -6,6 +6,7 @@
   display: inline-block;
   position: sticky;
   background-color: #315895;
+  z-index: 10;
 }
 
 .innerHeader {

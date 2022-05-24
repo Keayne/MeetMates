@@ -2,29 +2,36 @@
 
 import express from 'express';
 import { GenericDAO } from '../models/generic.dao.js';
-import { Chat } from '../models/message.js';
+import { Mate } from '../models/mate.js';
+import { Message } from '../models/message.js';
 import { authService } from '../services/auth.service.js';
 
 const router = express.Router();
 
 router.get('/messages/:room', authService.authenticationMiddleware, async (req, res) => {
-  const chatDAO: GenericDAO<Chat> = req.app.locals.chatDAO;
+  const chatDAO: GenericDAO<Message> = req.app.locals.chatDAO;
+  const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
 
-  const messages: Array<Chat> = await chatDAO.findAllASC({ room: req.params.room });
-  messages.forEach(e => {
-    if (e.author === 'fa0977c5-ae5f-40ef-a78a-7da44539fc77') {
+  const messages: Array<Message> = await chatDAO.findAllASC({ room: req.params.room });
+  for (const e of messages) {
+    const date = new Date(Number(e.createdAt));
+    e.posttime = date.toLocaleString('de-DE', { timeZone: 'Europe/Berlin' });
+    if (e.author === res.locals.user.id) {
       e.author = 'Me';
       e.own = 'msg-self';
     } else {
-      e.author = 'Other';
-      e.own = 'msg-remote';
+      const author = await mateDAO.getName({ id: e.author });
+      if (author) {
+        e.author = author.firstname + ' ' + author.name;
+        e.own = 'msg-remote';
+      }
     }
-  });
+  }
   res.json(messages);
 });
 
 router.post('/message', authService.authenticationMiddleware, async (req, res) => {
-  const chatDAO: GenericDAO<Chat> = req.app.locals.chatDAO;
+  const chatDAO: GenericDAO<Message> = req.app.locals.chatDAO;
   chatDAO.create({
     author: res.locals.user.id,
     room: req.body.room,

@@ -13,16 +13,18 @@ class ChatComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
 
   @property() private messages: Message[] = [];
-  @property() private room = 'be8ce656-875a-4b56-8c7f-8b071fe87e01';
+  @property() private room!: string;
   private ws!: WebSocket;
 
   async firstUpdated() {
-    this.ws = new WebSocket('ws://localhost:3000');
+    this.ws = new WebSocket('ws://localhost:3000/' + this.room);
     this.ws.onopen = () => {
       console.log('Connection Opened!');
     };
     const messages = await httpClient.get('/chat/messages/' + this.room);
     this.messages = await messages.json();
+    scrollTo(0, document.body.scrollHeight);
+
     this.ws.onmessage = async () => {
       const messages = await httpClient.get('/chat/messages/' + this.room);
       this.messages = await messages.json();
@@ -43,6 +45,8 @@ class ChatComponent extends PageMixin(LitElement) {
         this.showNotification((e as Error).message, 'error');
       }
       form.message.value = '';
+      const messages = await httpClient.get('/chat/messages/' + this.room);
+      this.messages = await messages.json();
     } else {
       this.showNotification('Nachricht darf nicht leer sein!');
     }
@@ -54,7 +58,13 @@ class ChatComponent extends PageMixin(LitElement) {
       <body>
         <div class="chat-window">
           ${this.messages.map(
-            e => html`<app-chat-message own=${e.own} author=${e.author} body=${e.body}></app-chat-message>`
+            e =>
+              html`<app-chat-message
+                own=${e.own}
+                author=${e.author}
+                posttime=${e.posttime}
+                body=${e.body}
+              ></app-chat-message>`
           )}
         </div>
         <form class="chat-input" @submit="${this.messageSubmit}">

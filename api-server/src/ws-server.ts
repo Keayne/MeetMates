@@ -1,9 +1,7 @@
 /* Autor: Valentin Lieberknecht */
 
 import { IncomingMessage, Server } from 'http';
-import cookie from 'cookie';
 import WebSocket from 'ws';
-import { authService } from './services/auth.service.js';
 import { Mate } from './models/mate.js';
 
 interface WebSocketExt extends WebSocket {
@@ -21,12 +19,12 @@ class WebSocketServer {
 
     this.wss.on('connection', (ws: WebSocketExt, req) => this.onConnection(ws, req));
   }
-  public async onMessage(ws: WebSocketExt, data: string) {
+  public async onMessage(req: IncomingMessage, ws: WebSocketExt, data: string) {
+    //console.log('Message: ' + data);
     this.wss.clients.forEach(client => {
-      client.send('reload');
-      // if (client !== ws && ws.room === data) {
-      //   client.send('reload');
-      // }
+      if (client !== ws && ws.room === data) {
+        client.send('reload');
+      }
     });
   }
 
@@ -41,7 +39,14 @@ class WebSocketServer {
   }
 
   private async onConnection(ws: WebSocketExt, req: IncomingMessage) {
-    ws.on('message', (data: string) => this.onMessage(ws, data));
+    if (req.url) {
+      ws.room = req.url.substring(1);
+      ws.on('message', (data: string) => this.onMessage(req, ws, data));
+    }
+    ws.isAlive = true;
+    ws.on('pong', () => {
+      ws.isAlive = true;
+    });
   }
 
   private setupHeartBeat() {

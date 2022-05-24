@@ -38,7 +38,6 @@ function configureApp(app: Express) {
     next();
   });
 
-
   app.use('/api', mates);
   app.use('/api/profile', profile);
   app.use('/api/meets', meets);

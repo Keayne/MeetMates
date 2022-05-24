@@ -12,6 +12,7 @@ class ChatMessageComponent extends PageMixin(LitElement) {
   @property({ type: String }) own = '';
   @property({ type: String }) author = '';
   @property({ type: String }) body = '';
+  @property({ type: String }) posttime = '';
 
   render() {
     return html` <div class="msg-container ${this.own}">
@@ -19,7 +20,7 @@ class ChatMessageComponent extends PageMixin(LitElement) {
         <div class="flr">
           <p class="msg">${this.body}</p>
           <span class="timestamp"
-            ><span class="username">${this.author}</span> &bull;<span class="posttime">a frew seconds ago</span></span
+            ><span class="username">${this.author}</span> &bull;<span class="posttime">${this.posttime}</span></span
           >
         </div>
       </div>

@@ -30,13 +30,20 @@ export class PsqlGenericDAO<T extends Entity> implements GenericDAO<T> {
   }
 
   public async findAllASC(entityFilter?: Partial<T>) {
-    const query = 'SELECT * FROM ' + this.table + ' ' + createWhereClause(entityFilter) + ' ORDER BY "createdAt" ASC';
+    const query =
+      'SELECT * FROM ' + this.table + ' ' + createWhereClause(entityFilter) + ' ORDER BY "createdAt" ASC LIMIT 100';
     const result = await this.db.query(query);
     return result.rows as T[];
   }
 
   public async findOne(entityFilter: Partial<T>) {
     const query = 'SELECT * FROM ' + this.table + ' ' + createWhereClause(entityFilter) + ' LIMIT 1';
+    const result = await this.db.query(query);
+    return result && result.rows ? (result.rows[0] as T) : null;
+  }
+
+  public async getName(entityFilter: Partial<T>) {
+    const query = 'SELECT firstname, name FROM ' + this.table + ' ' + createWhereClause(entityFilter) + ' LIMIT 1';
     const result = await this.db.query(query);
     return result && result.rows ? (result.rows[0] as T) : null;
   }
