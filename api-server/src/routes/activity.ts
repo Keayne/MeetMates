@@ -49,7 +49,7 @@ router.post('/', authService.authenticationMiddleware, async (req, res) => {
     motivationtitle: req.body.motivationtitle,
     rating: 1,
     chosen: 0,
-    meetid: '0ea6639d-c6d5-4030-bb1b-e687ecb850fb', //todo meetId needs to be handed over on submit
+    meetid: '0ea6639d-c6d5-4030-bb1b-e687ecb850fb', //read id from req url
     image: req.body.image,
     category: req.body.category
   });

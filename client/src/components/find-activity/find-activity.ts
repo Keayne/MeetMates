@@ -24,6 +24,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
 
   @property({ type: Array }) private activityList: Array<Actitity> = [];
+  @property({ type: Array }) private activityListLocal: Array<Actitity> = [];
   @query('#myForm') private myForm!: HTMLDivElement;
   @query('#title') private titlee!: HTMLInputElement;
   @query('#description') private description!: HTMLInputElement;
@@ -32,6 +33,10 @@ class FindActivityComponent extends PageMixin(LitElement) {
   @state() private imgSrc!: string;
   @property() meetId!: string;
 
+  /**
+   * Creates an activity and sends it to the server
+   * @param event Activity (Partial) to be submitted
+   */
   async submit(event: Event) {
     event.preventDefault();
     const partialActivity: Partial<Actitity> = {
@@ -52,16 +57,21 @@ class FindActivityComponent extends PageMixin(LitElement) {
       //TODO empty image upload,
       //emty fields of form end
       this.activityList = [...this.activityList, activity]; //append activity to screen so user does not have to reload the page to see the activity
+      this.activityListLocal = [...this.activityListLocal, activity]; //also add activity to localList
     } catch (e) {
       this.showNotification((e as Error).message, 'error');
     }
   }
 
+  /**
+   * Initial tasks required to load the page
+   */
   async firstUpdated() {
     try {
       this.startAsyncInit();
       const response = await httpClient.get(`activity/${this.meetId}` + location.search);
       this.activityList = (await response.json()).results;
+      this.activityListLocal = this.activityList;
     } catch (e) {
       this.showNotification((e as Error).message, 'error');
     } finally {
@@ -69,6 +79,10 @@ class FindActivityComponent extends PageMixin(LitElement) {
     }
   }
 
+  /**
+   * Handling of image upload for the "createActivity"-button
+   * @param e InputEvent
+   */
   async updateImage(e: InputEvent) {
     const toBase64 = (file: Blob): Promise<string> =>
       new Promise((resolve, reject) => {
@@ -94,10 +108,17 @@ class FindActivityComponent extends PageMixin(LitElement) {
             <h1>New Activity</h1>
 
             <label for="title"><b>Title</b></label>
-            <input type="text" placeholder="Enter Title" name="title" id="title" required />
+            <input type="text" placeholder="Enter Title" name="title" id="title" required autocomplete="false" />
 
             <label for="description"><b>Description</b></label>
-            <input type="text" placeholder="Enter Description" name="description" id="description" required />
+            <input
+              type="text"
+              placeholder="Enter Description"
+              name="description"
+              id="description"
+              required
+              autocomplete="false"
+            />
 
             <label for="category">Choose a category:</label> <br />
             <select id="category" name="category" required>
@@ -119,6 +140,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
               name="motivationTitle"
               id="motivationTitle"
               required
+              autocomplete="false"
             />
 
             <button type="submit" class="btn">Create Actitity</button>
@@ -126,17 +148,18 @@ class FindActivityComponent extends PageMixin(LitElement) {
           </form>
         </div>
         <!-- Pop up end-->
-        <!-- Filters -->
+        <!-- Filter Buttons -->
         <div id="myBtnContainer">
-          <button class="btn active" onclick="filterSelection('all')">Highest Rated</button>
-          <button class="btn" onclick="filterSelection('all')">My Activities</button>
-          <button class="btn" onclick="filterSelection('all')">Sport</button>
-          <button class="btn" onclick="filterSelection('all')">Entertainment</button>
-          <button class="btn" onclick="filterSelection('all')">Drinking</button>
+          <button class="btn active" @click=${() => this.selectFilter('all')}>All</button>
+          <button class="btn" @click=${() => this.selectFilter('Highest Rating')}>Highest Rating</button>
+          <button class="btn" @click=${() => this.selectFilter('Entertainment')}>Entertainment</button>
+          <button class="btn" @click=${() => this.selectFilter('Drinking')}>Drinking</button>
+          <button class="btn" @click=${() => this.selectFilter('Sport')}>Sport</button>
         </div>
-        <!-- Filters -->
+        <!-- Filter Buttons End -->
+        <!-- Render Activities -->
         ${repeat(
-          this.activityList,
+          this.activityListLocal,
           activity =>
             html` <div class="activity-container">
               <div class="activity">
@@ -150,6 +173,19 @@ class FindActivityComponent extends PageMixin(LitElement) {
         )}
       </div> `;
   }
+
+  /**
+   * Apply a filter to the currently shown activites
+   * @param category Name of the Category to filter
+   */
+  selectFilter(category: String) {
+    if (category === 'all') {
+      this.activityListLocal = this.activityList;
+    } else {
+      this.activityListLocal = this.activityList.filter(activity => activity.category === category);
+    }
+  }
+
   openForm() {
     this.myForm.style.display = 'block';
   }
