@@ -51,20 +51,30 @@
       "lastLoggedIn": "30.05.2022"
     },
     {
-      "id": "ce973cad-01dc-446d-894d-1bb966c7bfb8",
-      "name": "Curie",
-      "firstName": "Marie",
-      "eMail": "CurieMarie@yahoo.fr",
+      "id": "bbb5f64e-f103-4090-9a23-b1bef47732b0",
+      "name": "Schaper",
+      "firstName": "Arne",
+      "eMail": "arne.schaper@online.de",
       "Birthday": "07.11.1867",
+      "gender": "male",
+      "password": "$2a$10$ax1i9yMvNewLD242J9556.kX2EnsBwqjHIKc7q0m5yWTvJoBafFla",
+      "lastLoggedIn": "14.01.2022"
+    },
+    {
+      "id": "ce973cad-01dc-446d-894d-1bb966c7bfb8",
+      "name": "Blanco",
+      "firstName": "Robert",
+      "eMail": "Aldfsfsd.Pacino@gmail.com",
+      "Birthday": "25.04.1940",
       "gender": "female",
       "password": "",
-      "lastLoggedIn": "14.01.2022"
+      "lastLoggedIn": "30.05.2022"
     }
   ],
   "mateMeet": [
     {
       "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
-      "mateId": "ce973cad-01dc-446d-894d-1bb966c7bfb8"
+      "mateId": "bbb5f64e-f103-4090-9a23-b1bef47732b0"
     },
     {
       "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
@@ -297,13 +307,12 @@
   ],
   "activity": [
     {
-      "id": "259c7697-1697-4dd1-8b74-088019fbf30f",
-      "title": "dbTitleForSpecificMeet",
-      "description": "dbTestDescription1",
+      "id": "94e5ac29-4b85-4bef-8238-f8a1e2b13a6d",
+      "title": "Play SOC",
+      "description": "Songs of Conquest - A strategy game",
       "tooltip": "dbTestTooltip1",
       "tooltipCreatedBy": "Arne",
       "motivationTitle": "dbTestMotivationTitle1",
-      "rating": 1,
       "chosen": 0,
       "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
       "image": "",
@@ -316,7 +325,6 @@
       "tooltip": "dbTestTooltip2",
       "tooltipCreatedBy": "Arne",
       "motivationTitle": "dbTestMotivationTitle2",
-      "rating": 50,
       "chosen": 0,
       "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
       "image": "",
@@ -329,11 +337,22 @@
       "tooltip": "dbTestTooltip3",
       "tooltipCreatedBy": "Arne",
       "motivationTitle": "dbTestMotivationTitle3",
-      "rating": 50,
       "chosen": 0,
       "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
       "image": "",
       "category": "Sport"
+    }
+  ],
+  "rating": [
+    {
+      "activityId": "94e5ac29-4b85-4bef-8238-f8a1e2b13a6d",
+      "userId": "bbb5f64e-f103-4090-9a23-b1bef47732b0",
+      "rating": 88
+    },
+    {
+      "activityId": "94e5ac29-4b85-4bef-8238-f8a1e2b13a6d",
+      "userId": "eeab19ed-e87b-49a1-878e-e2a62494b050",
+      "rating": 2
     }
   ]
 }

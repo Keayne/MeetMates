@@ -7,16 +7,24 @@ import { repeat } from 'lit/directives/repeat.js';
 import { httpClient } from '../../http-client';
 
 export interface Actitity {
+  id: string;
   title: string;
   description: string;
   tooltip: string;
   tooltipcreatedby: string;
   motivationtitle: string;
-  rating: number;
   chosen: boolean;
   meetId: string;
   image: string;
   category: string;
+}
+
+export interface Rating {
+  overallRating: Number;
+  createdAt: String;
+  activityId: String;
+  userId: String;
+  rating: Number;
 }
 
 @customElement('find-activity')
@@ -166,7 +174,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
                 <activity-info .activity=${activity}></activity-info>
               </div>
               <div class="activity" class="rating">
-                <activity-rating .activity=${activity}></activity-rating>
+                <activity-rating .activity=${activity} .activityId=${activity.id}></activity-rating>
               </div>
             </div>
         </div>`

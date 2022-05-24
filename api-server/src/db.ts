@@ -15,6 +15,7 @@ import { MateMeet } from './models/matemeet.js';
 import { Activity } from './models/activity.js';
 import { Chat } from './models/message.js';
 import { Report } from './models/report.js';
+import { Rating } from './models/rating.js';
 
 const config = JSON.parse(fs.readFileSync(new URL('../config.json', import.meta.url), 'utf-8'));
 const { Client } = pg;
@@ -62,6 +63,7 @@ async function startPsql(app: Express) {
   app.locals.activityDAO = new PsqlGenericDAO<Activity>(client!, 'activity');
   app.locals.chatDAO = new PsqlGenericDAO<Chat>(client!, 'chat');
   app.locals.reportDAO = new PsqlGenericDAO<Report>(client!, 'report');
+  app.locals.ratingDAO = new PsqlUniversalDAO<Rating>(client!, 'rating');
   return async () => await client.end();
 }
 

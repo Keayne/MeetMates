@@ -22,12 +22,13 @@ type Mate = {
   Birthday: string;
   gender: string;
   lastLoggedIn: string;
+  password: string;
 };
 
 async function createPsqlScheme(client: ClientType) {
   await client.connect();
   await client.query(
-    'drop table if exists matemeet, matedescription , mateinterest , meet,  mate, interest, matedescription, description, servicedata, activitymeet, activity, chat, report'
+    'drop table if exists matemeet, matedescription , mateinterest , meet,  mate, interest, matedescription, description, servicedata, activitymeet, activity, chat, report, rating'
   );
   await client.query(
     `create table meet(
@@ -105,7 +106,6 @@ async function createPsqlScheme(client: ClientType) {
       tooltip Varchar(255) NOT NULL,
       tooltipCreatedBy Varchar(255) NOT NULL,
       motivationTitle Varchar(255) NOT NULL,
-      rating int,
       chosen int NOT NULL,
       meetId Varchar(40) NOT NULL references meet(id),
       image BYTEA,
@@ -148,6 +148,15 @@ async function createPsqlScheme(client: ClientType) {
       status_code int
     )`
   );
+
+  await client.query(
+    `create table rating(
+      "createdAt" bigint Not Null,
+      activityId Varchar(40) references activity(id),
+      userId Varchar(40) NOT NULL references mate(id),
+      rating int
+    )`
+  );
 }
 
 async function fillSchemeWithData(client: ClientType) {
@@ -162,7 +171,7 @@ async function fillSchemeWithData(client: ClientType) {
   //fill mate-DBTable
   testData.mates.forEach(async (element: Mate) => {
     const query = `insert into mate(
-      id,"createdAt",name,firstname,email,birthday, gender, lastloggedin
+      id,"createdAt",name,firstname,email,birthday, gender, lastloggedin, password
     ) 
     values(
       '${element.id}',
@@ -172,7 +181,8 @@ async function fillSchemeWithData(client: ClientType) {
       '${element.eMail}',
       '${element.Birthday}',
       '${element.gender}',
-      '${element.lastLoggedIn}'
+      '${element.lastLoggedIn}',
+      '${element.password}'
     )`;
     await client.query(query);
 
@@ -270,7 +280,6 @@ async function fillSchemeWithData(client: ClientType) {
         tooltip: string;
         tooltipCreatedBy: string;
         motivationTitle: string;
-        rating: number;
         chosen: number;
         meetId: string;
         image: string;
@@ -284,7 +293,6 @@ async function fillSchemeWithData(client: ClientType) {
         tooltip,
         tooltipCreatedBy,
         motivationTitle,
-        rating,
         chosen,
         meetId,
         image,
@@ -298,11 +306,28 @@ async function fillSchemeWithData(client: ClientType) {
         '${element.tooltip}',
         '${element.tooltipCreatedBy}',
         '${element.motivationTitle}',
-        '${element.rating}',
         '${element.chosen}',
         '${element.meetId}',
         '${element.image}',
         '${element.category}'
+      )`;
+        await client.query(query);
+      }
+    );
+
+    testData.rating.forEach(
+      async (element: { createdAt: number; activityId: string; userId: string; rating: number }) => {
+        const query = `insert into rating(
+        "createdAt",
+        activityId,
+        userId,
+        rating
+      )
+      values(
+        '${Date.now()}',
+        '${element.activityId}',
+        '${element.userId}',
+        '${element.rating}'
       )`;
         await client.query(query);
       }
