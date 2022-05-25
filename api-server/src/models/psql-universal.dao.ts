@@ -34,10 +34,22 @@ export class PsqlUniversalDAO<T extends Universal> implements UniversalDAO<T> {
     return result && result.rows ? (result.rows[0] as T) : null;
   }
 
-  public async update(entity: Partial<T> & Pick<Universal, 'createdAt'>) {
-    const query =
-      'UPDATE ' + this.table + ' ' + createSetClause(entity) + ' WHERE createdAt = ' + toColumnValue(entity.createdAt);
+  public async update(entity: Partial<T>, primaryKeys: Array<{ key: string; value: unknown }>) {
+    const parts: Array<string> = [];
+    primaryKeys.forEach(primarykey => {
+      parts.push(`${primarykey.key} = '${primarykey.value}' `);
+    });
+
+    let whereClause = ' WHERE ';
+
+    for (let i = 0; i <= parts.length - 1; i++) {
+      whereClause = i === parts.length - 1 ? whereClause + parts[i] : whereClause + parts[i] + 'AND ';
+    }
+    console.log('WhereClause: ' + whereClause);
+    const query = 'UPDATE ' + this.table + ' ' + createSetClause(entity) + whereClause;
+    console.log(query);
     await this.db.query(query);
+
     return true;
   }
 
