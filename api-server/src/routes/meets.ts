@@ -65,8 +65,8 @@ router.get('/', authService.authenticationMiddleware, async (req, res) => {
           });
 
           mates! = await mateDAO.findMultiple(...matesFilter);
-
           mates.forEach(mate => {
+            mate.image = mate.image ? Buffer.from(mate.image).toString() : '';
             rMates.push({
               id: mate.id,
               name: mate.name,
