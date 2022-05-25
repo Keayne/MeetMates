@@ -18,6 +18,7 @@ import fs from 'fs';
 import { pathToFileURL } from 'url';
 import { startWebSocketServer } from './ws-server.js';
 import chat from './routes/chat.js';
+import rating from './routes/rating.js';
 
 const config = JSON.parse(fs.readFileSync(new URL('../config.json', import.meta.url), 'utf-8'));
 
@@ -45,6 +46,7 @@ function configureApp(app: Express) {
   app.use('/api/activity', activity);
   app.use('/api/chat', chat);
   app.use('/reports', reports);
+  app.use('/api/rating', rating);
 }
 
 export async function start() {
