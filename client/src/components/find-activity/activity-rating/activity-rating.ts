@@ -16,11 +16,14 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
   @property() avgRating = 0;
   @property() sliderValue = '50';
 
+  //TODO: Save slider values on change, make sure this works on new activities as well, update db script to include images, add/delete for activities
+
   async firstUpdated() {
     try {
       this.startAsyncInit();
       const responseRating = await httpClient.get(`rating/findOne/${this.activity.id}` + location.search);
       this.rating = (await responseRating.json()).results;
+      console.log('Rating: ' + this.rating);
       const responseRatingAll = await httpClient.get(`rating/findAverageRating/${this.activity.id}` + location.search);
       this.avgRating = (await responseRatingAll.json()).results;
     } catch (e) {
@@ -36,15 +39,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
         <p>${this.activity.motivationtitle}</p>
         <div class="slidecontainer">
           <label for="overallRating">Overall Rating</label>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value=${this.avgRating || 0}
-            class="slider"
-            id="overallRating"
-            disabled
-          />
+          <input type="range" min="0" max="100" value=${this.avgRating} class="slider" id="overallRating" disabled />
         </div>
         <div class="slidecontainer">
           <label for="myRating">My Rating</label>
@@ -52,14 +47,14 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
             type="range"
             min="0"
             max="100"
-            value=${this.rating}
+            value=${this.rating.rating}
             class="slider"
             id="myRating"
             @change="${(e: Event) => this.readSliderValue(e)}"
           />
           <p>Value: ${this.sliderValue}</p>
           <div>
-            <button>Save Changes</button>
+            <button @click=${this.saveSliderValueToDb}>Save Changes</button>
           </div>
         </div>
       </div>
@@ -72,5 +67,15 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
       this.sliderValue = target?.value;
       //this.activity.rating = Number(this.sliderValue);
     }
+  }
+
+  async saveSliderValueToDb(event: Event) {
+    const partialRating: Partial<Rating> = {
+      activityid: this.activity.id,
+      rating: Number(this.sliderValue) //userID is not included here as it is being provided by the auth Middleware on patch request.
+    };
+    const responseRating = await httpClient.patch(`rating/${this.activity.id}` + location.search, partialRating);
+    const responseRatingAll = await httpClient.get(`rating/findAverageRating/${this.activity.id}` + location.search);
+    this.avgRating = (await responseRatingAll.json()).results;
   }
 }

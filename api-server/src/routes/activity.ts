@@ -34,4 +34,7 @@ router.post('/', authService.authenticationMiddleware, async (req, res) => {
   res.status(201).json(createdActivity);
 });
 
+router.delete('/', authService.authenticationMiddleware, async (req, res) => {
+  //TODO
+});
 export default router;

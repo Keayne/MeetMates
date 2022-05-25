@@ -9,7 +9,7 @@ export interface UniversalDAO<T extends Universal> {
 
   findOne(entityFilter: Partial<T>): Promise<T | null>;
 
-  update(entity: Partial<T>): Promise<boolean>;
+  update(entity: Partial<T>, primaryKeys: Array<{ key: string; value: unknown }>): Promise<boolean>;
 
   delete(id: string): Promise<boolean>;
 

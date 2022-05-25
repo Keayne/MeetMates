@@ -20,10 +20,8 @@ export interface Actitity {
 }
 
 export interface Rating {
-  overallRating: Number;
-  createdAt: String;
-  activityId: String;
-  userId: String;
+  activityid: String;
+  userid: String;
   rating: Number;
 }
 
