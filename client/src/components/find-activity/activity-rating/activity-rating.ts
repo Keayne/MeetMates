@@ -1,13 +1,14 @@
 /* Autor: Arne Schaper */
 
 import { LitElement, html } from 'lit';
-import { query, customElement, property } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { httpClient } from '../../../http-client';
 import { PageMixin } from '../../page.mixin';
 import { Actitity, Rating } from '../find-activity';
 import componentStyle from './activity-rating.css';
 
 @customElement('activity-rating')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ActivityRatingComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
 

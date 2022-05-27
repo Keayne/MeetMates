@@ -6,6 +6,7 @@ import { customElement, property } from 'lit/decorators.js';
 import componentStyle from './header.css';
 
 @customElement('app-header')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class HeaderComponent extends LitElement {
   static styles = componentStyle;
 
