@@ -2,8 +2,6 @@ import express from 'express';
 import { GenericDAO } from '../models/generic.dao.js';
 import { Activity } from '../models/activity.js';
 import { authService } from '../services/auth.service.js';
-import * as crypto from 'crypto';
-import { Rating } from '../models/rating.js';
 
 const router = express.Router();
 
@@ -19,7 +17,7 @@ router.get('/:id', authService.authenticationMiddleware, async (req, res) => {
 
 router.post('/', authService.authenticationMiddleware, async (req, res) => {
   const activityDAO: GenericDAO<Activity> = req.app.locals.activityDAO;
-  var utc = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
+  const utc = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
   const createdActivity = await activityDAO.create({
     title: req.body.title,
     description: req.body.description,

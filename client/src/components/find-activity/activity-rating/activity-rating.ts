@@ -69,12 +69,12 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
     }
   }
 
-  async saveSliderValueToDb(event: Event) {
+  async saveSliderValueToDb() {
     const partialRating: Partial<Rating> = {
       activityid: this.activity.id,
       rating: Number(this.sliderValue) //userID is not included here as it is being provided by the auth Middleware on patch request.
     };
-    const responseRating = await httpClient.patch(`rating/${this.activity.id}` + location.search, partialRating);
+    await httpClient.patch(`rating/${this.activity.id}` + location.search, partialRating);
     const responseRatingAll = await httpClient.get(`rating/findAverageRating/${this.activity.id}` + location.search);
     this.avgRating = (await responseRatingAll.json()).results;
   }

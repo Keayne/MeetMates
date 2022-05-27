@@ -1,13 +1,14 @@
+/* Autor: Arne Schaper */
 import { Entity } from './entity.js';
 
 export interface Activity extends Entity {
-  title: String;
-  description: String;
-  tooltip: String;
-  tooltipcreatedby: String;
-  motivationtitle: String;
+  title: string;
+  description: string;
+  tooltip: string;
+  tooltipcreatedby: string;
+  motivationtitle: string;
   chosen: number;
-  meetid: String;
-  image: String;
-  category: String;
+  meetid: string;
+  image: string;
+  category: string;
 }

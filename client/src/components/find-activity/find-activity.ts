@@ -20,15 +20,17 @@ export interface Actitity {
 }
 
 export interface Rating {
-  activityid: String;
-  userid: String;
-  rating: Number;
+  activityid: string;
+  userid: string;
+  rating: number;
 }
 
 @customElement('find-activity')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class FindActivityComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
 
+  @property() meetId!: string;
   @property({ type: Array }) private activityList: Array<Actitity> = [];
   @property({ type: Array }) private activityListLocal: Array<Actitity> = [];
   @query('#myForm') private myForm!: HTMLDivElement;
@@ -37,7 +39,6 @@ class FindActivityComponent extends PageMixin(LitElement) {
   @query('#motivationTitle') private motivationTitle!: HTMLInputElement;
   @query('#category') private category!: HTMLSelectElement;
   @state() private imgSrc!: string;
-  @property() meetId!: string;
 
   /**
    * Creates an activity and sends it to the server
@@ -184,7 +185,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
    * Apply a filter to the currently shown activites
    * @param category Name of the Category to filter
    */
-  selectFilter(category: String) {
+  selectFilter(category: string) {
     if (category === 'all') {
       this.activityListLocal = this.activityList;
     } else {

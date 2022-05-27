@@ -19,19 +19,18 @@ router.get('/findOne/:id', authService.authenticationMiddleware, async (req, res
 });
 
 router.get('/findAverageRating/:id', authService.authenticationMiddleware, async (req, res) => {
-  const mateId = res.locals.user.id;
   const ratingDAO: UniversalDAO<Rating> = req.app.locals.ratingDAO;
   const filter: Partial<Rating> = { activityid: req.params.id };
   const ratings = await ratingDAO.findAll(filter);
   //calculate average value
 
-  let sum: number = 0;
-  let counter: number = 0;
+  let sum = 0;
+  let counter = 0;
   ratings.forEach(element => {
     sum = sum + element.rating;
     counter++;
   });
-  let avgRating = sum / counter;
+  const avgRating = sum / counter;
 
   res.status(200).json({ results: avgRating || 0 });
 });
