@@ -2,12 +2,17 @@ import express from 'express';
 import { GenericDAO } from '../models/generic.dao.js';
 import { Activity } from '../models/activity.js';
 import { authService } from '../services/auth.service.js';
+import { UniversalDAO } from '../models/universal.dao.js';
+import { Rating } from '../models/rating.js';
 
 const router = express.Router();
 
+/**
+ * Returns all activities registered for a meetId
+ */
 router.get('/:id', authService.authenticationMiddleware, async (req, res) => {
   const activityDAO: GenericDAO<Activity> = req.app.locals.activityDAO;
-  const filter: Partial<Activity> = { meetid: req.params.id }; //TODO NEEDS TO CHECK IF USER IS ALLOWED TO MAKE REQUEST
+  const filter: Partial<Activity> = { meetid: req.params.id };
   const activites = await activityDAO.findAll(filter);
   for (const e of activites) {
     e.image = Buffer.from(e.image).toString();
@@ -15,6 +20,9 @@ router.get('/:id', authService.authenticationMiddleware, async (req, res) => {
   res.json({ results: activites });
 });
 
+/**
+ * Adds a new activity to a meet
+ */
 router.post('/', authService.authenticationMiddleware, async (req, res) => {
   const activityDAO: GenericDAO<Activity> = req.app.locals.activityDAO;
   const utc = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
@@ -32,7 +40,13 @@ router.post('/', authService.authenticationMiddleware, async (req, res) => {
   res.status(201).json(createdActivity);
 });
 
-router.delete('/', authService.authenticationMiddleware, async (req, res) => {
-  //TODO
+/**
+ * Deletes the activiyId with all corresponding ratings registered to this activity.
+ */
+router.delete('/:id', authService.authenticationMiddleware, async (req, res) => {
+  const activityDAO: GenericDAO<Activity> = req.app.locals.activityDAO;
+  await activityDAO.delete(req.params.id); //table cascades to corresponding ratings, so no delete request necessary for ratings
+  res.status(200).end();
 });
+
 export default router;

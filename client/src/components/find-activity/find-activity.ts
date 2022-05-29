@@ -17,6 +17,8 @@ export interface Actitity {
   meetId: string;
   image: string;
   category: string;
+  personalRating: number;
+  avgRating: number;
 }
 
 export interface Rating {
@@ -170,7 +172,8 @@ class FindActivityComponent extends PageMixin(LitElement) {
           activity =>
             html` <div class="activity-container">
               <div class="activity">
-                <activity-info .activity=${activity}></activity-info>
+                <activity-info 
+                .activity=${activity} @appactivityremoveclick=${() => this.deleteActivity(activity)}></activity-info>
               </div>
               <div class="activity" class="rating">
                 <activity-rating .activity=${activity} .activityId=${activity.id}></activity-rating>
@@ -188,8 +191,20 @@ class FindActivityComponent extends PageMixin(LitElement) {
   selectFilter(category: string) {
     if (category === 'all') {
       this.activityListLocal = this.activityList;
+    } else if (category === 'Highest Rating') {
+      console.log('TODO');
     } else {
       this.activityListLocal = this.activityList.filter(activity => activity.category === category);
+    }
+  }
+
+  async deleteActivity(activityToDelete: Actitity) {
+    try {
+      await httpClient.delete('activity/' + activityToDelete.id);
+      this.activityList = this.activityList.filter(activity => activity.id !== activityToDelete.id);
+      this.activityListLocal = this.activityListLocal.filter(activity => activity.id !== activityToDelete.id);
+    } catch (error) {
+      this.showNotification((error as Error).message, 'error');
     }
   }
 

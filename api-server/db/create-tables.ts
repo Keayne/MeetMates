@@ -149,11 +149,12 @@ async function createPsqlScheme(client: ClientType) {
     )`
   );
 
+  //on delete cascade not tested, in case this script fails, check if this worked.
   await client.query(
     `create table rating(
       "createdAt" bigint Not Null,
-      activityId Varchar(40) references activity(id),
-      userId Varchar(40) NOT NULL references mate(id),
+      activityId Varchar(40) references activity(id) ON DELETE CASCADE, 
+      userId Varchar(40) NOT NULL references mate(id) ON DELETE CASCADE,
       rating int
     )`
   );

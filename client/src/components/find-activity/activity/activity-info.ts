@@ -8,6 +8,7 @@ import { Actitity } from '../find-activity';
 import componentStyle from './activity-info.css';
 
 @customElement('activity-info')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class CardComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
 
@@ -27,8 +28,18 @@ class CardComponent extends PageMixin(LitElement) {
             <div class="card-content">${this.activity.description}</div>
             <span class="tooltiptext">${this.activity.tooltip}</span>
           </div>
+          <span class="remove-task" @click="${() => this.emit('appactivityremoveclick')}">Delete this activity</span>
         </div>
       </div>
     `;
+  }
+
+  emit(eventType: string, eventData = {}) {
+    const event = new CustomEvent(eventType, {
+      detail: eventData,
+      bubbles: true,
+      composed: true
+    });
+    this.dispatchEvent(event);
   }
 }
