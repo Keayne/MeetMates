@@ -24,7 +24,6 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
       this.startAsyncInit();
       const responseRating = await httpClient.get(`rating/findOne/${this.activity.id}` + location.search);
       this.rating = (await responseRating.json()).results;
-      console.log('Rating: ' + this.rating.rating);
       const responseRatingAll = await httpClient.get(`rating/findAverageRating/${this.activity.id}` + location.search);
       this.avgRating = (await responseRatingAll.json()).results;
     } catch (e) {
@@ -53,10 +52,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
             id="myRating"
             @change="${(e: Event) => this.readSliderValue(e)}"
           />
-          <p>Value: ${this.sliderValue}</p>
-          <div>
-            <button @click=${this.saveSliderValueToDb}>Save Changes</button>
-          </div>
+          <img src="/refresh.png" alt="update" @click=${this.saveSliderValueToDb} style="width:60px;height:50px;" />
         </div>
       </div>
     `;

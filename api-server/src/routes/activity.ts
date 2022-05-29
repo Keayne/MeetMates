@@ -23,17 +23,17 @@ router.get('/:id', authService.authenticationMiddleware, async (req, res) => {
 /**
  * Adds a new activity to a meet
  */
-router.post('/', authService.authenticationMiddleware, async (req, res) => {
+router.post('/:id', authService.authenticationMiddleware, async (req, res) => {
   const activityDAO: GenericDAO<Activity> = req.app.locals.activityDAO;
   const utc = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
   const createdActivity = await activityDAO.create({
     title: req.body.title,
     description: req.body.description,
-    tooltip: `Created at ${utc}`,
+    tooltip: utc,
     tooltipcreatedby: res.locals.user.id,
     motivationtitle: req.body.motivationtitle,
     chosen: 0,
-    meetid: '0ea6639d-c6d5-4030-bb1b-e687ecb850fb', //read id from req url
+    meetid: req.params.id,
     image: req.body.image,
     category: req.body.category
   });
@@ -47,6 +47,38 @@ router.delete('/:id', authService.authenticationMiddleware, async (req, res) => 
   const activityDAO: GenericDAO<Activity> = req.app.locals.activityDAO;
   await activityDAO.delete(req.params.id); //table cascades to corresponding ratings, so no delete request necessary for ratings
   res.status(200).end();
+});
+
+/**
+ * TODO
+ * Finds the highest voted activity of a MeetId. If multiple activities have the best rating, a random one is chosen.
+ * Returns the activityId of the highest voted activity.
+ * If there is no activity to be chosen as the highest voted one, returns an emty string.
+ */
+router.get('/findHighestVotedActivity/:id', authService.authenticationMiddleware, async (req, res) => {
+  const mateId = res.locals.user.id;
+  const meetId = req.params.id;
+
+  const activityDAO: GenericDAO<Activity> = req.app.locals.activityDAO;
+  const filter: Partial<Activity> = { meetid: req.params.id };
+  const activites = await activityDAO.findAll(filter);
+  const numberOfMatesRegisteredForActivity = 1; //TODO
+  let leadingActivity: Activity;
+
+  //check if an activity has already been chosen
+  //TODO
+
+  for (const e in activites) {
+    //Start: Logic for finding the highest voted activity
+    //End: Logic for finding the highest voted activity
+  }
+  /* 
+  for each activity of a meeting
+    get avarage voting of the activity IF all members of the meet have voted on it, save current leader 
+  if leader has acvRating of 0 or there is no leader, return emtpy string-> break
+  if previous check didn't catch, set the chosen attribute of the highest voted activity to "1".
+  
+  */
 });
 
 export default router;

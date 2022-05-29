@@ -107,7 +107,7 @@ async function createPsqlScheme(client: ClientType) {
       tooltipCreatedBy Varchar(255) NOT NULL,
       motivationTitle Varchar(255) NOT NULL,
       chosen int NOT NULL,
-      meetId Varchar(40) NOT NULL references meet(id),
+      meetId Varchar(40) NOT NULL references meet(id) ON DELETE CASCADE,
       image BYTEA,
       category VARCHAR(40)
     )`
@@ -149,7 +149,6 @@ async function createPsqlScheme(client: ClientType) {
     )`
   );
 
-  //on delete cascade not tested, in case this script fails, check if this worked.
   await client.query(
     `create table rating(
       "createdAt" bigint Not Null,

@@ -56,7 +56,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
       category: this.category.value
     };
     try {
-      const response = await httpClient.post('/activity', partialActivity);
+      const response = await httpClient.post(`/activity/${this.meetId}`, partialActivity);
       const activity: Actitity = await response.json();
       //emty fields of form
       this.titlee.value = '';
