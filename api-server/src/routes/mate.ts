@@ -3,12 +3,15 @@
 
 import express from 'express';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import { GenericDAO } from '../models/generic.dao.js';
 import { Mate } from '../models/mate.js';
 import { authService } from '../services/auth.service.js';
 import { MateDescription } from '../models/matedescription.js';
 import { MateInterest } from '../models/mateinterest.js';
 import { UniversalDAO } from '../models/universal.dao.js';
+import { Verify } from '../models/verify.js';
+import { emailService } from '../services/email.service.js';
 
 const router = express.Router();
 
@@ -16,6 +19,7 @@ router.post('/sign-up', async (req, res) => {
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
   const matedescriptionDAO: UniversalDAO<MateDescription> = req.app.locals.matedescriptionDAO;
   const mateinterestDAO: UniversalDAO<MateInterest> = req.app.locals.mateinterestDAO;
+  const verifyDAO: GenericDAO<Verify> = req.app.locals.verifyDAO;
   const errors: string[] = [];
 
   const sendErrorMessage = (message: string) => {
@@ -23,6 +27,7 @@ router.post('/sign-up', async (req, res) => {
     res.status(400).json({ message });
   };
 
+  //Validate
   if (
     !hasRequiredFields(
       req.body,
@@ -49,6 +54,7 @@ router.post('/sign-up', async (req, res) => {
     return sendErrorMessage('Passwort entspricht nicht den Anforderungen!');
   }
 
+  //Create User
   const createdUser = await mateDAO.create({
     name: req.body.name,
     firstname: req.body.firstname,
@@ -59,6 +65,7 @@ router.post('/sign-up', async (req, res) => {
     password: await bcrypt.hash(req.body.password, 10)
   });
 
+  //Create Interests
   await req.body.interests.forEach((e: string) => {
     mateinterestDAO.create({
       mateid: createdUser.id,
@@ -66,6 +73,7 @@ router.post('/sign-up', async (req, res) => {
     });
   });
 
+  //Create Descriptions
   await req.body.descriptions.forEach((e: { id: string; value: number }) => {
     matedescriptionDAO.create({
       mateid: createdUser.id,
@@ -74,8 +82,15 @@ router.post('/sign-up', async (req, res) => {
     });
   });
 
-  authService.createAndSetToken({ id: createdUser.id }, res);
-  res.status(201).json(createdUser);
+  //Create VerifyToken
+  const token = await verifyDAO.create({
+    mateid: createdUser.id,
+    token: crypto.randomBytes(32).toString('hex')
+  });
+  //Send E-Mail
+  await emailService.sendEmail(createdUser.email, { token: token.token, mateid: createdUser.id });
+
+  res.status(201).json({ message: 'User was registered! Please check your email' });
 });
 
 router.post('/sign-in', async (req, res) => {
@@ -87,16 +102,21 @@ router.post('/sign-in', async (req, res) => {
     res.status(400).json({ message: errors.join('\n') });
     return;
   }
+  const user = await mateDAO.findOne(filter);
 
-  const user = await mateDAO.findOne(filter); //find user in DB
-
-  if (user && (await bcrypt.compare(req.body.password, user.password))) {
-    authService.createAndSetToken({ id: user.id }, res);
-    res.status(201).json(user);
-  } else {
-    authService.removeToken(res); //unnecessary?
+  if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
+    authService.removeToken(res);
     res.status(401).json({ message: 'E-Mail oder Passwort ungültig!' });
+    return;
   }
+
+  //check if user is active (verified e-mail)
+  if (user.active == false) {
+    res.status(401).json({ message: 'E-Mail Adresse noch nicht verifizert!' });
+    return;
+  }
+  authService.createAndSetToken({ id: user.id }, res);
+  res.status(201).json(user);
 });
 
 router.delete('/sign-out', (req, res) => {
@@ -167,6 +187,19 @@ router.post('/edit', authService.authenticationMiddleware, async (req, res) => {
       value: e.value
     });
   });
+});
+
+router.get('/confirm/:id/:token', async (req, res) => {
+  const verifyDAO: GenericDAO<Verify> = req.app.locals.verifyDAO;
+  const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
+
+  const token = await verifyDAO.findOne({ mateid: req.params.id });
+  if (!token) return res.status(400).send('Invalid link');
+
+  if (token.token === req.params.token) {
+    mateDAO.update({ id: req.params.id, active: true });
+    res.send('email confirmed sucessfully');
+  }
 });
 
 function hasRequiredFields(object: { [key: string]: unknown }, requiredFields: string[], errors: string[]) {

@@ -28,97 +28,98 @@ type Mate = {
 async function createPsqlScheme(client: ClientType) {
   await client.connect();
   await client.query(
-    'drop table if exists matemeet, matedescription , mateinterest , meet,  mate, interest, matedescription, description, servicedata, activitymeet, activity, chat, report, rating'
+    'drop table if exists matemeet, matedescription , mateinterest , meet,  mate, interest, matedescription, description, servicedata, activitymeet, activity, report cascade'
   );
   await client.query(
     `create table meet(
-      id VARCHAR(40) PRIMARY KEY,
-      "createdAt" bigint Not Null,
-      name Varchar(60) Not Null
+      id varchar(40) primary key,
+      "createdAt" bigint not null,
+      name varchar(60) not null
     )`
   );
 
   await client.query(
     `create table mate(
-      id Varchar(40) PRIMARY KEY,
-      "createdAt" bigint Not Null,
-      name VARCHAR(100) NOT NULL,
-      firstname VARCHAR(100) NOT NULL,
-      email VARCHAR(100) NOT NULL,
-      birthday VARCHAR(10),
-      gender Varchar(10),
+      id varchar(40) primary key,
+      "createdAt" bigint not null,
+      active boolean not null default false,
+      name varchar(100) not null,
+      firstname varchar(100) not null,
+      email varchar(100) not null,
+      birthday varchar(10),
+      gender varchar(10),
       image BYTEA,
-      password Varchar(255),
-      lastloggedin Varchar(10)
+      password varchar(255),
+      lastloggedin varchar(10)
     )`
   );
 
   await client.query(
     `create table matemeet(
-      mateId Varchar(40) NOT NULL references mate(id),
-      meetId Varchar(40) NOT NULL references meet(id),
-      "createdAt" bigint Not Null,
+      mateId varchar(40) not null references mate(id),
+      meetId varchar(40) not null references meet(id),
+      "createdAt" bigint not null,
       rating int
       )`
   );
 
   await client.query(
     `create table interest(
-      id Varchar(40) PRIMARY KEY,
-      "createdAt" bigint Not Null,
-      text Varchar(80),
-      sort Varchar(80)
+      id varchar(40) primary key,
+      "createdAt" bigint not null,
+      text varchar(80),
+      sort varchar(80)
     )`
   );
 
   await client.query(
     `create table mateinterest(
-      mateId Varchar(40) NOT NULL references mate(id),
-      interestId Varchar(40) NOT NULL references interest(id),
-      "createdAt" bigint Not Null
+      mateId varchar(40) not null references mate(id) on delete cascade,
+      interestId varchar(40) not null references interest(id) on delete cascade,
+      "createdAt" bigint not null
     )`
   );
 
   await client.query(
     `create table description(
-      id Varchar(40) PRIMARY KEY,
-      "createdAt" bigint Not Null,
-      lText Varchar(255) NOT NULL,
-      rText Varchar(255) NOT NULL
+      id varchar(40) primary key,
+      "createdAt" bigint not null,
+      lText varchar(255) not null,
+      rText varchar(255) not null
     )`
   );
 
   await client.query(
     `create table matedescription(
-      mateId Varchar(40) NOT NULL references mate(id),
-      descriptionId Varchar(40) NOT NULL references description(id),
-      "createdAt" bigint Not Null,
-      value int NOT NULL
+      mateId varchar(40) not null references mate(id) on delete cascade,
+      descriptionId varchar(40) not null references description(id) on delete cascade,
+      "createdAt" bigint not null,
+      value int not null
     )`
   );
 
   await client.query(
     `create table activity(
-      id Varchar(40) PRIMARY KEY,
-      "createdAt" bigint Not Null,
-      title Varchar(255) NOT NULL,
-      description Varchar(255) NOT NULL,
-      tooltip Varchar(255) NOT NULL,
-      tooltipCreatedBy Varchar(255) NOT NULL,
-      motivationTitle Varchar(255) NOT NULL,
-      chosen int NOT NULL,
-      meetId Varchar(40) NOT NULL references meet(id),
-      image BYTEA,
-      category VARCHAR(40)
+      id varchar(40) primary key,
+      "createdAt" bigint not null,
+      title varchar(255) not null,
+      description varchar(255) not null,
+      tooltip varchar(255) not null,
+      tooltipCreatedBy varchar(255) not null,
+      motivationTitle varchar(255) not null,
+      rating int,
+      chosen int not null,
+      meetId varchar(40) not null references meet(id),
+      image BYTEA
     )`
   );
 
   /*
   await client.query(
     `create table activitymeet(
-      userId Varchar(40) NOT NULL references mate(id),
-      meetId Varchar(40) NOT NULL references meet(id),
-      activityId Varchar(40) NOT NULL references activity(id),
+      userId varchar(40) not null references mate(id),
+      meetId varchar(40) not null references meet(id),
+      activityId varchar(40) not null references activity(id),
       rating int
     )
   `
@@ -126,25 +127,25 @@ async function createPsqlScheme(client: ClientType) {
 
   await client.query(
     `create table chat(
-      id Varchar(40) PRIMARY KEY,
-      "createdAt" bigint Not Null,
-      author Varchar(40) NOT NULL references mate(id),
-      room Varchar(40) NOT NULL references meet(id),
-      body Varchar(255) NOT NULL
+      id varchar(40) primary key,
+      "createdAt" bigint not null,
+      author varchar(40) not null references mate(id),
+      room varchar(40) not null references meet(id),
+      body varchar(255) not null
     )`
   );
 
   await client.query(
     `create table report(
-      id Varchar(40) PRIMARY KEY,
-      "createdAt" bigint Not Null,
-      document_uri Varchar(255),
-      referrer Varchar(255),
-      violated_directive Varchar(255),
-      effective_directive Varchar(255),
-      original_policy Varchar(255),
-      disposition Varchar(255),
-      blocked_uri Varchar(255),
+      id varchar(40) primary key,
+      "createdAt" bigint not null,
+      document_uri varchar(255),
+      referrer varchar(255),
+      violated_directive varchar(255),
+      effective_directive varchar(255),
+      original_policy varchar(255),
+      disposition varchar(255),
+      blocked_uri varchar(255),
       status_code int
     )`
   );
@@ -154,7 +155,14 @@ async function createPsqlScheme(client: ClientType) {
       "createdAt" bigint Not Null,
       activityId Varchar(40) references activity(id),
       userId Varchar(40) NOT NULL references mate(id),
-      rating int
+      rating int)`
+  );
+  await client.query(
+    `create table verify (
+      id varchar(40) primary key,
+      "createdAt" bigint not null,
+      mateId varchar(40) not null references mate(id) on delete cascade,
+      token varchar(250) not null default null
     )`
   );
 }
