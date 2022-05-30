@@ -181,7 +181,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
             </div>
         </div>`
         )}
-      </div> `;
+      </div>`;
   }
 
   /**
