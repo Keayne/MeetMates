@@ -100,17 +100,17 @@ async function createPsqlScheme(client: ClientType) {
 
   await client.query(
     `create table activity(
-      id varchar(40) primary key,
-      "createdAt" bigint not null,
-      title varchar(255) not null,
-      description varchar(255) not null,
-      tooltip varchar(255) not null,
-      tooltipCreatedBy varchar(255) not null,
-      motivationTitle varchar(255) not null,
-      rating int,
-      chosen int not null,
-      meetId varchar(40) not null references meet(id),
-      image BYTEA
+      id Varchar(40) PRIMARY KEY,
+      "createdAt" bigint Not Null,
+      title Varchar(255) NOT NULL,
+      description Varchar(255) NOT NULL,
+      tooltip Varchar(255) NOT NULL,
+      tooltipCreatedBy Varchar(255) NOT NULL,
+      motivationTitle Varchar(255) NOT NULL,
+      chosen int NOT NULL,
+      meetId Varchar(40) NOT NULL references meet(id) ON DELETE CASCADE,
+      image BYTEA,
+      category VARCHAR(40)
     )`
   );
 
@@ -153,9 +153,9 @@ async function createPsqlScheme(client: ClientType) {
   await client.query(
     `create table rating(
       "createdAt" bigint Not Null,
-      activityId Varchar(40) references activity(id),
-      userId Varchar(40) NOT NULL references mate(id),
-      rating int)`
+      activityId Varchar(40) references activity(id) ON DELETE CASCADE, 
+      userId Varchar(40) NOT NULL references mate(id) ON DELETE CASCADE,
+      rating int`
   );
   await client.query(
     `create table verify (

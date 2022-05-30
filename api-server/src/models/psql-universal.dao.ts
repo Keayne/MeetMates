@@ -45,9 +45,7 @@ export class PsqlUniversalDAO<T extends Universal> implements UniversalDAO<T> {
     for (let i = 0; i <= parts.length - 1; i++) {
       whereClause = i === parts.length - 1 ? whereClause + parts[i] : whereClause + parts[i] + 'AND ';
     }
-    console.log('WhereClause: ' + whereClause);
     const query = 'UPDATE ' + this.table + ' ' + createSetClause(entity) + whereClause;
-    console.log(query);
     await this.db.query(query);
 
     return true;

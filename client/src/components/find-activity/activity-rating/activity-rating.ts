@@ -15,7 +15,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
   @property({ reflect: true }) activity = {} as Actitity;
   @property() rating = {} as Rating;
   @property() avgRating = 0;
-  @property() sliderValue = '50';
+  @property() sliderValue = '0';
 
   //TODO: Save slider values on change, make sure this works on new activities as well, update db script to include images, add/delete for activities
 
@@ -24,7 +24,6 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
       this.startAsyncInit();
       const responseRating = await httpClient.get(`rating/findOne/${this.activity.id}` + location.search);
       this.rating = (await responseRating.json()).results;
-      console.log('Rating: ' + this.rating);
       const responseRatingAll = await httpClient.get(`rating/findAverageRating/${this.activity.id}` + location.search);
       this.avgRating = (await responseRatingAll.json()).results;
     } catch (e) {
@@ -53,10 +52,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
             id="myRating"
             @change="${(e: Event) => this.readSliderValue(e)}"
           />
-          <p>Value: ${this.sliderValue}</p>
-          <div>
-            <button @click=${this.saveSliderValueToDb}>Save Changes</button>
-          </div>
+          <img src="/refresh.png" alt="update" @click=${this.saveSliderValueToDb} style="width:60px;height:50px;" />
         </div>
       </div>
     `;
@@ -66,7 +62,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
     const target = e.target as HTMLInputElement;
     if (e) {
       this.sliderValue = target?.value;
-      //this.activity.rating = Number(this.sliderValue);
+      this.activity.personalRating = Number(this.sliderValue);
     }
   }
 
@@ -78,5 +74,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
     await httpClient.patch(`rating/${this.activity.id}` + location.search, partialRating);
     const responseRatingAll = await httpClient.get(`rating/findAverageRating/${this.activity.id}` + location.search);
     this.avgRating = (await responseRatingAll.json()).results;
+    this.activity.personalRating = this.rating.rating;
+    this.activity.avgRating = this.avgRating;
   }
 }
