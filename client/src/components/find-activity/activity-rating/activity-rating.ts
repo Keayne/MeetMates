@@ -53,6 +53,13 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
             @change="${(e: Event) => this.readSliderValue(e)}"
           />
           <img src="/refresh.png" alt="update" @click=${this.saveSliderValueToDb} style="width:60px;height:50px;" />
+          <img
+            class="remove-task"
+            src="/deleteicon.png"
+            style="width:60px;height:50px;"
+            alt="update"
+            @click="${() => this.emit('appactivityremoveclick')}"
+          />
         </div>
       </div>
     `;
@@ -76,5 +83,14 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
     this.avgRating = (await responseRatingAll.json()).results;
     this.activity.personalRating = this.rating.rating;
     this.activity.avgRating = this.avgRating;
+  }
+
+  emit(eventType: string, eventData = {}) {
+    const event = new CustomEvent(eventType, {
+      detail: eventData,
+      bubbles: true,
+      composed: true
+    });
+    this.dispatchEvent(event);
   }
 }

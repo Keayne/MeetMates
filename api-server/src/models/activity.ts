@@ -9,6 +9,6 @@ export interface Activity extends Entity {
   motivationtitle: string;
   chosen: number;
   meetid: string;
-  image: string;
+  image?: string;
   category: string;
 }

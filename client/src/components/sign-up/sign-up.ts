@@ -19,7 +19,7 @@ class SignUpComponent extends PageMixin(LitElement) {
   @query('#birthday') private birthdayElement!: HTMLInputElement;
   @query('#gender') private genderElement!: HTMLInputElement;
   @query('#password') private passwordElement!: HTMLInputElement;
-  @query('#password-check') private passwordCheckElement!: HTMLInputElement;
+  @query('#passwordCheck') private passwordCheckElement!: HTMLInputElement;
 
   @state() private descriptions: { id: string; ltext: string; rtext: string }[] = [];
   @state() private interests: { id: string; text: string }[] = [];
@@ -149,7 +149,7 @@ class SignUpComponent extends PageMixin(LitElement) {
         <span>${this.passwordMessage}</span>
         <br>
         <label>Password Check:</label>
-        <input type="password" @keyup="${this.checkCheckPassword}" id="password-check" required />
+        <input type="password" @keyup="${this.checkCheckPassword}" id="passwordCheck" required />
         <span>${this.passwordCheckMessage}</span>
         <h3>Rate yourself here<h3>
         ${this.descriptions.map(

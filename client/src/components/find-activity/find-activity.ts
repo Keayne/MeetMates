@@ -173,10 +173,11 @@ class FindActivityComponent extends PageMixin(LitElement) {
             html` <div class="activity-container">
               <div class="activity">
                 <activity-info 
-                .activity=${activity} @appactivityremoveclick=${() => this.deleteActivity(activity)}></activity-info>
+                .activity=${activity}></activity-info>
               </div>
               <div class="activity" class="rating">
-                <activity-rating .activity=${activity} .activityId=${activity.id}></activity-rating>
+                <activity-rating .activity=${activity} .activityId=${activity.id} @appactivityremoveclick=${() =>
+              this.deleteActivity(activity)}></activity-rating>
               </div>
             </div>
         </div>`
@@ -195,10 +196,14 @@ class FindActivityComponent extends PageMixin(LitElement) {
       console.log('TODO');
     } else {
       this.activityListLocal = this.activityList.filter(activity => activity.category === category);
+      if (this.activityListLocal.length === 0) {
+        //TODO render create activity component?
+      }
     }
   }
 
   async deleteActivity(activityToDelete: Actitity) {
+    console.log('deleteActivity');
     try {
       await httpClient.delete('activity/' + activityToDelete.id);
       this.activityList = this.activityList.filter(activity => activity.id !== activityToDelete.id);

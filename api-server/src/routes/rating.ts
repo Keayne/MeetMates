@@ -133,7 +133,7 @@ router.patch('/:id', authService.authenticationMiddleware, async (req, res) => {
   const chosenActivity = await activityDAO.findOne({ id: leadingActivityId.id });
   if (chosenActivity) {
     chosenActivity.chosen = 1;
-    chosenActivity.image = ''; //TODO fix this, image should be updated but currently kills the sql statement
+    delete chosenActivity.image;
     activityDAO.update(chosenActivity);
     res.status(200).end();
   } else {
