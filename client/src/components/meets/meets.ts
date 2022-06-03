@@ -31,7 +31,7 @@ class MeetsComponent extends PageMixin(LitElement) {
       this.startAsyncInit();
       const response = await httpClient.get('/meets' + location.search);
       this.meets = await response.json();
-      console.log(this.meets);
+      //console.log(this.meets);
     } catch (err) {
       if ((err as { statusCode: number }).statusCode === 401) {
         router.navigate('mates/sign-in');

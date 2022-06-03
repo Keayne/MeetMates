@@ -63,7 +63,7 @@ async function startPsql(app: Express) {
   app.locals.matemeetDAO = new PsqlUniversalDAO<MateMeet>(client!, 'matemeet');
   app.locals.activityDAO = new PsqlGenericDAO<Activity>(client!, 'activity');
   app.locals.chatDAO = new PsqlGenericDAO<Message>(client!, 'chat');
-  app.locals.verifyDAO = new PsqlGenericDAO<Verify>(client!, 'verify');
+  app.locals.verifyDAO = new PsqlUniversalDAO<Verify>(client!, 'verify');
   app.locals.reportDAO = new PsqlGenericDAO<Report>(client!, 'report');
   app.locals.ratingDAO = new PsqlUniversalDAO<Rating>(client!, 'rating');
   return async () => await client.end();

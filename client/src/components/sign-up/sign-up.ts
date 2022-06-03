@@ -51,7 +51,7 @@ class SignUpComponent extends PageMixin(LitElement) {
       const index = this.selectedInterests.indexOf(hobby);
       if (index == -1) {
         this.selectedInterests.push(hobby);
-        e.currentTarget.style.backgroundColor = '#04204a';
+        e.currentTarget.style.backgroundColor = '#04aa6d';
       } else {
         this.selectedInterests.splice(index, 1);
         e.currentTarget.style.backgroundColor = '#eee';
@@ -84,6 +84,7 @@ class SignUpComponent extends PageMixin(LitElement) {
     } else {
       this.passwordMessage = 'good password!';
     }
+    this.checkCheckPassword();
   }
 
   checkCheckPassword() {
@@ -125,8 +126,8 @@ class SignUpComponent extends PageMixin(LitElement) {
   render() {
     return html`
       ${this.renderNotification()}
-      <h1>Register</h1>
       <form>
+      <h1>Register</h1>
         <label>Firstname:</label>
         <input type="text" id="firstname" required />
         <label>Name:</label>

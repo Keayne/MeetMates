@@ -33,7 +33,7 @@ class UserProfileComponent extends PageMixin(LitElement) {
 
   render() {
     return html`${this.renderNotification()}
-      <div class="test">
+      <div class="main">
         <img style="max-width: 200px; max-height: 200px" src="${this.imgSrc}" />
         <p>Fistname: ${this.mate.firstName}</p>
         <p>Name: ${this.mate.name}</p>

@@ -100,9 +100,7 @@ router.get('/:id', authService.authenticationMiddleware, async (req, res) => {
 });
 
 router.post('/changeName', authService.authenticationMiddleware, async (req, res) => {
-  console.log(req.body);
-
-  console.log(`User: ${res.locals.user.id} change Name from Meet: ${req.body.meetId} to "${req.body.name}"`);
+  //console.log(`User: ${res.locals.user.id} change Name from Meet: ${req.body.meetId} to "${req.body.name}"`);
 
   const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;
 
@@ -120,7 +118,7 @@ router.post('/changeName', authService.authenticationMiddleware, async (req, res
 
 // remove Mate from Meet
 router.delete('/:meetid', authService.authenticationMiddleware, async (req, res) => {
-  console.log(`Remove User: userid${res.locals.user.id} from Meet: ${req.params.meetid}`);
+  //console.log(`Remove User: userid${res.locals.user.id} from Meet: ${req.params.meetid}`);
 
   const mateMeetDAO: UniversalDAO<MateMeet> = req.app.locals.matemeetDAO;
   const filter: Partial<MateMeet> = { meetid: req.params.meetid, mateid: res.locals.user.id };

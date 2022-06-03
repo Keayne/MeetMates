@@ -38,6 +38,9 @@ class SignInComponent extends PageMixin(LitElement) {
         <div>
           <button type="button" @click="${this.submit}">Anmelden</button>
         </div>
+        <div>
+          <p>Passwort <a href="mates/reset">vergessen</a>?</p>
+        </div>
       </form>
     `;
   }
@@ -61,7 +64,6 @@ class SignInComponent extends PageMixin(LitElement) {
   }
 
   isFormValid() {
-    console.log('isFormValid Method');
     return this.form.checkValidity();
   }
 }

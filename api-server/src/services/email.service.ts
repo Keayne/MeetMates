@@ -17,13 +17,13 @@ class EMailService {
     });
   }
 
-  sendEmail = async (email: string, token: { token: string; mateid: string }) => {
+  sendEmail = async (email: string, message: { subject: string; text: string }) => {
     try {
       await this.transporter.sendMail({
         from: 'meeetmates@gmail.com',
         to: email,
-        subject: 'E-Mail Verification',
-        text: 'http://localhost:3000/api/confirm/' + token.mateid + '/' + token.token
+        subject: message.subject,
+        text: message.text
       });
       console.log('email sent sucessfully');
     } catch (error) {

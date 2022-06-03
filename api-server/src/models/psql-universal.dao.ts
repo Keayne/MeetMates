@@ -22,6 +22,29 @@ export class PsqlUniversalDAO<T extends Universal> implements UniversalDAO<T> {
     return entity as unknown as T;
   }
 
+  public async createAndOverwrite(partEntity: Omit<T, keyof Universal>) {
+    const entity = { ...partEntity, createdAt: new Date().getTime() };
+
+    const propertyNames = getPropertyNames(entity);
+    const columnNames = propertyNames.map(prop => toColumnName(prop));
+    const columnValues = propertyNames.map(propertyName => {
+      return toColumnValue(entity[propertyName as keyof typeof entity]);
+    });
+    const stmt =
+      'INSERT INTO ' +
+      this.table +
+      '(' +
+      columnNames.join(',') +
+      ')' +
+      ' VALUES(' +
+      columnValues.join(', ') +
+      ') ON CONFLICT (mateid, type) DO UPDATE ' +
+      createSetClause(entity);
+
+    await this.db.query(stmt);
+    return entity as unknown as T;
+  }
+
   public async findAll(entityFilter?: Partial<T>) {
     const query = 'SELECT * FROM ' + this.table + ' ' + createWhereClause(entityFilter);
     const result = await this.db.query(query);
@@ -51,8 +74,8 @@ export class PsqlUniversalDAO<T extends Universal> implements UniversalDAO<T> {
     return true;
   }
 
-  public async delete(createdAt: string) {
-    const query = 'DELETE FROM ' + this.table + ' WHERE createdAt = ' + toColumnValue(createdAt);
+  public async delete(mateid: string) {
+    const query = 'DELETE FROM ' + this.table + ' WHERE mateid = ' + toColumnValue(mateid);
     await this.db.query(query);
     return true;
   }

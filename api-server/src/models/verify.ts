@@ -1,8 +1,11 @@
 /* Autor: Valentin Lieberknecht */
 
-import { Entity } from './entity.js';
+import { Universal } from './universal.js';
 
-export interface Verify extends Entity {
+export interface Verify extends Universal {
   mateid: string;
+  type: string;
   token: string;
+  code?: number;
+  email?: string;
 }

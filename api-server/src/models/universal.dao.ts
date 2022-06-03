@@ -5,6 +5,8 @@ import { Universal } from './universal.js';
 export interface UniversalDAO<T extends Universal> {
   create(partEntity: Omit<T, keyof Universal>): Promise<T>;
 
+  createAndOverwrite(partEntity: Omit<T, keyof Universal>): Promise<T>;
+
   findAll(entityFilter?: Partial<T>): Promise<T[]>;
 
   findOne(entityFilter: Partial<T>): Promise<T | null>;

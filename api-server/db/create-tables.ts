@@ -45,7 +45,7 @@ async function createPsqlScheme(client: ClientType) {
       active boolean not null default false,
       name varchar(100) not null,
       firstname varchar(100) not null,
-      email varchar(100) not null,
+      email varchar(100),
       birthday varchar(10),
       gender varchar(10),
       image BYTEA,
@@ -56,8 +56,8 @@ async function createPsqlScheme(client: ClientType) {
 
   await client.query(
     `create table matemeet(
-      mateId varchar(40) not null references mate(id),
-      meetId varchar(40) not null references meet(id),
+      mateid varchar(40) not null references mate(id) on delete cascade,
+      meetid varchar(40) not null references meet(id),
       "createdAt" bigint not null,
       rating int
       )`
@@ -74,8 +74,8 @@ async function createPsqlScheme(client: ClientType) {
 
   await client.query(
     `create table mateinterest(
-      mateId varchar(40) not null references mate(id) on delete cascade,
-      interestId varchar(40) not null references interest(id) on delete cascade,
+      mateid varchar(40) not null references mate(id) on delete cascade,
+      interestid varchar(40) not null references interest(id) on delete cascade,
       "createdAt" bigint not null
     )`
   );
@@ -91,8 +91,8 @@ async function createPsqlScheme(client: ClientType) {
 
   await client.query(
     `create table matedescription(
-      mateId varchar(40) not null references mate(id) on delete cascade,
-      descriptionId varchar(40) not null references description(id) on delete cascade,
+      mateid varchar(40) not null references mate(id) on delete cascade,
+      descriptionid varchar(40) not null references description(id) on delete cascade,
       "createdAt" bigint not null,
       value int not null
     )`
@@ -101,14 +101,14 @@ async function createPsqlScheme(client: ClientType) {
   await client.query(
     `create table activity(
       id Varchar(40) PRIMARY KEY,
-      "createdAt" bigint Not Null,
-      title Varchar(255) NOT NULL,
-      description Varchar(255) NOT NULL,
-      tooltip Varchar(255) NOT NULL,
-      tooltipCreatedBy Varchar(255) NOT NULL,
-      motivationTitle Varchar(255) NOT NULL,
-      chosen int NOT NULL,
-      meetId Varchar(40) NOT NULL references meet(id) ON DELETE CASCADE,
+      "createdAt" bigint not null,
+      title Varchar(255) not null,
+      description Varchar(255) not null,
+      tooltip Varchar(255) not null,
+      tooltipCreatedBy Varchar(255) not null,
+      motivationTitle Varchar(255) not null,
+      chosen int not null,
+      meetid Varchar(40) not null references meet(id) ON DELETE CASCADE,
       image BYTEA,
       category VARCHAR(40)
     )`
@@ -117,9 +117,9 @@ async function createPsqlScheme(client: ClientType) {
   /*
   await client.query(
     `create table activitymeet(
-      userId varchar(40) not null references mate(id),
-      meetId varchar(40) not null references meet(id),
-      activityId varchar(40) not null references activity(id),
+      userid varchar(40) not null references mate(id),
+      meetid varchar(40) not null references meet(id),
+      activityid varchar(40) not null references activity(id),
       rating int
     )
   `
@@ -129,7 +129,7 @@ async function createPsqlScheme(client: ClientType) {
     `create table chat(
       id varchar(40) primary key,
       "createdAt" bigint not null,
-      author varchar(40) not null references mate(id),
+      author varchar(40) not null references mate(id) on delete cascade,
       room varchar(40) not null references meet(id),
       body varchar(255) not null
     )`
@@ -152,17 +152,20 @@ async function createPsqlScheme(client: ClientType) {
 
   await client.query(
     `create table rating(
-      "createdAt" bigint Not Null,
-      activityId Varchar(40) references activity(id) ON DELETE CASCADE, 
-      userId Varchar(40) NOT NULL references mate(id) ON DELETE CASCADE,
+      "createdAt" bigint not null,
+      activityid Varchar(40) references activity(id) ON DELETE CASCADE, 
+      userid Varchar(40) not null references mate(id) ON DELETE CASCADE,
       rating int`
   );
   await client.query(
-    `create table verify (
-      id varchar(40) primary key,
+    `create table verify(
       "createdAt" bigint not null,
-      mateId varchar(40) not null references mate(id) on delete cascade,
-      token varchar(250) not null default null
+      mateid varchar(40) not null references mate(id) on delete cascade,
+      type char(1) not null,
+      token varchar(250) not null,
+      code int default null,
+      email varchar(100) default null,
+      unique (mateid, type)
     )`
   );
 }
@@ -213,15 +216,15 @@ async function fillSchemeWithData(client: ClientType) {
     });
 
     //fill mateMeet-DBTable
-    testData.mateMeet.forEach(async (element: { mateId: string; meetId: string }) => {
+    testData.mateMeet.forEach(async (element: { mateid: string; meetid: string }) => {
       const query = `insert into matemeet(
-        mateId,
+        mateid,
         meetid,
         "createdAt"
       )
       values(
-        '${element.mateId}',
-        '${element.meetId}',
+        '${element.mateid}',
+        '${element.meetid}',
         '${Date.now()}'
       )`;
 
@@ -229,15 +232,15 @@ async function fillSchemeWithData(client: ClientType) {
     });
 
     //fill MateInterest-DBTable
-    testData.mateInterest.forEach(async (element: { mateId: string; interestId: string }) => {
+    testData.mateInterest.forEach(async (element: { mateid: string; interestid: string }) => {
       const query = `insert into mateinterest(
-        mateId,
+        mateid,
         interestid,
         "createdAt"
       )
       values(
-        '${element.mateId}',
-        '${element.interestId}',
+        '${element.mateid}',
+        '${element.interestid}',
         '${Date.now()}'
       )`;
 
@@ -262,16 +265,16 @@ async function fillSchemeWithData(client: ClientType) {
       await client.query(query);
     });
 
-    testData.matedescription.forEach(async (element: { mateId: string; descriptionId: string; value: number }) => {
+    testData.matedescription.forEach(async (element: { mateid: string; descriptionid: string; value: number }) => {
       const query = `insert into matedescription(
-        mateId,
-        descriptionId,
+        mateid,
+        descriptionid,
         "createdAt",
         value
       )
       values(
-        '${element.mateId}',
-        '${element.descriptionId}',
+        '${element.mateid}',
+        '${element.descriptionid}',
         '${Date.now()}',
         '${element.value}'
       )`;
@@ -289,7 +292,7 @@ async function fillSchemeWithData(client: ClientType) {
         tooltipCreatedBy: string;
         motivationTitle: string;
         chosen: number;
-        meetId: string;
+        meetid: string;
         image: string;
         category: string;
       }) => {
@@ -302,7 +305,7 @@ async function fillSchemeWithData(client: ClientType) {
         tooltipCreatedBy,
         motivationTitle,
         chosen,
-        meetId,
+        meetid,
         image,
         category
       )
@@ -315,7 +318,7 @@ async function fillSchemeWithData(client: ClientType) {
         '${element.tooltipCreatedBy}',
         '${element.motivationTitle}',
         '${element.chosen}',
-        '${element.meetId}',
+        '${element.meetid}',
         '${element.image}',
         '${element.category}'
       )`;
@@ -324,17 +327,17 @@ async function fillSchemeWithData(client: ClientType) {
     );
 
     testData.rating.forEach(
-      async (element: { createdAt: number; activityId: string; userId: string; rating: number }) => {
+      async (element: { createdAt: number; activityid: string; userid: string; rating: number }) => {
         const query = `insert into rating(
         "createdAt",
-        activityId,
-        userId,
+        activityid,
+        userid,
         rating
       )
       values(
         '${Date.now()}',
-        '${element.activityId}',
-        '${element.userId}',
+        '${element.activityid}',
+        '${element.userid}',
         '${element.rating}'
       )`;
         await client.query(query);
