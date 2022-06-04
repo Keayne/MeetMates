@@ -1,0 +1,27 @@
+/* Autor: Jonathan Hüls */
+
+.main{
+    margin: 0 auto;
+
+}
+
+/* tablets */
+@media (min-width: 768px) {
+    .main {
+        max-width: 720px;
+    }    
+}
+
+/* Laptop */
+@media (min-width: 1200px) {
+    .main {
+        max-width: 1140px;
+    }    
+}
+
+/* Computer */
+@media (min-width: 1400px) {
+    .main {
+        max-width: 1320px;
+    }    
+}

@@ -1,40 +1,68 @@
 body{
-    background-color: azure;
+    background-color: var(--app-color-background);
 }
 
+/*mobile*/
 .meeting{
-    text-align: center;
+    max-width: 100%;
+    text-align: center;   
+    box-sizing: border-box;
 }
+
+.meeting * {
+    box-sizing: border-box;
+}
+
+/* tablets
+@media (min-width:768px){
+    .meeting{
+        max-width: 768px;
+        text-align: center;   
+    }
+}
+*/
+
 
 .meeting:not(:defined) {
     display: none;
 }
 
 .meet-header{
+
+    box-sizing:border-box;
+
     display: inline-flex;
-    background-color: pink;
-    border-radius: 0.35rem; 
+    position: relative;
+    background-color: var(--app-color-third, #BF7F9B);
+    border-radius: 16px; 
 
     justify-content: space-between;
     align-items: center;
 
-    min-width: 40rem;
-    padding: 0rem 2rem;
-    
+    width: 100%;
+    padding: 8px 16px;
 }
+
+
 .meetName{
     border-style: none;
     background: transparent;
 
     font-size: 22px;
     font-weight: bold; 
-    margin: 0.5rem;
+    margin: 8px;
 }
 
 .meet-Delete{
+
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+
     font-weight: 200;
     border: 2px black solid;
-    border-radius: 1rem;
+    border-radius: 16px;
     text-align: center;
     justify-content: center;
     align-items: center;
@@ -43,8 +71,8 @@ body{
     display: flex;
     
     cursor: pointer;
-    min-width: 2rem;
-    min-height: 2rem;
+    min-width: 32px;
+    min-height: 32px;
 }
 
 
@@ -56,10 +84,17 @@ body{
     
 }
 
-.meetingUsers{
+.centerMates{
     display: flex;
-    align-items: center;
-    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.meetingUsers{
+    width: 95%;
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;    
 }
 
 .routeBtn{
@@ -72,10 +107,10 @@ body{
 
     transition: wid;
 
-    min-width: 2rem;
-    min-height: 1rem;
-    margin: 0.5rem;
-    border-radius: 1rem;
+    min-width: 15%;
+    min-height: 5%;
+    margin: 8px;
+    border-radius: 16px;
 }
 
 .routeBtn:hover{

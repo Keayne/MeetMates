@@ -2,10 +2,13 @@ import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { router } from '../../router/router.js';
 import { httpClient } from '../../http-client.js';
+import componentStyle from './app.css';
 
 @customElement('app-root')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class AppComponent extends LitElement {
+  static styles = componentStyle;
+
   @property() loggedIn = false;
   @state() private headerOptions = [
     { title: 'Register', routePath: 'mates/sign-up' },
