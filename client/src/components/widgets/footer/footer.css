@@ -77,6 +77,12 @@
   text-decoration: underline;
 }
 
+.fixedFooter{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+}
+
 /* Media Queries */
 
 @media (max-width: 600px) {
