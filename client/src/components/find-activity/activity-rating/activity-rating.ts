@@ -1,20 +1,21 @@
 /* Autor: Arne Schaper */
 
 import { LitElement, html } from 'lit';
-import { query, customElement, property } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { httpClient } from '../../../http-client';
 import { PageMixin } from '../../page.mixin';
 import { Actitity, Rating } from '../find-activity';
 import componentStyle from './activity-rating.css';
 
 @customElement('activity-rating')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ActivityRatingComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
 
   @property({ reflect: true }) activity = {} as Actitity;
   @property() rating = {} as Rating;
   @property() avgRating = 0;
-  @property() sliderValue = '50';
+  @property() sliderValue = '0';
 
   //TODO: Save slider values on change, make sure this works on new activities as well, update db script to include images, add/delete for activities
 
@@ -23,7 +24,6 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
       this.startAsyncInit();
       const responseRating = await httpClient.get(`rating/findOne/${this.activity.id}` + location.search);
       this.rating = (await responseRating.json()).results;
-      console.log('Rating: ' + this.rating);
       const responseRatingAll = await httpClient.get(`rating/findAverageRating/${this.activity.id}` + location.search);
       this.avgRating = (await responseRatingAll.json()).results;
     } catch (e) {
@@ -52,10 +52,14 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
             id="myRating"
             @change="${(e: Event) => this.readSliderValue(e)}"
           />
-          <p>Value: ${this.sliderValue}</p>
-          <div>
-            <button @click=${this.saveSliderValueToDb}>Save Changes</button>
-          </div>
+          <img src="/refresh.png" alt="update" @click=${this.saveSliderValueToDb} style="width:60px;height:50px;" />
+          <img
+            class="remove-task"
+            src="/deleteicon.png"
+            style="width:60px;height:50px;"
+            alt="update"
+            @click="${() => this.emit('appactivityremoveclick')}"
+          />
         </div>
       </div>
     `;
@@ -65,17 +69,28 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
     const target = e.target as HTMLInputElement;
     if (e) {
       this.sliderValue = target?.value;
-      //this.activity.rating = Number(this.sliderValue);
+      this.activity.personalRating = Number(this.sliderValue);
     }
   }
 
-  async saveSliderValueToDb(event: Event) {
+  async saveSliderValueToDb() {
     const partialRating: Partial<Rating> = {
       activityid: this.activity.id,
       rating: Number(this.sliderValue) //userID is not included here as it is being provided by the auth Middleware on patch request.
     };
-    const responseRating = await httpClient.patch(`rating/${this.activity.id}` + location.search, partialRating);
+    await httpClient.patch(`rating/${this.activity.id}` + location.search, partialRating);
     const responseRatingAll = await httpClient.get(`rating/findAverageRating/${this.activity.id}` + location.search);
     this.avgRating = (await responseRatingAll.json()).results;
+    this.activity.personalRating = this.rating.rating;
+    this.activity.avgRating = this.avgRating;
+  }
+
+  emit(eventType: string, eventData = {}) {
+    const event = new CustomEvent(eventType, {
+      detail: eventData,
+      bubbles: true,
+      composed: true
+    });
+    this.dispatchEvent(event);
   }
 }

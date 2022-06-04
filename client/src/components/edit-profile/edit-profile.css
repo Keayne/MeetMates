@@ -59,3 +59,22 @@ button {
   font-size: 0.8em;
   font-weight: bold;
 }
+
+/* Media Queries */
+
+@media (max-width: 600px) {
+  input,
+  select {
+    margin-left: 10px;
+    width: 90%;
+  }
+  h1,
+  h3,
+  label {
+    margin-left: 10px;
+  }
+  button {
+    text-align: center;
+    width: 70%;
+  }
+}

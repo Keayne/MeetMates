@@ -14,6 +14,7 @@ interface Mate {
 }
 
 @customElement('meet-user')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class MeetUserComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
 
@@ -28,7 +29,7 @@ class MeetUserComponent extends PageMixin(LitElement) {
   }
 
   private mateClicked(e: Event) {
-    console.log("router.navigate('mates/profile/'" + this.mate.id + ');');
+    //console.log("router.navigate('mates/profile/'" + this.mate.id + ');');
     router.navigate('mates/profile/' + this.mate.id);
   }
 }

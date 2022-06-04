@@ -20,7 +20,6 @@ class WebSocketServer {
     this.wss.on('connection', (ws: WebSocketExt, req) => this.onConnection(ws, req));
   }
   public async onMessage(req: IncomingMessage, ws: WebSocketExt, data: string) {
-    //console.log('Message: ' + data);
     this.wss.clients.forEach(client => {
       if (client !== ws && ws.room === data) {
         client.send('reload');

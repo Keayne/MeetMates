@@ -15,10 +15,8 @@ class SignUpComponent extends PageMixin(LitElement) {
   @query('form') private form!: HTMLFormElement;
   @query('#name') private nameElement!: HTMLInputElement;
   @query('#firstname') private firstnameElement!: HTMLInputElement;
-  @query('#email') private emailElement!: HTMLInputElement;
   @query('#birthday') private birthdayElement!: HTMLInputElement;
   @query('#gender') private genderElement!: HTMLInputElement;
-  @query('#password') private passwordElement!: HTMLInputElement;
 
   @state() private descriptions: { id: string; ltext: string; rtext: string; value: number }[] = [];
   @state() private interests: { id: string; text: string; status: boolean }[] = [];
@@ -37,7 +35,6 @@ class SignUpComponent extends PageMixin(LitElement) {
       this.imgSrc = response.image;
       this.nameElement.value = response.mate.name;
       this.firstnameElement.value = response.mate.firstname;
-      this.emailElement.value = response.mate.email;
       this.birthdayElement.value = response.mate.birthday;
       this.genderElement.value = response.mate.gender;
       response.interests.forEach((e: { interestid: string }) => {
@@ -62,7 +59,7 @@ class SignUpComponent extends PageMixin(LitElement) {
       const index = this.selectedInterests.indexOf(hobby);
       if (index == -1) {
         this.selectedInterests.push(hobby);
-        e.currentTarget.style.backgroundColor = '#04204a';
+        e.currentTarget.style.backgroundColor = '#04aa6d';
       } else {
         this.selectedInterests.splice(index, 1);
         e.currentTarget.style.backgroundColor = '#eee';
@@ -94,17 +91,15 @@ class SignUpComponent extends PageMixin(LitElement) {
         mate: {
           name: this.nameElement.value,
           firstname: this.firstnameElement.value,
-          email: this.emailElement.value,
           birthday: this.birthdayElement.value,
           gender: this.genderElement.value,
           image: this.imgSrc
         },
-        password: this.passwordElement.value,
         interests: this.selectedInterests,
         descriptions: this.selectedDescriptions
       };
       try {
-        httpClient.post('/edit', accountData);
+        httpClient.put('/edit', accountData);
         router.navigate('/');
       } catch (e) {
         this.showNotification((e as Error).message, 'error');
@@ -117,9 +112,8 @@ class SignUpComponent extends PageMixin(LitElement) {
   render() {
     return html`
       ${this.renderNotification()}
+      <form>
       <h1>Edit Profile</h1>
-      <form>
-      <form>
         <label>Firstname:</label>
         <input type="text" id="firstname" required />
         <label>Name:</label>
@@ -133,10 +127,6 @@ class SignUpComponent extends PageMixin(LitElement) {
         </select>
         <label>Birthday:</label>
         <input type="date" id="birthday" required>
-        <label>Email:</label>
-        <input type="email" id="email" required />
-        <label>Password:</label>
-        <input type="password" id="password"/>
         <h3>Rate yourself here<h3>
         ${this.descriptions.map(
           e =>
@@ -152,7 +142,7 @@ class SignUpComponent extends PageMixin(LitElement) {
         ${this.interests.map(
           interst =>
             html`<div
-              style=${interst.status ? 'background-color: #04204a' : 'background-color: #eee'}
+              style=${interst.status ? 'background-color: #04aa6d' : 'background-color: #eee'}
               class="pill"
               @click=${(e: MouseEvent) => this.selectHobby(e, interst.id)}
             >

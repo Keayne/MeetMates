@@ -5,6 +5,7 @@ import { customElement, property } from 'lit/decorators.js';
 import componentStyle from './footer.css';
 
 @customElement('app-footer')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class FooterComponent extends LitElement {
   static styles = componentStyle;
 

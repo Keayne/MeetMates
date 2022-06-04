@@ -19,7 +19,7 @@ class SignUpComponent extends PageMixin(LitElement) {
   @query('#birthday') private birthdayElement!: HTMLInputElement;
   @query('#gender') private genderElement!: HTMLInputElement;
   @query('#password') private passwordElement!: HTMLInputElement;
-  @query('#password-check') private passwordCheckElement!: HTMLInputElement;
+  @query('#passwordCheck') private passwordCheckElement!: HTMLInputElement;
 
   @state() private descriptions: { id: string; ltext: string; rtext: string }[] = [];
   @state() private interests: { id: string; text: string }[] = [];
@@ -51,7 +51,7 @@ class SignUpComponent extends PageMixin(LitElement) {
       const index = this.selectedInterests.indexOf(hobby);
       if (index == -1) {
         this.selectedInterests.push(hobby);
-        e.currentTarget.style.backgroundColor = '#04204a';
+        e.currentTarget.style.backgroundColor = '#04aa6d';
       } else {
         this.selectedInterests.splice(index, 1);
         e.currentTarget.style.backgroundColor = '#eee';
@@ -84,6 +84,7 @@ class SignUpComponent extends PageMixin(LitElement) {
     } else {
       this.passwordMessage = 'good password!';
     }
+    this.checkCheckPassword();
   }
 
   checkCheckPassword() {
@@ -125,8 +126,8 @@ class SignUpComponent extends PageMixin(LitElement) {
   render() {
     return html`
       ${this.renderNotification()}
-      <h1>Register</h1>
       <form>
+      <h1>Register</h1>
         <label>Firstname:</label>
         <input type="text" id="firstname" required />
         <label>Name:</label>
@@ -149,7 +150,7 @@ class SignUpComponent extends PageMixin(LitElement) {
         <span>${this.passwordMessage}</span>
         <br>
         <label>Password Check:</label>
-        <input type="password" @keyup="${this.checkCheckPassword}" id="password-check" required />
+        <input type="password" @keyup="${this.checkCheckPassword}" id="passwordCheck" required />
         <span>${this.passwordCheckMessage}</span>
         <h3>Rate yourself here<h3>
         ${this.descriptions.map(

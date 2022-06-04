@@ -17,18 +17,22 @@ export interface Actitity {
   meetId: string;
   image: string;
   category: string;
+  personalRating: number;
+  avgRating: number;
 }
 
 export interface Rating {
-  activityid: String;
-  userid: String;
-  rating: Number;
+  activityid: string;
+  userid: string;
+  rating: number;
 }
 
 @customElement('find-activity')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class FindActivityComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
 
+  @property() meetId!: string;
   @property({ type: Array }) private activityList: Array<Actitity> = [];
   @property({ type: Array }) private activityListLocal: Array<Actitity> = [];
   @query('#myForm') private myForm!: HTMLDivElement;
@@ -37,7 +41,6 @@ class FindActivityComponent extends PageMixin(LitElement) {
   @query('#motivationTitle') private motivationTitle!: HTMLInputElement;
   @query('#category') private category!: HTMLSelectElement;
   @state() private imgSrc!: string;
-  @property() meetId!: string;
 
   /**
    * Creates an activity and sends it to the server
@@ -53,7 +56,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
       category: this.category.value
     };
     try {
-      const response = await httpClient.post('/activity', partialActivity);
+      const response = await httpClient.post(`/activity/${this.meetId}`, partialActivity);
       const activity: Actitity = await response.json();
       //emty fields of form
       this.titlee.value = '';
@@ -169,26 +172,44 @@ class FindActivityComponent extends PageMixin(LitElement) {
           activity =>
             html` <div class="activity-container">
               <div class="activity">
-                <activity-info .activity=${activity}></activity-info>
+                <activity-info 
+                .activity=${activity}></activity-info>
               </div>
               <div class="activity" class="rating">
-                <activity-rating .activity=${activity} .activityId=${activity.id}></activity-rating>
+                <activity-rating .activity=${activity} .activityId=${activity.id} @appactivityremoveclick=${() =>
+              this.deleteActivity(activity)}></activity-rating>
               </div>
             </div>
         </div>`
         )}
-      </div> `;
+      </div>`;
   }
 
   /**
    * Apply a filter to the currently shown activites
    * @param category Name of the Category to filter
    */
-  selectFilter(category: String) {
+  selectFilter(category: string) {
     if (category === 'all') {
       this.activityListLocal = this.activityList;
+    } else if (category === 'Highest Rating') {
+      console.log('TODO');
     } else {
       this.activityListLocal = this.activityList.filter(activity => activity.category === category);
+      if (this.activityListLocal.length === 0) {
+        //TODO render create activity component?
+      }
+    }
+  }
+
+  async deleteActivity(activityToDelete: Actitity) {
+    console.log('deleteActivity');
+    try {
+      await httpClient.delete('activity/' + activityToDelete.id);
+      this.activityList = this.activityList.filter(activity => activity.id !== activityToDelete.id);
+      this.activityListLocal = this.activityListLocal.filter(activity => activity.id !== activityToDelete.id);
+    } catch (error) {
+      this.showNotification((error as Error).message, 'error');
     }
   }
 

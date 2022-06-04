@@ -42,7 +42,6 @@ input[type='checkbox'] {
   font-size: 12px;
   letter-spacing: 1px;
   font-weight: bold;
-  color: #777;
   cursor: pointer;
 }
 button {
@@ -59,4 +58,23 @@ button {
   margin-top: 10px;
   font-size: 0.8em;
   font-weight: bold;
+}
+
+/* Media Queries */
+
+@media (max-width: 600px) {
+  input,
+  select {
+    margin-left: 10px;
+    width: 90%;
+  }
+  h1,
+  h3,
+  label {
+    margin-left: 10px;
+  }
+  button {
+    text-align: center;
+    width: 70%;
+  }
 }

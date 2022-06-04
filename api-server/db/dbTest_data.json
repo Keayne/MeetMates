@@ -265,7 +265,7 @@
     {
       "id": "f0e0e009-8450-4130-a258-0dca231d34d4",
       "lText": "Fleisch",
-      "rText": "Vegetarisch/Vegan"
+      "rText": "Vegetarisch"
     },
     {
       "id": "2d91588c-84d2-43c0-89f6-85dab19f2c15",
@@ -308,39 +308,39 @@
   "activity": [
     {
       "id": "94e5ac29-4b85-4bef-8238-f8a1e2b13a6d",
-      "title": "Play SOC",
-      "description": "Songs of Conquest - A strategy game",
-      "tooltip": "dbTestTooltip1",
-      "tooltipCreatedBy": "Arne",
-      "motivationTitle": "dbTestMotivationTitle1",
+      "title": "Tennis",
+      "description": "Ein gelber Ball fliegt über ein Netz",
+      "tooltip": "2022/05/29",
+      "tooltipCreatedBy": "bbb5f64e-f103-4090-9a23-b1bef47732b0",
+      "motivationTitle": "Bist du bei Tennis dabei?",
       "chosen": 0,
       "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
       "image": "",
       "category": "Sport"
     },
     {
-      "id": "adaa1bb0-e223-4f77-a667-ae0d6f204062",
-      "title": "dbTestTitleForMeetId1",
-      "description": "dbTestDescription2",
-      "tooltip": "dbTestTooltip2",
-      "tooltipCreatedBy": "Arne",
-      "motivationTitle": "dbTestMotivationTitle2",
+      "id": "7bb91ff4-82d8-46f3-8007-44d8f6e122cb",
+      "title": "Kino",
+      "description": "Ein Ort wo Filme gezeigt werden",
+      "tooltip": "2022/05/29",
+      "tooltipCreatedBy": "bbb5f64e-f103-4090-9a23-b1bef47732b0",
+      "motivationTitle": "Hast du Lust auf Kino?",
       "chosen": 0,
       "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
       "image": "",
-      "category": "Sport"
+      "category": "Entertainment"
     },
     {
-      "id": "795f59da-91cd-4ce4-b1db-500864fca083",
-      "title": "dbTestTitle2ForMeetId1",
-      "description": "dbTestDescription3",
-      "tooltip": "dbTestTooltip3",
-      "tooltipCreatedBy": "Arne",
-      "motivationTitle": "dbTestMotivationTitle3",
+      "id": "e63601db-0863-420e-82a6-5f9e5fb7fe6d",
+      "title": "Trink was im Blauen Haus",
+      "description": "Get Together - mit Getränk aber bitte.",
+      "tooltip": "2022/05/29",
+      "tooltipCreatedBy": "bbb5f64e-f103-4090-9a23-b1bef47732b0",
+      "motivationTitle": "Trinkst du mit?",
       "chosen": 0,
       "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
       "image": "",
-      "category": "Sport"
+      "category": "Drinking"
     }
   ],
   "rating": [

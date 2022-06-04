@@ -1,4 +1,4 @@
-/* Autor: Prof. Dr. Norman Lahme-Hütig (FH Münster) */
+/* Autor: Arne Schaper */
 
 import fetch from 'node-fetch';
 import { v4 as uuidv4 } from 'uuid';
@@ -6,14 +6,22 @@ import { BrowserContext } from 'playwright';
 import config from './config.js';
 
 export class UserSession {
+  firstname: string;
   name: string;
+  gender: string;
+  birthday: string;
   email: string;
   password: string;
+  image: string;
   token?: string;
 
   constructor(public context: BrowserContext) {
     const uuid = uuidv4();
+    this.firstname = `firstname_${uuid}`;
     this.name = `name_${uuid}`;
+    this.gender = `Female`;
+    this.birthday = `25.04.1940`;
+    this.image = '';
     this.email = `email_${uuid}@example.org`;
     this.password = `pw_${uuid}`;
   }
@@ -23,11 +31,20 @@ export class UserSession {
   }
 
   signUpData() {
-    return { name: this.name, email: this.email, password: this.password, passwordCheck: this.password };
+    return {
+      firstname: this.firstname,
+      name: this.name,
+      gender: this.gender,
+      birthday: this.birthday,
+      image: this.image,
+      email: this.email,
+      password: this.password,
+      passwordCheck: this.password
+    };
   }
 
   async registerUser() {
-    const response = await fetch(config.serverUrl('users'), {
+    const response = await fetch(config.serverUrl('sign-up'), {
       method: 'POST',
       body: JSON.stringify(this.signUpData()),
       headers: { 'Content-Type': 'application/json' }
@@ -44,7 +61,7 @@ export class UserSession {
   }
 
   async deleteUser() {
-    const response = await fetch(config.serverUrl('users'), {
+    const response = await fetch(config.serverUrl(''), {
       method: 'DELETE',
       headers: { Cookie: `jwt-token=${this.token}` }
     });
