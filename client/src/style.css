@@ -10,17 +10,13 @@
   --app-color-second: #83A5C2;
   --app-color-third: #BF7F9B;
   --app-color-fourth: #04204A;
-
-  --app-color-light-first: #315895;
-  --app-color-light-second: #83A5C2;
-  --app-color-light-third: #BF7F9B;
-  --app-color-light-fourth: #04204A;
-
   
-  --app-color-dark-first: #60c37f;
-  --app-color-dark-second: #acf600;
-  --app-color-dark-third: #6790f0;
-  --app-color-dark-fourth: #9f9dfa;
+  --app-color-dark-first: #EEB76B;
+  --app-color-dark-second: #E2703A;
+  --app-color-dark-third: #9C3D54;
+  --app-color-dark-fourth: #310B0B;
+
+  --app-color-background: azure;
 
   --app-footer-height: 153px;
 }
@@ -40,7 +36,12 @@ body {
   margin: 0;
   padding: 0;
   padding-bottom: var(--app-footer-height, 153px);
+
+  align-content: center;
+  align-items: center;
+  justify-content: center;
 }
+
 
 /* fordarkmode through Button*/
 body.dark{
