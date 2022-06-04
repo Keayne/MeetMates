@@ -5,6 +5,12 @@
   --app-error-color: #bf7f9b;
   --app-bright-color: #83a5c2;
   --app-dark-color: #04204a;
+
+  --app-color-light-first: #315895;
+  --app-color-light-second: #83A5C2;
+  --app-color-light-third: #BF7F9B;
+  --app-color-light-fourth: #04204A;
+
 }
 body {
   font-family: 'Open Sans', sans-serif;
