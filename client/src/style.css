@@ -11,12 +11,14 @@
   --app-color-third: #bf7f9b;
   --app-color-fourth: #04204a;
 
+  --app-color-background: azure;
+
+  
   --app-color-dark-first: #eeb76b;
   --app-color-dark-second: #e2703a;
   --app-color-dark-third: #9c3d54;
   --app-color-dark-fourth: #310b0b;
-
-  --app-color-background: azure;
+  --app-color-dark-background: grey;
 
   --app-footer-height: 153px;
 }
@@ -36,6 +38,7 @@ body {
   margin: 0;
   padding: 0;
   padding-bottom: var(--app-footer-height, 153px);
+  background-color: var(--app-color-background, azure);
 
   align-content: center;
   align-items: center;
@@ -48,4 +51,5 @@ body.dark {
   --app-color-second: var(--app-color-dark-second);
   --app-color-third: var(--app-color-dark-third);
   --app-color-fourth: var(--app-color-dark-fourth);
+  --app-color-background: var(--app-color-dark-background);
 }

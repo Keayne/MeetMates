@@ -6,11 +6,11 @@ h2 {
 }
 .meet
 {
-    min-width: 500px;
+    min-width: 60%;
 
 
-    background-color: lightgrey;
-    margin: 1rem;
+    background-color: var(--app-color-second, #315895);
+    margin: 16px;
     border-radius: 20px;
     
     display: inline-flex;
@@ -24,7 +24,7 @@ h2 {
 .meet:hover{
     -webkit-box-shadow: 6px 8px 12px -1px rgba(0,0,0,0.36); 
     box-shadow: 6px 8px 12px -1px rgba(0,0,0,0.36);
-    min-width: 40rem;
+    min-width: 80%;
     transition: ease-out 0.3s;
 
 }
@@ -32,11 +32,11 @@ h2 {
 
 
 .meet > * {
-    margin: 0.2rem;
+    margin: 3.2px;
 }
 
 .meet > .name{
-    margin: 0rem 1rem;
+    margin: 0px 16px;
 }
 
 .userIcon {
@@ -45,10 +45,10 @@ h2 {
 }
 
 img{
-    border-radius: 1rem;
+    border-radius: 16px;
     min-width: auto;
     min-height: auto;
 
-    max-width: 1.5rem;
-    max-height: 1.5rem;
+    max-width: 24px;
+    max-height: 24px;
 }

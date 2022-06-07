@@ -1,6 +1,3 @@
-body{
-    background-color: var(--app-color-background);
-}
 
 /*mobile*/
 .meeting{
@@ -98,7 +95,7 @@ body{
 }
 
 .routeBtn{
-    background-color: #315895;
+    background-color:var(--app-color-first, #BF7F9B);
 
     cursor: pointer;
     text-decoration: none;

@@ -5,7 +5,7 @@
 
 .meetingUser{
     display: flex;
-    background-color: lightgrey;
+    background-color: var(--app-color-second, lightgray);
     border-radius: 16px;
     width: 100%;
     transition: width 0.3s ease-in-out;
