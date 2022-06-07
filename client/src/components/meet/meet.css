@@ -114,3 +114,8 @@
     -webkit-box-shadow: 6px 8px 12px -1px rgba(0,0,0,0.36); 
     box-shadow: 6px 8px 12px -1px rgba(0,0,0,0.36);
 }
+
+.chat{
+    width: 80%;
+    border-radius: 16px;
+}

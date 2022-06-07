@@ -69,7 +69,7 @@ class YourMeetComponent extends PageMixin(LitElement) {
           <div>
             <button type="button" class="routeBtn" @click="${this.routeToActiviySeelction}">Find Actitity</button>
           </div>
-          <meet-chat></meet-chat>
+          <app-chat class="chat" .room=${this.meetId}></app-chat>
         </div>`;
     }
   }
