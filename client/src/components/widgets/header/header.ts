@@ -18,7 +18,7 @@ class HeaderComponent extends LitElement {
         <div class="innerHeader">
           <div class="logoContainer">
             <a href="/">
-              <img class="logo" src="/meetMates.png" style="width:50px;height:50px;" />
+              <img class="logo" src="meetmates.png" style="width:50px;height:50px;" />
             </a>
           </div>
           <ol class="navigation">

@@ -79,7 +79,7 @@ class ResetPasswordComponent extends PageMixin(LitElement) {
   }
 
   checkPassword() {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/gm;
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*#?&-_=()]{8,}$/gm;
     if (!regex.test(this.passwordElement.value)) {
       this.passwordMessage =
         'Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters';

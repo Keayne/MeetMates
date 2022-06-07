@@ -12,7 +12,7 @@ class FooterComponent extends LitElement {
   @property({ type: Array }) linkItems: Array<{ title: string; routePath: string }> = [];
 
   render() {
-    return html`<footer class="footer-distributed fixedFooter ">
+    return html`<footer class="footer-distributed">
       <div class="footer-right"></div>
 
       <div class="footer-left">

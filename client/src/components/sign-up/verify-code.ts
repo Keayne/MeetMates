@@ -32,13 +32,13 @@ class VerifyCodeComponent extends PageMixin(LitElement) {
     if (this.form.checkValidity()) {
       try {
         await httpClient.post('sign-in', this.codeElement.value);
-        router.navigate('/meets');
+        router.navigate('/mates/sign-in');
       } catch (e) {
         console.log(e);
         this.showNotification((e as Error).message, 'error');
       }
     } else {
-      this.form.classList.add('was-validated');
+      this.form.reportValidity();
     }
   }
 }

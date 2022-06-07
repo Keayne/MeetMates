@@ -17,8 +17,7 @@
       "eMail": "Peter.Müller@gmx.com",
       "Birthday": "28.02.1995",
       "gender": "male",
-      "password": "",
-      "lastLoggedIn": "09.04.2022"
+      "password": ""
     },
     {
       "id": "f552eaaf-8fa3-4319-b7af-8139cac8f35b",
@@ -27,8 +26,7 @@
       "eMail": "BayerLisa@gmail.com",
       "Birthday": "17.12.1998",
       "gender": "female",
-      "password": "",
-      "lastLoggedIn": "12.03.2022"
+      "password": ""
     },
     {
       "id": "eeab19ed-e87b-49a1-878e-e2a62494b050",
@@ -37,8 +35,7 @@
       "eMail": "mHammil@web.de",
       "Birthday": "25.09.1951",
       "gender": "male",
-      "password": "",
-      "lastLoggedIn": "25.04.2022"
+      "password": ""
     },
     {
       "id": "5376a8df-a292-460e-865b-27441f357398",
@@ -47,8 +44,7 @@
       "eMail": "Al.Pacino@gmail.com",
       "Birthday": "25.04.1940",
       "gender": "male",
-      "password": "",
-      "lastLoggedIn": "30.05.2022"
+      "password": ""
     },
     {
       "id": "bbb5f64e-f103-4090-9a23-b1bef47732b0",
@@ -57,8 +53,7 @@
       "eMail": "arne.schaper@online.de",
       "Birthday": "07.11.1867",
       "gender": "male",
-      "password": "$2a$10$ax1i9yMvNewLD242J9556.kX2EnsBwqjHIKc7q0m5yWTvJoBafFla",
-      "lastLoggedIn": "14.01.2022"
+      "password": "$2a$10$ax1i9yMvNewLD242J9556.kX2EnsBwqjHIKc7q0m5yWTvJoBafFla"
     },
     {
       "id": "ce973cad-01dc-446d-894d-1bb966c7bfb8",
@@ -67,8 +62,7 @@
       "eMail": "Aldfsfsd.Pacino@gmail.com",
       "Birthday": "25.04.1940",
       "gender": "female",
-      "password": "",
-      "lastLoggedIn": "30.05.2022"
+      "password": ""
     }
   ],
   "mateMeet": [

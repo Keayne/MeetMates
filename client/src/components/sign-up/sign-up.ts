@@ -77,7 +77,7 @@ class SignUpComponent extends PageMixin(LitElement) {
     this.imgSrc = await toBase64(input.files![0]);
   }
   checkPassword() {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/gm;
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*#?&-_=()]{8,}$/gm;
     if (!regex.test(this.passwordElement.value)) {
       this.passwordMessage =
         'Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters';
@@ -106,6 +106,7 @@ class SignUpComponent extends PageMixin(LitElement) {
           gender: this.genderElement.value,
           image: this.imgSrc,
           password: this.passwordElement.value,
+          passwordCheck: this.passwordCheckElement.value,
           interests: this.selectedInterests,
           descriptions: this.selectedDescriptions
         };

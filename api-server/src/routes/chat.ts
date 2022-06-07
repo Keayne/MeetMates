@@ -30,13 +30,23 @@ router.get('/messages/:room', authService.authenticationMiddleware, async (req, 
   res.json(messages);
 });
 
-router.post('/message', authService.authenticationMiddleware, async (req, res) => {
+router.post('/', authService.authenticationMiddleware, async (req, res) => {
   const chatDAO: GenericDAO<Message> = req.app.locals.chatDAO;
-  chatDAO.create({
+  await chatDAO.create({
     author: res.locals.user.id,
     room: req.body.room,
     body: req.body.body
   });
+  res.status(201).end();
+});
+
+router.delete('/:id', async (req, res) => {
+  const chatDAO: GenericDAO<Message> = req.app.locals.chatDAO;
+  if (req.app.locals.testing) {
+    await chatDAO.deleteAll({ id: req.params.id });
+  } else {
+    res.status(401).end();
+  }
 });
 
 export default router;

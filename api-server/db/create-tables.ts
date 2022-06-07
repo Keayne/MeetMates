@@ -21,7 +21,6 @@ type Mate = {
   eMail: string;
   Birthday: string;
   gender: string;
-  lastLoggedIn: string;
   password: string;
 };
 
@@ -49,8 +48,7 @@ async function createPsqlScheme(client: ClientType) {
       birthday varchar(10),
       gender varchar(10),
       image BYTEA,
-      password varchar(255),
-      lastloggedin varchar(10)
+      password varchar(255)
     )`
   );
 
@@ -182,7 +180,7 @@ async function fillSchemeWithData(client: ClientType) {
   //fill mate-DBTable
   testData.mates.forEach(async (element: Mate) => {
     const query = `insert into mate(
-      id,"createdAt",name,firstname,email,birthday, gender, lastloggedin, password
+      id,"createdAt",name,firstname,email,birthday, gender, password
     ) 
     values(
       '${element.id}',
@@ -192,7 +190,6 @@ async function fillSchemeWithData(client: ClientType) {
       '${element.eMail}',
       '${element.Birthday}',
       '${element.gender}',
-      '${element.lastLoggedIn}',
       '${element.password}'
     )`;
     await client.query(query);

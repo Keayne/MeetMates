@@ -7,28 +7,28 @@
   --app-dark-color: #04204a;
 
   --app-color-first: #315895;
-  --app-color-second: #83A5C2;
-  --app-color-third: #BF7F9B;
-  --app-color-fourth: #04204A;
-  
-  --app-color-dark-first: #EEB76B;
-  --app-color-dark-second: #E2703A;
-  --app-color-dark-third: #9C3D54;
-  --app-color-dark-fourth: #310B0B;
+  --app-color-second: #83a5c2;
+  --app-color-third: #bf7f9b;
+  --app-color-fourth: #04204a;
+
+  --app-color-dark-first: #eeb76b;
+  --app-color-dark-second: #e2703a;
+  --app-color-dark-third: #9c3d54;
+  --app-color-dark-fourth: #310b0b;
 
   --app-color-background: azure;
 
   --app-footer-height: 153px;
 }
-  
-  /*for darkmode for OS-preferences*/
+
+/*for darkmode for OS-preferences*/
 @media (prefers-color-scheme: dark) {
-    :root{
-      --app-color-first: var(--app-color-dark-first);
-      --app-color-second: var(--app-color-dark-second);
-      --app-color-third: var(--app-color-dark-third);
-      --app-color-fourth: var(--app-color-dark-fourth);
-    }
+  :root {
+    --app-color-first: var(--app-color-dark-first);
+    --app-color-second: var(--app-color-dark-second);
+    --app-color-third: var(--app-color-dark-third);
+    --app-color-fourth: var(--app-color-dark-fourth);
+  }
 }
 
 body {
@@ -42,12 +42,10 @@ body {
   justify-content: center;
 }
 
-
 /* fordarkmode through Button*/
-body.dark{
+body.dark {
   --app-color-first: var(--app-color-dark-first);
   --app-color-second: var(--app-color-dark-second);
   --app-color-third: var(--app-color-dark-third);
   --app-color-fourth: var(--app-color-dark-fourth);
 }
-

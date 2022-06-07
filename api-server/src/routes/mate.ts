@@ -1,5 +1,4 @@
 /* Autor: Valentin Lieberknecht */
-/* Autor: Arne Schaper */
 
 import express from 'express';
 import bcrypt from 'bcryptjs';
@@ -14,6 +13,10 @@ import { Verify } from '../models/verify.js';
 import { emailService } from '../services/email.service.js';
 
 const router = express.Router();
+
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*#?&-_=()]{8,}$/;
+const emailRegex =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 router.post('/sign-up', async (req, res) => {
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
@@ -31,25 +34,37 @@ router.post('/sign-up', async (req, res) => {
   if (
     !hasRequiredFields(
       req.body,
-      ['name', 'firstname', 'email', 'birthday', 'gender', 'image', 'password', 'interests', 'descriptions'],
+      [
+        'name',
+        'firstname',
+        'email',
+        'birthday',
+        'gender',
+        'image',
+        'password',
+        'passwordCheck',
+        'interests',
+        'descriptions'
+      ],
       errors
     )
   ) {
     return sendErrorMessage(errors.join('\n'));
   }
 
+  if (req.body.password !== req.body.passwordCheck) {
+    return sendErrorMessage('Die beiden Passwörter stimmen nicht überein.');
+  }
+
   const filter: Partial<Mate> = { email: req.body.email };
   if (await mateDAO.findOne(filter)) {
     return sendErrorMessage('Es existiert bereits ein Konto mit der angegebenen E-Mail-Adresse.');
   }
-  if (
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-      String(req.body.email)
-    ) == false
-  ) {
+  if (emailRegex.test(String(req.body.email)) == false) {
     return sendErrorMessage('Email Format ungültig');
   }
-  if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/gm.test(String(req.body.password)) == false) {
+
+  if (passwordRegex.test(String(req.body.password)) == false) {
     return sendErrorMessage('Passwort entspricht nicht den Anforderungen!');
   }
 
@@ -79,6 +94,12 @@ router.post('/sign-up', async (req, res) => {
       value: e.value
     });
   });
+
+  if (req.app.locals.testing) {
+    mateDAO.update({ id: createdUser.id, active: true, email: req.body.email });
+    authService.createAndSetToken({ id: createdUser.id }, res);
+    res.status(201).send({ message: 'logged-in with test account!' });
+  }
 
   //Create VerifyToken
   const token = await verifyDAO.createAndOverwrite({
@@ -127,8 +148,9 @@ router.post('/sign-in', async (req, res) => {
     res.status(401).json({ message: 'E-Mail Adresse noch nicht verifizert!' });
     return;
   }
+
   authService.createAndSetToken({ id: user.id }, res);
-  res.status(201).json(user);
+  res.status(201).json({ id: user.id });
 });
 
 router.delete('/sign-out', (req, res) => {
@@ -267,7 +289,7 @@ router.patch('/changepassword', authService.authenticationMiddleware, async (req
     return;
   }
 
-  if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/gm.test(String(req.body.password)) == false) {
+  if (passwordRegex.test(String(req.body.password)) == false) {
     res.status(401).send('Passwort entspricht nicht den Anforderungen!');
     return;
   }
@@ -311,11 +333,13 @@ router.patch('/resetpassword', async (req, res) => {
   const verify = await verifyDAO.findOne({ mateid: req.body.id, type: 'p' });
   if (!verify) return res.status(400).send('Invalid');
 
-  if (verify.token === req.body.token) {
-    await mateDAO.update({ id: req.body.id, password: await bcrypt.hash(req.body.password, 10) });
-    await verifyDAO.deleteOne({ mateid: req.body.id, type: 'p' });
-    res.send('password changed');
-  }
+  if (verify.token !== req.body.token) return res.status(401).send('invalid token');
+  const hoursBetween = Math.abs(verify.createdAt - Date.now() / (60 * 60 * 1000));
+  if (hoursBetween > 24) res.status(401).send('token expired');
+
+  await mateDAO.update({ id: req.body.id, password: await bcrypt.hash(req.body.password, 10) });
+  await verifyDAO.deleteOne({ mateid: req.body.id, type: 'p' });
+  res.send('password changed');
 });
 
 router.delete('/delete', authService.authenticationMiddleware, async (req, res) => {

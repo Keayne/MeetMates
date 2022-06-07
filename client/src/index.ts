@@ -24,7 +24,7 @@ import './components/find-activity/activity/activity-info.ts';
 import './components/find-activity/activity-rating/activity-rating.ts';
 import './components/settings/reset-password.ts';
 import './components/settings/request-password-reset.ts';
-import './components/settings/verify-code.ts';
+import './components/sign-up/verify-code.ts';
 import './components/settings/settings.ts';
 import './components/settings/change-password.ts';
 import './components/settings/change-email.ts';
