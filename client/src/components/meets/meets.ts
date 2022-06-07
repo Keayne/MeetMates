@@ -21,6 +21,7 @@ interface Mate {
 }
 
 @customElement('app-meets')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class MeetsComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
   @property({ type: Array }) private meets: Array<Meet> = [];

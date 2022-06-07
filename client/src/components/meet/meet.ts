@@ -1,6 +1,6 @@
 /* Autor: Jonathan Hüls */
 import { LitElement, html } from 'lit';
-import { customElement, property, query, state } from 'lit/decorators.js';
+import { customElement, property, query } from 'lit/decorators.js';
 import { PageMixin } from '../page.mixin';
 import { router } from '../../router/router.js';
 import componentStyle from './meet.css';
@@ -19,18 +19,38 @@ interface Meet {
   mates: Mate[];
 }
 
+interface Activity {
+  id: string;
+  title: string;
+  description: string;
+  tooltip: string;
+  tooltipcreatedby: string;
+  motivationtitle: string;
+  chosen: number;
+  meetid: string;
+  image?: string;
+  category: string;
+}
+
 @customElement('app-your-meet')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class YourMeetComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
   @property() meetId!: string;
   @query('#meetName') private meetName: HTMLInputElement | undefined;
 
   private meet!: Meet;
+  private activity: Activity | undefined;
 
   async firstUpdated() {
     try {
-      const response = await httpClient.get('/meet/' + this.meetId + location.search);
-      this.meet = await response.json();
+      const meetResponse = await httpClient.get('/meet/' + this.meetId + location.search);
+      this.meet = await meetResponse.json();
+      const activityResponse = await httpClient.get('/findChosenActivity/' + this.meetId + location.search);
+      this.activity = await activityResponse.json();
+
+      console.log(this.activity);
+
       this.requestUpdate();
       await this.updateComplete;
     } catch (err) {
@@ -48,6 +68,12 @@ class YourMeetComponent extends PageMixin(LitElement) {
       for (const m of this.meet.mates) {
         matesTemp.push(html`<meet-user class="meetMate" .mate=${m} />`);
       }
+      const activity = this.activity
+        ? html`<activity-info activity=${this.activity} />`
+        : html`<div>
+            <button type="button" class="routeBtn" @click="${this.routeToActiviySeelction}">Find Actitity</button>
+          </div>`;
+
       return html`${this.renderNotification()}
         <div class="meeting">
           <div class="meet-header">
@@ -66,9 +92,7 @@ class YourMeetComponent extends PageMixin(LitElement) {
           <div class="centerMates">
             <div class="meetingUsers">${matesTemp}</div>
           </div>
-          <div>
-            <button type="button" class="routeBtn" @click="${this.routeToActiviySeelction}">Find Actitity</button>
-          </div>
+          ${activity}
           <app-chat class="chat" .room=${this.meetId}></app-chat>
         </div>`;
     }
@@ -95,7 +119,7 @@ class YourMeetComponent extends PageMixin(LitElement) {
       }
     }
   }
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async deleteMeetClicked(e: Event) {
     if (confirm('Do you realy wish to quit the Meet ?')) {
       try {
