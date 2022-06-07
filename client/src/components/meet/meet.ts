@@ -63,7 +63,9 @@ class YourMeetComponent extends PageMixin(LitElement) {
               &#10006;
             </button>
           </div>
-          <div class="meetingUsers">${matesTemp}</div>
+          <div class="centerMates">
+            <div class="meetingUsers">${matesTemp}</div>
+          </div>
           <div>
             <button type="button" class="routeBtn" @click="${this.routeToActiviySeelction}">Find Actitity</button>
           </div>
