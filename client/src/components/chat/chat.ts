@@ -37,7 +37,7 @@ class ChatComponent extends PageMixin(LitElement) {
     if (form.message.value) {
       this.ws.send(this.room);
       try {
-        httpClient.post('chat/message', {
+        httpClient.post('chat', {
           room: this.room,
           body: form.message.value
         });

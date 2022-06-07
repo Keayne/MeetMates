@@ -8,9 +8,11 @@
   height: 10%;
   font: normal 16px sans-serif;
   padding: 45px 50px;
-  position: absolute;
   text-align: center;
   flex-shrink: 0;
+  position: fixed;
+  left: 0;
+  bottom: 0;
 }
 
 .footer-distributed .footer-left p {
@@ -78,6 +80,7 @@
   text-decoration: underline;
 }
 
+<<<<<<< HEAD
 .fixedFooter{
   position: fixed;
   left: 0;
@@ -85,6 +88,8 @@
   box-sizing: border-box;
 }
 
+=======
+>>>>>>> 25f7d72e69acd5abdd9ebd9f0eba1d84c56f39e2
 /* Media Queries */
 
 @media (max-width: 600px) {
