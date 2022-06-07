@@ -46,7 +46,7 @@ class YourMeetComponent extends PageMixin(LitElement) {
     try {
       const meetResponse = await httpClient.get('/meet/' + this.meetId + location.search);
       this.meet = await meetResponse.json();
-      const activityResponse = await httpClient.get('/findChosenActivity/' + this.meetId + location.search);
+      const activityResponse = await httpClient.get('/activity/findChosenActivity/' + this.meetId + location.search);
       this.activity = await activityResponse.json();
 
       console.log(this.activity);
