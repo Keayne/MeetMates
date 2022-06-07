@@ -30,8 +30,11 @@
     border-radius: 16px;
     max-width: 32px;
     max-height: 32px;
+    min-width: 32px;
 
+    flex-shrink: 0;
 }
+
 .meetingUser > *{
     
     margin: 8px;
