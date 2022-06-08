@@ -102,11 +102,6 @@ router.get('/:id', authService.authenticationMiddleware, async (req, res) => {
 router.post('/changeName', authService.authenticationMiddleware, async (req, res) => {
   //console.log(`User: ${res.locals.user.id} change Name from Meet: ${req.body.meetId} to "${req.body.name}"`);
 
-<<<<<<< HEAD
-  console.log(`User: ${res.locals.user.id} change Name from Meet: ${req.body.meetId} to "${req.body.name}"`);
-
-=======
->>>>>>> 25f7d72e69acd5abdd9ebd9f0eba1d84c56f39e2
   const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;
 
   const meet = await meetDAO.update({
