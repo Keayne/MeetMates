@@ -2,8 +2,6 @@
 
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { httpClient } from '../../http-client';
-import { router } from '../../router/router';
 import { PageMixin } from '../page.mixin';
 import componentStyle from './settings.css';
 
@@ -25,28 +23,18 @@ class SettingsComponent extends PageMixin(LitElement) {
         return html`<app-change-email></app-change-email>`;
       case 'change-password':
         return html`<app-change-password></app-change-password>`;
-    }
-  }
-
-  async deleteProfile() {
-    if (confirm('Do you really want to delete your profile?')) {
-      const response = await httpClient.delete('/delete');
-      if (response.status === 200) {
-        this.showNotification('Profile deleted');
-        router.navigate('/');
-      }
-    } else {
-      console.log('Cancelled');
+      case 'delete-profile':
+        return html`<app-delete-profile></app-delete-profile>`;
     }
   }
 
   render() {
     return html`${this.renderNotification()}
-      <div class="sidenav">
+      <div class="div">
         <a href="/mates/settings/edit-profile">Edit Profile</a>
         <a href="/mates/settings/change-email">Change Email</a>
         <a href="/mates/settings/change-password">Change Password</a>
-        <a @click=${this.deleteProfile}>Delete your profile</a>
+        <a href="/mates/settings/delete-profile">Delete profile</a>
       </div>
       <div class="main">${this.currentComponent()}</div> `;
   }

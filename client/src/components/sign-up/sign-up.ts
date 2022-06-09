@@ -42,7 +42,7 @@ class SignUpComponent extends PageMixin(LitElement) {
         });
       });
     } catch (e) {
-      console.log(e);
+      this.showNotification((e as Error).message, 'error');
     }
   }
 
@@ -117,7 +117,7 @@ class SignUpComponent extends PageMixin(LitElement) {
           this.showNotification((e as Error).message, 'error');
         }
       } else {
-        alert('Password does not match!');
+        this.showNotification('Password does not match!');
       }
     } else {
       this.form.reportValidity();

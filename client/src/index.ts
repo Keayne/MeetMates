@@ -28,3 +28,4 @@ import './components/sign-up/verify-code.ts';
 import './components/settings/settings.ts';
 import './components/settings/change-password.ts';
 import './components/settings/change-email.ts';
+import './components/settings/delete-profile.ts';
