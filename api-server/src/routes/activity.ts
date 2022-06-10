@@ -56,7 +56,11 @@ router.get('/findChosenActivity/:id', authService.authenticationMiddleware, asyn
   const filter: Partial<Activity> = { meetid: req.params.id, chosen: 1 };
   const activites = await activityDAO.findOne(filter);
 
-  res.status(200).json(activites);
+  if (activites) {
+    res.status(200).json(activites);
+  } else {
+    res.status(200).json({});
+  }
 });
 
 export default router;

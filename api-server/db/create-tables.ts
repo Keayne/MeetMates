@@ -27,7 +27,7 @@ type Mate = {
 async function createPsqlScheme(client: ClientType) {
   await client.connect();
   await client.query(
-    'drop table if exists matemeet, matedescription , mateinterest , meet,  mate, interest, matedescription, description, servicedata, activitymeet, activity, report cascade'
+    'drop table if exists matemeet, matedescription , mateinterest , meet,  mate, interest, matedescription, description, servicedata, activitymeet, chat, activity, report cascade'
   );
   await client.query(
     `create table meet(
@@ -153,7 +153,7 @@ async function createPsqlScheme(client: ClientType) {
       "createdAt" bigint not null,
       activityid Varchar(40) references activity(id) ON DELETE CASCADE, 
       userid Varchar(40) not null references mate(id) ON DELETE CASCADE,
-      rating int`
+      rating int)`
   );
   await client.query(
     `create table verify(

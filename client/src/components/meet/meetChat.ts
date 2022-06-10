@@ -1,10 +1,11 @@
 /* Autor: Jonathan Hüls */
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
 import { PageMixin } from '../page.mixin';
 import componentStyle from './meetChat.css';
 
 @customElement('meet-chat')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class MeetChatComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
 

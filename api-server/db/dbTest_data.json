@@ -67,33 +67,33 @@
   ],
   "mateMeet": [
     {
-      "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
-      "mateId": "bbb5f64e-f103-4090-9a23-b1bef47732b0"
+      "meetid": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
+      "mateid": "bbb5f64e-f103-4090-9a23-b1bef47732b0"
     },
     {
-      "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
-      "mateId": "eeab19ed-e87b-49a1-878e-e2a62494b050"
+      "meetid": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
+      "mateid": "eeab19ed-e87b-49a1-878e-e2a62494b050"
     },
     {
-      "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
-      "mateId": "3939bac7-f0ef-46ec-ac32-cecc98b4926f"
+      "meetid": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
+      "mateid": "3939bac7-f0ef-46ec-ac32-cecc98b4926f"
     },
 
     {
-      "meetId": "be8ce656-875a-4b56-8c7f-8b071fe87e01",
-      "mateId": "3939bac7-f0ef-46ec-ac32-cecc98b4926f"
+      "meetid": "be8ce656-875a-4b56-8c7f-8b071fe87e01",
+      "mateid": "3939bac7-f0ef-46ec-ac32-cecc98b4926f"
     },
     {
-      "meetId": "be8ce656-875a-4b56-8c7f-8b071fe87e01",
-      "mateId": "5376a8df-a292-460e-865b-27441f357398"
+      "meetid": "be8ce656-875a-4b56-8c7f-8b071fe87e01",
+      "mateid": "5376a8df-a292-460e-865b-27441f357398"
     },
     {
-      "meetId": "be8ce656-875a-4b56-8c7f-8b071fe87e01",
-      "mateId": "f552eaaf-8fa3-4319-b7af-8139cac8f35b"
+      "meetid": "be8ce656-875a-4b56-8c7f-8b071fe87e01",
+      "mateid": "f552eaaf-8fa3-4319-b7af-8139cac8f35b"
     },
     {
-      "meetId": "be8ce656-875a-4b56-8c7f-8b071fe87e01",
-      "mateId": "ce973cad-01dc-446d-894d-1bb966c7bfb8"
+      "meetid": "be8ce656-875a-4b56-8c7f-8b071fe87e01",
+      "mateid": "ce973cad-01dc-446d-894d-1bb966c7bfb8"
     }
   ],
   "interest": [
