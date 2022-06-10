@@ -63,7 +63,7 @@ class AppComponent extends LitElement {
         'chat/:id': params => html`<app-chat .room=${params.id}></app-chat>`,
         'meet': () => html`<app-your-meet></app-your-meet>`
       },
-      () => html`<landing-page></landing-page>`
+      () => html`<app-about></app-about>`
     );
   }
 

@@ -1,8 +1,110 @@
-/* Autor: Valentin Lieberknecht */
+/* Autor: Jonathan Hüls */
 
-.about-section {
-  padding: 50px;
-  text-align: center;
-  background-color: #474e5d;
-  color: white;
+.landingPage{
+  height: 100%;
+}
+
+@media (max-width: 600px) {
+  .quoteContainer{
+      background-color: var(--app-color-background);
+      min-width: 25%;
+      min-height: 33%;
+
+      align-items: center;
+      display: block;
+
+      margin-left: auto;
+      margin-right: auto;
+      padding: 3%;            
+  }
+}
+
+@media (min-width: 601px) {
+  .quoteContainer{
+      background-color: var(--app-color-background);
+      min-width: 25%;
+      min-height: 33%;
+
+      align-items: center;
+      justify-content: center;
+      display: flex;
+      padding: 3%;            
+  }
+}
+
+.quoteContainer > *{
+  margin:  16px;    
+}
+
+.quoteImg{
+
+  min-width:  150px;
+  min-height: 150px;
+
+  max-width:  150px;
+  max-height: 150px;
+
+  object-fit:cover;
+  object-position: right;
+
+  width: 100%;
+  height: 100%;
+  border-radius: 75px;
+  border: 1px;
+  border-color: var(--app-color-third);
+  border-style: solid;
+  margin-left: 5%;
+}
+
+
+.btnContainer{
+  background-color: var(--app-color-second);
+  min-width: 10%;
+  padding: 16px;
+ 
+  border: 1px double var(--app-color-third);;
+  border-radius: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .btnContainer {
+      max-width: 720px;
+
+      border-right-style: none;
+      border-left-style: none;
+      border-radius: 0px;
+  }    
+}
+
+
+.btnContainer > input{
+  background-color: var(--app-color-third);;
+  padding: 8px;
+
+  border-style: none;
+  border-radius: 16px;
+}
+
+.quoteAuthor{
+  font-style: italic;
+  right: 0;
+  margin: 8px;
+  margin-top: 16px;
+}
+
+
+#tryItBtn{
+  font: 16px sans-serif;
+  font-weight: 600; 
+  margin: auto;
+  transition: 0.2s ease-in;
+  border: 1px solid black;
+}
+#tryItBtn:hover {
+  -webkit-box-shadow: 6px 5px 15px 1px rgba(0,0,0,0.45); 
+  box-shadow: 6px 5px 15px 1px rgba(0,0,0,0.45);
 }
