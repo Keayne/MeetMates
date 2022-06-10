@@ -110,54 +110,50 @@ class FindActivityComponent extends PageMixin(LitElement) {
         <div class="activity-header">
           <h2>Available Activities</h2>
         </div>
-        <!-- Pop up -->
-        <button class="open-button" @click="${this.openForm}">Create Activity</button>
+        <!-- Filter Buttons -->
+        
+        <!-- Filter Buttons End -->
+
+        <!-- New Create Activity -->
+        <button class="open-button" @click="${this.openForm}">Create an activity</button>
         <div class="form-popup" id="myForm">
           <form @submit="${this.submit}" class="form-container">
-            <h1>New Activity</h1>
-
-            <label for="title"><b>Title</b></label>
-            <input type="text" placeholder="Enter Title" name="title" id="title" required autocomplete="false" />
-
-            <label for="description"><b>Description</b></label>
-            <input
+            <h2>New Activity</h2>
+            <label for="title"><b>Title</b></label><br>
+            <input type="text" placeholder="Your Title" name="title" id="title" required autocomplete="off" />
+            <br><label for="description"><b>Description</b></label><br>
+            <input 
               type="text"
-              placeholder="Enter Description"
+              placeholder="What is your activity?"
               name="description"
               id="description"
               required
-              autocomplete="false"
-            />
-
-            <label for="category">Choose a category:</label> <br />
+              autocomplete="off"
+            /><br>
+            <label for="category"><b>Choose a category</b></label><br>
             <select id="category" name="category" required>
               <option value="Sport">Sport</option>
               <option value="Entertainment">Entertainment</option>
               <option value="Drinking">Drinking</option>
               <option value="Other">Other</option></select
             ><br /><br />
-
             <label for="Image"><b>Image</b></label>
-            <input @change="${this.updateImage}" type="file" accept="image/png, image/jpeg" required />
-
+            <input @change="${this.updateImage}" type="file" accept="image/png, image/jpeg" required /><br>
             <img style="max-width: 200px; max-height: 200px" src="${this.imgSrc}" />
-
-            <label for="description"><b>Motivation Title</b></label>
+            <br><label for="description"><b>Motivation Title</b></label><br>
             <input
               type="text"
-              placeholder="Enter Motivation Title"
+              placeholder="Why should you do this together?"
               name="motivationTitle"
               id="motivationTitle"
               required
-              autocomplete="false"
-            />
-
-            <button type="submit" class="btn">Create Actitity</button>
+              autocomplete="off"
+            /><br>
+            <button type="submit" class="btn">Create Actitity</button><br>
             <button type="button" class="btn cancel" @click="${this.closeForm}">Close</button>
           </form>
         </div>
-        <!-- Pop up end-->
-        <!-- Filter Buttons -->
+          <!-- End New Create Activity -->
         <div id="myBtnContainer">
           <button class="btn active" @click=${() => this.selectFilter('all')}>All</button>
           <button class="btn" @click=${() => this.selectFilter('Highest Rating')}>Highest Rating</button>
@@ -165,23 +161,23 @@ class FindActivityComponent extends PageMixin(LitElement) {
           <button class="btn" @click=${() => this.selectFilter('Drinking')}>Drinking</button>
           <button class="btn" @click=${() => this.selectFilter('Sport')}>Sport</button>
         </div>
-        <!-- Filter Buttons End -->
-        <!-- Render Activities -->
-        ${repeat(
-          this.activityListLocal,
-          activity =>
-            html` <div class="activity-container">
+          <!-- Render Activities -->
+          ${repeat(
+            this.activityListLocal,
+            activity =>
+              html` <div class="activity-container">
               <div class="activity">
                 <activity-info 
                 .activity=${activity}></activity-info>
               </div>
               <div class="activity" class="rating">
                 <activity-rating .activity=${activity} .activityId=${activity.id} @appactivityremoveclick=${() =>
-              this.deleteActivity(activity)}></activity-rating>
+                this.deleteActivity(activity)}></activity-rating>
               </div>
             </div>
         </div>`
-        )}
+          )}
+        </div>
       </div>`;
   }
 
@@ -214,7 +210,8 @@ class FindActivityComponent extends PageMixin(LitElement) {
   }
 
   openForm() {
-    this.myForm.style.display = 'block';
+    if (this.myForm.style.display === '' || this.myForm.style.display === 'none') this.myForm.style.display = 'block';
+    else this.myForm.style.display = 'none';
   }
 
   closeForm() {

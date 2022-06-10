@@ -5,6 +5,7 @@
   flex-direction: column;
   align-items: center;
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .rating {
@@ -12,69 +13,56 @@
 }
 
 .activity:nth-child(even) {
-  margin-left: 1rem;
+  margin-left: 16px;
 }
 
 .activity-container {
-  margin-top: 1rem;
+  /* Change flex direction to column when too small*/
+  margin-top: 16px;
   display: flex;
   align-items: center;
   flex-direction: row;
 }
 
 .activity-container:last-child {
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
 }
 
 .activity-header {
   background-color: #ffc0cb;
-  border-radius: 0.5rem;
+  border-radius: 8px;
   align-items: center;
 
-  min-width: 40rem;
-  height: 3rem;
+  width: 50%;
+  height: 48px;
   display: inline-flex;
   justify-content: center;
 }
 
 /* Popup Initial Source: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_popup_form*/
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
-* {
-  box-sizing: border-box;
-}
-
 /* Button used to open the contact form - fixed at the bottom of the page */
 .open-button {
   background-color: #555;
+  width: 50%;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border-radius: 8px;
   color: white;
   padding: 16px 20px;
   border: none;
   cursor: pointer;
   opacity: 0.8;
-  position: fixed;
-  bottom: 23px;
-  right: 28px;
-  width: 280px;
+}
+
+.form-container {
+  width: 100%;
 }
 
 /* The popup form - hidden by default */
 .form-popup {
   display: none;
-  position: fixed;
-  bottom: 0;
-  right: 15px;
-  border: 3px solid #f1f1f1;
-  z-index: 9;
-}
-
-/* Add styles to the form container */
-.form-container {
-  max-width: 300px;
-  padding: 10px;
-  background-color: white;
+  position: relative;
 }
 
 /* Full-width input fields */
@@ -85,18 +73,19 @@ body {
   margin: 5px 0 22px 0;
   border: none;
   background: #f1f1f1;
+  border-radius: 8px;
 }
 
-/* When the inputs get focus, do something */
+/* When the inputs get focus..*/
 .form-container input[type='text']:focus,
 .form-container input[type='password']:focus {
-  background-color: #ddd;
+  background-color: var(--app-bright-color);
   outline: none;
 }
 
-/* Set a style for the submit/login button */
+/* Set style for create-activity button */
 .form-container .btn {
-  background-color: #04aa6d;
+  background-color: var(--app-primary-color);
   color: white;
   padding: 16px 20px;
   border: none;
@@ -108,7 +97,7 @@ body {
 
 /* Add a red background color to the cancel button */
 .form-container .cancel {
-  background-color: red;
+  background-color: var(--app-error-color);
 }
 
 /* Add some hover effects to buttons */
@@ -145,7 +134,7 @@ body {
   padding: 12px 16px;
   background-color: #f1f1f1;
   cursor: pointer;
-  border-radius: 0.5rem;
+  border-radius: 8px;
 }
 
 .btn:hover {

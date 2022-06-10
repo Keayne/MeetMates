@@ -28,7 +28,6 @@ class CardComponent extends PageMixin(LitElement) {
             <div class="card-content">${this.activity.description}</div>
             <span class="tooltiptext">${this.activity.tooltip}</span>
           </div>
-          <span class="remove-task" @click="${() => this.emit('appactivityremoveclick')}">Delete this activity</span>
         </div>
       </div>
     `;

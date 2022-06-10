@@ -2,22 +2,22 @@
   display: block;
   overflow: hidden;
   box-sizing: border-box;
-  border-radius: 0.75rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 .card-body {
-  margin: 1rem 1rem;
+  margin: 16px 16px;
 }
 .card-image {
   max-width: 100%;
 }
 .card-title {
-  margin-bottom: 0.5rem;
-  font-size: 1.25rem;
+  margin-bottom: 8px;
+  font-size: 20px;
   color: #0093d1;
 }
 .card-content {
-  font-size: 1rem;
+  font-size: 16px;
   color: #777;
 }
 

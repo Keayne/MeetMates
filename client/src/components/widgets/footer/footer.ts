@@ -18,7 +18,6 @@ class FooterComponent extends LitElement {
       <div class="footer-left">
         <p class="footer-links">
           <a class="link-1" href="#">Home</a>
-          <a href="#">FAQ</a>
           <a href="about">About</a>
         </p>
         <p>Meet Mates &copy; 2022</p>

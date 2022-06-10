@@ -26,6 +26,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
       this.rating = (await responseRating.json()).results;
       const responseRatingAll = await httpClient.get(`rating/findAverageRating/${this.activity.id}` + location.search);
       this.avgRating = (await responseRatingAll.json()).results;
+      this.sliderValue = String(this.rating.rating);
     } catch (e) {
       this.showNotification((e as Error).message, 'error');
     } finally {
@@ -74,6 +75,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
   }
 
   async saveSliderValueToDb() {
+    console.log(this.sliderValue);
     const partialRating: Partial<Rating> = {
       activityid: this.activity.id,
       rating: Number(this.sliderValue) //userID is not included here as it is being provided by the auth Middleware on patch request.
