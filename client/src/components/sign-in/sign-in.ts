@@ -21,25 +21,29 @@ class SignInComponent extends PageMixin(LitElement) {
   render() {
     return html`
       ${this.renderNotification()}
-      <h1>Anmelden</h1>
-      <h3>Du hast noch kein Konto? <a href="mates/sign-up">Hier Registrieren</a></h3>
+      <h1>Login</h1>
+      <h3>Don't have an account? <a href="mates/sign-up">Sign up here</a></h3>
 
       <!--Login Form-->
       <form>
         <div>
           <label for="email">E-Mail</label>
+          <br />
           <input id="email" type="email" placeholder="E-Mail" autofocus required id="email" />
         </div>
+
         <div>
-          <label for="password">Passwort</label>
-          <input type="password" placeholder="Passwort" required id="password" />
+          <label for="password">Password</label>
+          <br />
+          <input type="password" placeholder="Password" required id="password" />
           <!-- TODO: remove autofillbehaviour from browser-->
         </div>
         <div>
-          <button type="button" @click="${this.submit}">Anmelden</button>
+          <button type="button" @click="${this.submit}">Login</button>
         </div>
         <div>
-          <p>Passwort <a href="mates/reset">vergessen</a>?</p>
+          <p>Forgot your password?</p>
+          <p>Click <a href="mates/reset">here</a>!</p>
         </div>
       </form>
     `;

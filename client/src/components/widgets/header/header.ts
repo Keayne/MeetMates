@@ -1,7 +1,7 @@
 /* Autor: Arne Schaper */
 
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 
 import componentStyle from './header.css';
 
@@ -11,21 +11,25 @@ class HeaderComponent extends LitElement {
   static styles = componentStyle;
 
   @property({ type: Array }) headerOptions: Array<{ title: string; routePath: string }> = [];
+  @state() menuOpen = false;
+
+  openMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
+  closeMenu() {
+    this.menuOpen = false;
+  }
 
   render() {
     return html`
-      <div class="header">
-        <div class="innerHeader">
-          <div class="logoContainer">
-            <a href="/">
-              <img class="logo" src="meetmates.png" style="width:50px;height:50px;" />
-            </a>
-          </div>
-          <ol class="navigation">
-            ${this.headerOptions.map(linkItem => html`<li><a href="${linkItem.routePath}">${linkItem.title}</a></li>`)}
-          </ol>
-        </div>
-      </div>
+      <img class="logo" src="meetmates.png" style="width:50px;height:50px;" />
+      <span class="menu-button" @click="${this.openMenu}"></span>
+      <ol ?open=${this.menuOpen}>
+        ${this.headerOptions.map(
+          linkItem => html`<li><a href="${linkItem.routePath}" @click=${this.closeMenu}>${linkItem.title}</a></li>`
+        )}
+      </ol>
     `;
   }
 }

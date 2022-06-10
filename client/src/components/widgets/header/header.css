@@ -1,29 +1,35 @@
 /* Autor: Arne Schaper */
+:host {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 
-.header {
-  top: 0;
-  width: 100%;
-  display: inline-block;
   position: sticky;
-  background-color: #315895;
-  z-index: 10;
+  top: 0;
+  margin: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 1px;
+  padding-bottom: 0px;
+  background-color: var(--app-primary-color);
+  color: white;
 }
 
-.innerHeader {
-  height: 50px;
-  display: flex;
-  margin: 0 auto;
-  line-height: 50px;
+.logo {
+  /* Center Logo (50px wide) -> 25px + 10px padding left of header*/
+  margin-left: calc(50% - 35px);
+  border-radius: 10px;
 }
 
-.logoContainer {
-  display: inline-block;
-  margin-left: calc(50% - 25px);
+a {
+  text-decoration: none;
+  color: white;
+  font-family: 'Open Sans', sans-serif;
 }
 
-.navigation {
-  display: flex;
-  margin-left: auto;
+a:hover {
+  color: var(--app-error-color);
 }
 
 ol {
@@ -38,17 +44,51 @@ ol a {
   display: inline-block;
 }
 
-a {
-  text-decoration: none;
-  color: rgb(255, 255, 255);
-  justify-content: center;
-}
+@media (max-width: 500px) {
+  /* mobile layout*/
+  ol {
+    flex-basis: 100%;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-direction: column;
+    align-items: center;
+  }
 
-a li {
-  text-align: center;
-  vertical-align: bottom;
-}
+  /* Ensure last redirect is not bottom of opened menu/header*/
+  ol:last-child {
+    margin-bottom: 10px;
+  }
 
-a:hover {
-  color: #83a5c2;
+  ol a {
+    padding-top: 0.75rem;
+  }
+
+  ol:not([open]) {
+    display: none;
+  }
+
+  /* Space between redirects */
+  li:first-child a {
+    padding-top: 16px;
+  }
+  li:last-child a {
+    padding-bottom: 0;
+  }
+
+  .menu-button {
+    display: inline;
+    font-size: 1.25rem;
+    user-select: none;
+    padding: 0;
+    margin: 0;
+    line-height: 1.25rem;
+  }
+
+  .menu-button::before {
+    content: '☰';
+  }
+
+  .menu-button:not(:disabled) {
+    cursor: pointer;
+  }
 }
