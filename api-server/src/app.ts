@@ -55,6 +55,9 @@ export async function start() {
   configureApp(app);
   const stopDB = await startDB(app);
   const stopHttpServer = await startHttpServer(app, config.server.port);
+
+  if (process.env.MEETMATES_MODE === 'TESTING') app.locals.testing = true;
+
   return async () => {
     await stopHttpServer();
     await stopDB();

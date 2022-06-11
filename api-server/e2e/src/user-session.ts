@@ -1,4 +1,4 @@
-/* Autor: Prof. Dr. Norman Lahme-Hütig (FH Münster) */
+/* Autor: Valentin Lieberknecht */
 
 import fetch, { RequestInit, Response } from 'node-fetch';
 import { v4 as uuidv4 } from 'uuid';
@@ -6,7 +6,11 @@ import config from './config.js';
 
 export class UserSession {
   name: string;
+  firstname: string;
   email: string;
+  birthday: string;
+  gender: string;
+  image: string;
   password: string;
   token?: string;
 
@@ -15,8 +19,12 @@ export class UserSession {
   constructor() {
     const uuid = uuidv4();
     this.name = `name_${uuid}`;
+    this.firstname = `firstname_${uuid}`;
     this.email = `email_${uuid}@example.org`;
-    this.password = `pw_${uuid}`;
+    this.birthday = '2022-04-26';
+    this.gender = 'diverse';
+    this.image = 'data:image/png;base64,iV';
+    this.password = `pw_${uuid}A`;
   }
 
   get(url: string) {
@@ -44,18 +52,30 @@ export class UserSession {
   }
 
   signUpData() {
-    return { name: this.name, email: this.email, password: this.password, passwordCheck: this.password };
+    return {
+      name: this.name,
+      firstname: this.firstname,
+      email: this.email,
+      birthday: this.birthday,
+      gender: this.gender,
+      image: this.image,
+      password: this.password,
+      passwordCheck: this.password,
+      interests: [],
+      descriptions: []
+    };
   }
 
   async registerUser() {
-    await this.post('users', this.signUpData());
+    const res = await this.post('sign-up', this.signUpData());
+
     if (!this.hasCookie('jwt-token')) {
       throw new Error('Failed to extract jwt-token');
     }
   }
 
   async deleteUser() {
-    await this.delete('users');
+    await this.delete('delete');
     this.clearCookies();
   }
 

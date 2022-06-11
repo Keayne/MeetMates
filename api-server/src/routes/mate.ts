@@ -99,6 +99,7 @@ router.post('/sign-up', async (req, res) => {
     mateDAO.update({ id: createdUser.id, active: true, email: req.body.email });
     authService.createAndSetToken({ id: createdUser.id }, res);
     res.status(201).send({ message: 'logged-in with test account!' });
+    return;
   }
 
   //Create VerifyToken

@@ -2,5 +2,5 @@
   "client": "http://localhost:8082/app",
   "server": "http://localhost:3000/api",
   "headless": false,
-  "slowMo": 100
+  "slowMo": 0
 }
