@@ -13,7 +13,6 @@ class ResetPasswordComponent extends PageMixin(LitElement) {
     form {
       max-width: 600px;
       margin: 30px auto;
-      background: white;
       text-align: left;
       border-radius: 10px;
     }
