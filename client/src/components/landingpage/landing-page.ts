@@ -14,9 +14,7 @@ class AboutComponent extends PageMixin(LitElement) {
     return html`${this.renderNotification()}
       <div class="landingPage">
         <div class="quoteContainer">
-          <div>
-            <img class="quoteImg" src="/arne.jpg" />
-          </div>
+          <img class="quoteImg" src="/arne.jpg" />
           <div>
             <span>
               Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
@@ -34,9 +32,7 @@ class AboutComponent extends PageMixin(LitElement) {
         </div>
 
         <div class="quoteContainer">
-          <div>
-            <img class="quoteImg" src="/valentin.jpg" />
-          </div>
+          <img class="quoteImg" src="/valentin.jpg" />
           <div>
             <span>
               Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
@@ -50,9 +46,7 @@ class AboutComponent extends PageMixin(LitElement) {
         </div>
 
         <div class="quoteContainer">
-          <div>
-            <img class="quoteImg" src="/jonathan.jpg" />
-          </div>
+          <img class="quoteImg" src="/jonathan.jpg" />
           <div>
             <span>
               Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
