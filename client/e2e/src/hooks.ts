@@ -6,6 +6,7 @@ import { exec } from 'child_process';
 import { fileURLToPath } from 'url';
 
 export const mochaHooks = async () => {
+  process.env.MEETMATES_MODE = 'TESTING';
   const childProcesses = await Promise.all([
     startServer('api-server', 'http://localhost:3000'),
     startServer('web-server', 'http://localhost:8082')

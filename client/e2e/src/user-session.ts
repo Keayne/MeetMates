@@ -1,29 +1,29 @@
-/* Autor: Arne Schaper */
+/* Autor: Valentin Lieberknecht */
 
 import fetch from 'node-fetch';
-import { v4 as uuidv4 } from 'uuid';
 import { BrowserContext } from 'playwright';
+import { v4 as uuidv4 } from 'uuid';
 import config from './config.js';
 
 export class UserSession {
-  firstname: string;
   name: string;
-  gender: string;
-  birthday: string;
+  firstname: string;
   email: string;
-  password: string;
+  birthday: string;
+  gender: string;
   image: string;
+  password: string;
   token?: string;
 
   constructor(public context: BrowserContext) {
     const uuid = uuidv4();
-    this.firstname = `firstname_${uuid}`;
     this.name = `name_${uuid}`;
-    this.gender = `Female`;
-    this.birthday = `25.04.1940`;
-    this.image = '';
+    this.firstname = `firstname_${uuid}`;
     this.email = `email_${uuid}@example.org`;
-    this.password = `pw_${uuid}`;
+    this.birthday = '2022-04-26';
+    this.gender = 'diverse';
+    this.image = 'data:image/png;base64,iV';
+    this.password = `pw_${uuid}A`;
   }
 
   signInData() {
@@ -32,14 +32,16 @@ export class UserSession {
 
   signUpData() {
     return {
-      firstname: this.firstname,
       name: this.name,
-      gender: this.gender,
-      birthday: this.birthday,
-      image: this.image,
+      firstname: this.firstname,
       email: this.email,
+      birthday: this.birthday,
+      gender: this.gender,
+      image: this.image,
       password: this.password,
-      passwordCheck: this.password
+      passwordCheck: this.password,
+      interests: [],
+      descriptions: []
     };
   }
 
@@ -49,6 +51,7 @@ export class UserSession {
       body: JSON.stringify(this.signUpData()),
       headers: { 'Content-Type': 'application/json' }
     });
+
     const cookie = response.headers.raw()['set-cookie'].find(cookie => cookie.startsWith('jwt-token'));
     if (!cookie) {
       throw new Error('Failed to extract jwt-token');
@@ -61,7 +64,7 @@ export class UserSession {
   }
 
   async deleteUser() {
-    const response = await fetch(config.serverUrl(''), {
+    const response = await fetch(config.serverUrl('delete'), {
       method: 'DELETE',
       headers: { Cookie: `jwt-token=${this.token}` }
     });

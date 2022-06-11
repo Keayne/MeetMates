@@ -6,6 +6,7 @@ let stopServer: () => Promise<void>;
 
 export const mochaHooks = {
   async beforeAll() {
+    process.env.MEETMATES_MODE = 'TESTING';
     stopServer = await startServer();
   },
   async afterAll() {
