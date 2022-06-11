@@ -15,6 +15,7 @@ import bcrypt from 'bcryptjs';
 interface FullMeet {
   id: string;
   name: string;
+  opened: boolean;
   activityId: string;
   mates: ReturnMate[];
 }
@@ -76,7 +77,7 @@ router.get('/', authService.authenticationMiddleware, async (req, res) => {
             });
           });
         }
-        return { id: meet.id, name: meet.name, activityId: meet.activityId, mates: rMates };
+        return { id: meet.id, name: meet.name, activityId: meet.activityId, opened: mateMeet.opened, mates: rMates };
       })
     )
   ).filter(fullMeet => !!fullMeet) as FullMeet[];

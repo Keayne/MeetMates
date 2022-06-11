@@ -60,7 +60,7 @@ router.get('/:id', authService.authenticationMiddleware, async (req, res) => {
   if (mateMeet === null) {
     return null;
   }
-  //Build all Meets with Mates
+  //Build Meet with Mates
   const meet: Meet | null = await meetDAO.findOne({ id: mateMeet!.meetid });
   let mates: Mate[];
   const rMates: ReturnMate[] = [];
@@ -92,12 +92,20 @@ router.get('/:id', authService.authenticationMiddleware, async (req, res) => {
   });
 
   if (!meet) {
-    res.status(400).json({ message: `Es existiert kein Meet mit der ID : ${req.body.meetId} ` });
+    res.status(400).json({ message: `Es existiert kein Meet mit der ID : ${meetId} ` });
   } else {
     const fullMeet: FullMeet = { id: meet.id, name: meet.name, activityId: meet.activityId, mates: rMates };
     res.status(201).json(fullMeet);
+    setMeetAsOpened(meetId, mateId, matemeetDAO);
   }
 });
+
+async function setMeetAsOpened(meetId: string, mateId: string, matemeetDAO: UniversalDAO<MateMeet>) {
+  const opened = await matemeetDAO.update({ opened: true }, [
+    { key: 'mateid', value: mateId },
+    { key: 'meetid', value: meetId }
+  ]);
+}
 
 router.post('/changeName', authService.authenticationMiddleware, async (req, res) => {
   //console.log(`User: ${res.locals.user.id} change Name from Meet: ${req.body.meetId} to "${req.body.name}"`);

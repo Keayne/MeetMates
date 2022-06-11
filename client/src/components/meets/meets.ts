@@ -11,6 +11,7 @@ import componentStyle from './meets.css';
 interface Meet {
   id: string;
   name: string;
+  opened: boolean;
   mates: Mate[];
 }
 interface Mate {
@@ -27,12 +28,22 @@ class MeetsComponent extends PageMixin(LitElement) {
   @property({ type: Array }) private meets: Array<Meet> = [];
   @state() private new: Meet[] = [];
 
+  private oldMeets: Meet[] = [];
+  private newMeets: Meet[] = [];
+
   async firstUpdated() {
     try {
       this.startAsyncInit();
       const response = await httpClient.get('/meets' + location.search);
       this.meets = await response.json();
-      //console.log(this.meets);
+
+      this.meets.forEach(meet => {
+        if (meet.opened) {
+          this.oldMeets.push(meet);
+        } else {
+          this.newMeets.push(meet);
+        }
+      });
     } catch (err) {
       if ((err as { statusCode: number }).statusCode === 401) {
         router.navigate('mates/sign-in');
@@ -45,10 +56,14 @@ class MeetsComponent extends PageMixin(LitElement) {
   render() {
     return html`${this.renderNotification()}
       <div class="meets">
-        <div class="meets-header">
-          <h2>Your Meets</h2>
-        </div>
-        <div class="meets-body">${repeat(this.meets, meet => html`<meets-meet .meet=${meet} />`)}</div>
+        ${this.newMeets.length > 0
+          ? html`<div class="meets-header"><h2>New Meets</h2></div>
+              <div class="meets-body">${repeat(this.newMeets, meet => html`<meets-meet .meet=${meet} />`)}</div>`
+          : html``}
+        ${this.oldMeets.length > 0
+          ? html`<div class="meets-header"><h2>Your Meets</h2></div>
+              <div class="meets-body">${repeat(this.oldMeets, meet => html`<meets-meet .meet=${meet} />`)}</div>`
+          : html``}
       </div>`;
   }
 }
