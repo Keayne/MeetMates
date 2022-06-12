@@ -13,7 +13,7 @@ router.get('/:id', authService.authenticationMiddleware, async (req, res) => {
   const filter: Partial<Activity> = { meetid: req.params.id };
   const activites = await activityDAO.findAll(filter);
   for (const e of activites) {
-    e.image = Buffer.from(e.image).toString();
+    e.image = Buffer.from(e.image as string).toString();
   }
   res.json({ results: activites });
 });

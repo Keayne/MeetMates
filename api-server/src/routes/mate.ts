@@ -11,7 +11,6 @@ import { MateInterest } from '../models/mateinterest.js';
 import { UniversalDAO } from '../models/universal.dao.js';
 import { Verify } from '../models/verify.js';
 import { emailService } from '../services/email.service.js';
-import { resolveSoa } from 'dns';
 
 const router = express.Router();
 

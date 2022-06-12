@@ -75,7 +75,6 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
   }
 
   async saveSliderValueToDb() {
-    console.log(this.sliderValue);
     const partialRating: Partial<Rating> = {
       activityid: this.activity.id,
       rating: Number(this.sliderValue) //userID is not included here as it is being provided by the auth Middleware on patch request.
