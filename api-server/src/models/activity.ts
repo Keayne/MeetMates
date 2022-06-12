@@ -11,4 +11,5 @@ export interface Activity extends Entity {
   meetid: string;
   image?: string;
   category: string;
+  deletepermission: boolean;
 }

@@ -11,9 +11,12 @@ const router = express.Router();
 router.get('/:id', authService.authenticationMiddleware, async (req, res) => {
   const activityDAO: GenericDAO<Activity> = req.app.locals.activityDAO;
   const filter: Partial<Activity> = { meetid: req.params.id };
+  const mateId = res.locals.user.id;
   const activites = await activityDAO.findAll(filter);
   for (const e of activites) {
     e.image = Buffer.from(e.image as string).toString();
+    if (mateId === e.tooltipcreatedby) e.deletepermission = true;
+    else e.deletepermission = false;
   }
   res.json({ results: activites });
 });
@@ -33,7 +36,8 @@ router.post('/:id', authService.authenticationMiddleware, async (req, res) => {
     chosen: 0,
     meetid: req.params.id,
     image: req.body.image,
-    category: req.body.category
+    category: req.body.category,
+    deletepermission: true
   });
   res.status(201).json(createdActivity);
 });
