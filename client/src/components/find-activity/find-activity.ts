@@ -71,6 +71,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
       this.description.value = '';
       this.motivationTitle.value = '';
       this.category.value = '';
+      this.imgSrc = ''; //only clears preview of image
       //this.image = ''; TODO
       //emty fields of form end
       this.activityList = [...this.activityList, activity]; //append activity to screen so user does not have to reload the page to see the activity
@@ -211,7 +212,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
                 .activity=${activity}></activity-info>
               </div>
               <div class="activity" class="rating">
-                <activity-rating .activity=${activity} .activityId=${activity.id} @appactivityremoveclick=${() =>
+                <activity-rating .activity=${activity} @appactivityremoveclick=${() =>
                 this.deleteActivity(activity)}></activity-rating>
               </div>
             </div>
@@ -237,8 +238,8 @@ class FindActivityComponent extends PageMixin(LitElement) {
       this.btn1.style.backgroundColor = 'grey';
     } else if (category === 'Highest Rating') {
       this.btn2.style.backgroundColor = 'grey';
-      this.activityListLocal = this.activityList;
-      this.activityListLocal.sort((a, b) => (a.avgRating < b.avgRating ? 1 : -1));
+      this.activityListLocal = [...this.activityList];
+      this.activityListLocal = this.activityListLocal.sort((a, b) => (a.avgRating < b.avgRating ? 1 : -1));
     } else {
       this.activityListLocal = this.activityList.filter(activity => activity.category === category);
       if (category === 'Entertainment') this.btn3.style.backgroundColor = 'grey';

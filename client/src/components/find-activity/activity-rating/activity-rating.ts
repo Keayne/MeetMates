@@ -14,17 +14,14 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
 
   @property({ reflect: true }) activity = {} as Actitity;
   @property() rating = {} as Rating;
-  @property() avgRating = 0;
   @property() sliderValue = '0';
   @query('#deleteButton') private deleteButton!: HTMLImageElement;
 
-  async firstUpdated() {
+  async updated() {
     try {
       this.startAsyncInit();
       const responseRating = await httpClient.get(`rating/findOne/${this.activity.id}` + location.search);
       this.rating = (await responseRating.json()).results;
-      const responseRatingAll = await httpClient.get(`rating/findAverageRating/${this.activity.id}` + location.search);
-      this.avgRating = (await responseRatingAll.json()).results;
       this.sliderValue = String(this.rating.rating ? this.rating.rating : '0');
       if (this.activity.deletepermission === false) this.deleteButton.style.display = 'none';
     } catch (e) {
@@ -40,7 +37,15 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
         <p>${this.activity.motivationtitle}</p>
         <div class="slidecontainer">
           <label for="overallRating">Overall Rating</label>
-          <input type="range" min="0" max="100" value=${this.avgRating} class="slider" id="overallRating" disabled />
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value=${this.activity.avgRating}
+            class="slider"
+            id="overallRating"
+            disabled
+          />
         </div>
         <div class="slidecontainer">
           <label for="myRating">My Rating</label>
@@ -88,13 +93,12 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
   async saveSliderValueToDb() {
     const partialRating: Partial<Rating> = {
       activityid: this.activity.id,
-      rating: Number(this.sliderValue) //userID is not included here as it is being provided by the auth Middleware on patch request.
+      rating: Number(this.activity.personalRating) //userID is not included here as it is being provided by the auth Middleware on patch request.
     };
-    await httpClient.patch(`rating/${this.activity.id}` + location.search, partialRating);
+    await httpClient.patch(`rating/${this.activity.id}${location.search}`, partialRating);
     const responseRatingAll = await httpClient.get(`rating/findAverageRating/${this.activity.id}` + location.search);
-    this.avgRating = (await responseRatingAll.json()).results;
+    this.activity.avgRating = (await responseRatingAll.json()).results;
     this.activity.personalRating = this.rating.rating;
-    this.activity.avgRating = this.avgRating;
   }
 
   emit(eventType: string, eventData = {}) {
