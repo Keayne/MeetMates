@@ -7,6 +7,10 @@
     {
       "id": "be8ce656-875a-4b56-8c7f-8b071fe87e01",
       "name": "Kitchen Faries"
+    },
+    {
+      "id": "4858064b-a1b3-46c1-b883-356e13fa02f3",
+      "name": "Flying Bird"
     }
   ],
   "mates": [
@@ -93,6 +97,18 @@
     },
     {
       "meetid": "be8ce656-875a-4b56-8c7f-8b071fe87e01",
+      "mateid": "ce973cad-01dc-446d-894d-1bb966c7bfb8"
+    },
+    {
+      "meetid": "4858064b-a1b3-46c1-b883-356e13fa02f3",
+      "mateid": "3939bac7-f0ef-46ec-ac32-cecc98b4926f"
+    },
+    {
+      "meetid": "4858064b-a1b3-46c1-b883-356e13fa02f3",
+      "mateid": "bbb5f64e-f103-4090-9a23-b1bef47732b0"
+    },
+    {
+      "meetid": "4858064b-a1b3-46c1-b883-356e13fa02f3",
       "mateid": "ce973cad-01dc-446d-894d-1bb966c7bfb8"
     }
   ],
@@ -335,6 +351,30 @@
       "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
       "image": "",
       "category": "Drinking"
+    },
+    {
+      "id": "7d8c01ca-da74-4d28-84e9-f000e9e31826",
+      "title": "Trink was im Blauen Haus",
+      "description": "Get Together - mit Getränk aber bitte.",
+      "tooltip": "2022/05/29",
+      "tooltipCreatedBy": "3939bac7-f0ef-46ec-ac32-cecc98b4926",
+      "motivationTitle": "Trinkst du mit?",
+      "chosen": 0,
+      "meetId": "4858064b-a1b3-46c1-b883-356e13fa02f3",
+      "image": "",
+      "category": "Drinking"
+    },
+    {
+      "id": "d126d8e7-33ea-4ebd-9cd2-0a41fd3ca719",
+      "title": "Tennis",
+      "description": "Spiel mit einem gelben Ball.",
+      "tooltip": "2022/05/29",
+      "tooltipCreatedBy": "bbb5f64e-f103-4090-9a23-b1bef47732b0",
+      "motivationTitle": "Spielen wir Tennis?",
+      "chosen": 0,
+      "meetId": "4858064b-a1b3-46c1-b883-356e13fa02f3",
+      "image": "",
+      "category": "Sport"
     }
   ],
   "rating": [
@@ -347,6 +387,16 @@
       "activityId": "94e5ac29-4b85-4bef-8238-f8a1e2b13a6d",
       "userId": "eeab19ed-e87b-49a1-878e-e2a62494b050",
       "rating": 2
+    },
+    {
+      "activityId": "d126d8e7-33ea-4ebd-9cd2-0a41fd3ca719",
+      "userId": "ce973cad-01dc-446d-894d-1bb966c7bfb8",
+      "rating": 100
+    },
+    {
+      "activityId": "d126d8e7-33ea-4ebd-9cd2-0a41fd3ca719",
+      "userId": "3939bac7-f0ef-46ec-ac32-cecc98b4926f",
+      "rating": 80
     }
   ]
 }

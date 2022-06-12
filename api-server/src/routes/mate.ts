@@ -11,6 +11,7 @@ import { MateInterest } from '../models/mateinterest.js';
 import { UniversalDAO } from '../models/universal.dao.js';
 import { Verify } from '../models/verify.js';
 import { emailService } from '../services/email.service.js';
+import { resolveSoa } from 'dns';
 
 const router = express.Router();
 
@@ -351,6 +352,14 @@ router.delete('/delete', authService.authenticationMiddleware, async (req, res) 
 
   authService.removeToken(res);
   res.status(200).end();
+});
+
+router.get('/getName/:id', authService.authenticationMiddleware, async (req, res) => {
+  const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
+  const mate = await mateDAO.findOne({ id: res.locals.user.id });
+
+  if (!mate) return res.status(503).send('Could not found user in db');
+  res.status(200).json({ message: mate.name });
 });
 
 function hasRequiredFields(object: { [key: string]: unknown }, requiredFields: string[], errors: string[]) {

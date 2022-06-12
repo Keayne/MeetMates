@@ -29,6 +29,7 @@
 }
 
 .activity-header {
+  margin-top: 8px;
   background-color: #ffc0cb;
   border-radius: 8px;
   align-items: center;
@@ -141,7 +142,36 @@
   background-color: #ddd;
 }
 
-.btn.active {
-  background-color: #666;
-  color: white;
+@media (max-width: 680px) {
+  .activity-header {
+    background-color: #ffc0cb;
+    border-radius: 8px;
+    align-items: center;
+
+    width: 100%;
+    height: 48px;
+    display: inline-flex;
+    justify-content: center;
+  }
+
+  .open-button {
+    background-color: #555;
+    width: 100%;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    opacity: 0.8;
+  }
+
+  .activity-container {
+    /* Change flex direction to column when too small*/
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
 }
