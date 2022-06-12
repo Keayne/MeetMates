@@ -1,7 +1,7 @@
 /* Autor: Arne Schaper */
 
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, query } from 'lit/decorators.js';
 import { httpClient } from '../../../http-client';
 import { PageMixin } from '../../page.mixin';
 import { Actitity, Rating } from '../find-activity';
@@ -16,10 +16,10 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
   @property() rating = {} as Rating;
   @property() avgRating = 0;
   @property() sliderValue = '0';
-
-  //TODO: Save slider values on change, make sure this works on new activities as well, update db script to include images, add/delete for activities
+  @query('#deleteButton') private deleteButton!: HTMLImageElement;
 
   async firstUpdated() {
+    console.log(this.activity.deletepermission);
     try {
       this.startAsyncInit();
       const responseRating = await httpClient.get(`rating/findOne/${this.activity.id}` + location.search);
@@ -27,6 +27,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
       const responseRatingAll = await httpClient.get(`rating/findAverageRating/${this.activity.id}` + location.search);
       this.avgRating = (await responseRatingAll.json()).results;
       this.sliderValue = String(this.rating.rating);
+      if (this.activity.deletepermission === false) this.deleteButton.style.display = 'none';
     } catch (e) {
       this.showNotification((e as Error).message, 'error');
     } finally {
@@ -59,6 +60,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
             src="/deleteicon.png"
             style="width:60px;height:50px;"
             alt="update"
+            id="deleteButton"
             @click="${() => this.emit('appactivityremoveclick')}"
           />
         </div>

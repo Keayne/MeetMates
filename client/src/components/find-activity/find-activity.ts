@@ -19,6 +19,7 @@ export interface Actitity {
   category: string;
   personalRating: number;
   avgRating: number;
+  deletepermission: boolean;
 }
 
 export interface Rating {
@@ -99,6 +100,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
           activity.tooltipcreatedby = await this.updateAuthor(activity.tooltipcreatedby);
         })
       );
+      console.log(this.activityList);
       this.activityListLocal = this.activityList;
       this.btn1.style.backgroundColor = 'grey'; //preselect all filter
     } catch (e) {
