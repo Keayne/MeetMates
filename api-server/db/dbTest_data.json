@@ -326,7 +326,8 @@
       "chosen": 0,
       "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
       "image": "",
-      "category": "Sport"
+      "category": "Sport",
+      "deletepermission": "false"
     },
     {
       "id": "7bb91ff4-82d8-46f3-8007-44d8f6e122cb",
@@ -338,7 +339,8 @@
       "chosen": 0,
       "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
       "image": "",
-      "category": "Entertainment"
+      "category": "Entertainment",
+      "deletepermission": "false"
     },
     {
       "id": "e63601db-0863-420e-82a6-5f9e5fb7fe6d",
@@ -350,7 +352,8 @@
       "chosen": 0,
       "meetId": "0ea6639d-c6d5-4030-bb1b-e687ecb850fb",
       "image": "",
-      "category": "Drinking"
+      "category": "Drinking",
+      "deletepermission": "false"
     },
     {
       "id": "7d8c01ca-da74-4d28-84e9-f000e9e31826",
@@ -362,7 +365,8 @@
       "chosen": 0,
       "meetId": "4858064b-a1b3-46c1-b883-356e13fa02f3",
       "image": "",
-      "category": "Drinking"
+      "category": "Drinking",
+      "deletepermission": "false"
     },
     {
       "id": "d126d8e7-33ea-4ebd-9cd2-0a41fd3ca719",
@@ -374,7 +378,8 @@
       "chosen": 0,
       "meetId": "4858064b-a1b3-46c1-b883-356e13fa02f3",
       "image": "",
-      "category": "Sport"
+      "category": "Sport",
+      "deletepermission": "false"
     }
   ],
   "rating": [

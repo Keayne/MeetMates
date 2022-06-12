@@ -19,14 +19,13 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
   @query('#deleteButton') private deleteButton!: HTMLImageElement;
 
   async firstUpdated() {
-    console.log(this.activity.deletepermission);
     try {
       this.startAsyncInit();
       const responseRating = await httpClient.get(`rating/findOne/${this.activity.id}` + location.search);
       this.rating = (await responseRating.json()).results;
       const responseRatingAll = await httpClient.get(`rating/findAverageRating/${this.activity.id}` + location.search);
       this.avgRating = (await responseRatingAll.json()).results;
-      this.sliderValue = String(this.rating.rating);
+      this.sliderValue = String(this.rating.rating ? this.rating.rating : '0');
       if (this.activity.deletepermission === false) this.deleteButton.style.display = 'none';
     } catch (e) {
       this.showNotification((e as Error).message, 'error');
@@ -49,7 +48,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
             type="range"
             min="0"
             max="100"
-            value=${this.rating.rating}
+            value=${this.rating.rating ? this.rating.rating : '0'}
             class="slider"
             id="myRating"
             @change="${(e: Event) => this.readSliderValue(e)}"
@@ -61,11 +60,21 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
             style="width:60px;height:50px;"
             alt="update"
             id="deleteButton"
-            @click="${() => this.emit('appactivityremoveclick')}"
+            @click="${this.confirmDelete}"
           />
         </div>
       </div>
     `;
+  }
+
+  confirmDelete(e: Event) {
+    const target = e.target as HTMLInputElement;
+    if (target) {
+      const result = confirm('Want to delete?');
+      if (result) {
+        this.emit('appactivityremoveclick');
+      }
+    }
   }
 
   readSliderValue(e: Event) {

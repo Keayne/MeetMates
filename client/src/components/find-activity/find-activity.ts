@@ -60,7 +60,8 @@ class FindActivityComponent extends PageMixin(LitElement) {
       description: this.description.value,
       motivationtitle: this.motivationTitle.value,
       image: this.imgSrc,
-      category: this.category.value
+      category: this.category.value,
+      deletepermission: true
     };
     try {
       const response = await httpClient.post(`/activity/${this.meetId}`, partialActivity);
@@ -77,14 +78,30 @@ class FindActivityComponent extends PageMixin(LitElement) {
     } catch (e) {
       this.showNotification((e as Error).message, 'error');
     }
+    this.closeForm();
     this.showNotification('Added activity.', 'info');
   }
 
   async updateAuthor(authorId: string) {
-    const mate = await httpClient.get(`/getName/${authorId}`);
-    const response = await mate.json();
-
+    let response;
+    try {
+      const mate = await httpClient.get(`/getName/${authorId}`);
+      response = await mate.json();
+    } catch (error) {
+      this.showNotification((error as Error).message, 'error');
+    }
     return response.message;
+  }
+
+  async updateAvgRating(activityId: string) {
+    let response;
+    try {
+      const responseRatingAll = await httpClient.get(`rating/findAverageRating/${activityId}` + location.search);
+      response = (await responseRatingAll.json()).results;
+    } catch (error) {
+      this.showNotification((error as Error).message, 'error');
+    }
+    return response;
   }
 
   /**
@@ -98,9 +115,9 @@ class FindActivityComponent extends PageMixin(LitElement) {
       await Promise.all(
         this.activityList.map(async (activity: Actitity): Promise<void> => {
           activity.tooltipcreatedby = await this.updateAuthor(activity.tooltipcreatedby);
+          activity.avgRating = await this.updateAvgRating(activity.id);
         })
       );
-      console.log(this.activityList);
       this.activityListLocal = this.activityList;
       this.btn1.style.backgroundColor = 'grey'; //preselect all filter
     } catch (e) {
@@ -220,6 +237,8 @@ class FindActivityComponent extends PageMixin(LitElement) {
       this.btn1.style.backgroundColor = 'grey';
     } else if (category === 'Highest Rating') {
       this.btn2.style.backgroundColor = 'grey';
+      this.activityListLocal = this.activityList;
+      this.activityListLocal.sort((a, b) => (a.avgRating < b.avgRating ? 1 : -1));
     } else {
       this.activityListLocal = this.activityList.filter(activity => activity.category === category);
       if (category === 'Entertainment') this.btn3.style.backgroundColor = 'grey';

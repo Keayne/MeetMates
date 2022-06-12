@@ -357,8 +357,9 @@ router.get('/getName/:id', authService.authenticationMiddleware, async (req, res
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
   const mate = await mateDAO.findOne({ id: res.locals.user.id });
 
-  if (!mate) return res.status(503).send('Could not found user in db');
-  res.status(200).json({ message: mate.name });
+  if (!mate) return res.status(503).send('Could not find user in db');
+  const fullName = mate.firstname + ' ' + mate.name;
+  res.status(200).json({ message: fullName });
 });
 
 function hasRequiredFields(object: { [key: string]: unknown }, requiredFields: string[], errors: string[]) {

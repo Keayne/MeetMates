@@ -14,7 +14,7 @@ div {
 }
 
 .error {
-  background-color: var(--app-error-color);
+  background-color: var(--app-color-third);
 }
 
 .info {

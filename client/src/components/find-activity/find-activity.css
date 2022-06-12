@@ -40,9 +40,7 @@
   justify-content: center;
 }
 
-/* Popup Initial Source: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_popup_form*/
-
-/* Button used to open the contact form - fixed at the bottom of the page */
+/* Button used to open the create activity form */
 .open-button {
   background-color: #555;
   width: 50%;
@@ -86,7 +84,7 @@
 
 /* Set style for create-activity button */
 .form-container .btn {
-  background-color: var(--app-primary-color);
+  background-color: var(--app-color-first);
   color: white;
   padding: 16px 20px;
   border: none;
@@ -98,7 +96,7 @@
 
 /* Add a red background color to the cancel button */
 .form-container .cancel {
-  background-color: var(--app-error-color);
+  background-color: var(--app-color-third);
 }
 
 /* Add some hover effects to buttons */

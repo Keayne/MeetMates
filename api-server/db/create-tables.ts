@@ -112,7 +112,8 @@ async function createPsqlScheme(client: ClientType) {
       chosen int NOT NULL,
       meetid Varchar(40) NOT NULL references meet(id) ON DELETE CASCADE,
       image BYTEA,
-      category VARCHAR(40)
+      category VARCHAR(40),
+      deletepermission boolean default false
     );`
   );
 
@@ -288,7 +289,8 @@ async function fillSchemeWithData(client: ClientType) {
         chosen,
         meetid,
         image,
-        category
+        category,
+        deletepermission
       )
       values(
         '${element.id}',
@@ -301,7 +303,8 @@ async function fillSchemeWithData(client: ClientType) {
         '${element.chosen}',
         '${element.meetId}',
         '${element.image}',
-        '${element.category}'
+        '${element.category}',
+        '${element.deletepermission}'
       )`;
       await client.query(query);
     })
