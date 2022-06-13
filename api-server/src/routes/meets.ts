@@ -1,5 +1,6 @@
 /* Autor: Jonathan Hüls */
 
+import { randomInt } from 'crypto';
 import express from 'express';
 import { GenericDAO } from '../models/generic.dao.js';
 import { Mate } from '../models/mate.js';
@@ -16,7 +17,6 @@ interface FullMeet {
   id: string;
   name: string;
   opened: boolean;
-  activityId: string;
   mates: ReturnMate[];
 }
 interface ReturnMate {
@@ -77,13 +77,72 @@ router.get('/', authService.authenticationMiddleware, async (req, res) => {
             });
           });
         }
-        return { id: meet.id, name: meet.name, activityId: meet.activityId, opened: mateMeet.opened, mates: rMates };
+        return { id: meet.id, name: meet.name, opened: mateMeet.opened, mates: rMates };
       })
     )
   ).filter(fullMeet => !!fullMeet) as FullMeet[];
 
+  if (meets.length < 2) {
+    meets.push(await createNewMeet(mateId, req));
+  }
+
+  console.log(meets);
+
   res.status(201).json(meets);
 });
+
+async function createNewMeet(mateId: string, req: express.Request): Promise<FullMeet> {
+  const matemeetDAO: UniversalDAO<MateMeet> = req.app.locals.matemeetDAO;
+  const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;
+  const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
+
+  const newMeet = await meetDAO.create({ name: 'Hello Meet' });
+
+  //find MeetMates
+  const meetMates: ReturnMate[] = [];
+  const mates = await mateDAO.findAll({ active: true });
+  for (let index = 0; index < randomInt(3, 4); index++) {
+    const mate = getMateFromMates(mateId, mates);
+    mate.image = mate.image ? Buffer.from(mate.image).toString() : '';
+    meetMates.push({
+      id: mate.id,
+      name: mate.name,
+      firstName: mate.firstname,
+      src: mate.image,
+      age: mate.birthday
+    });
+  }
+  const mateMeet: MateMeet[] = await Promise.all(
+    meetMates.map(async (mate: ReturnMate): Promise<MateMeet> => {
+      const newMateMeet = await matemeetDAO.create({ mateid: mate.id, meetid: newMeet.id, opened: false, rating: 0 });
+      return newMateMeet;
+    })
+  );
+
+  //add requested User to Meet
+  mateMeet.push(await matemeetDAO.create({ mateid: mateId, meetid: newMeet.id, opened: false, rating: 0 }));
+
+  const mate = await mateDAO.findOne({ id: mateId });
+  if (mate !== null) {
+    mate.image = mate.image ? Buffer.from(mate.image).toString() : '';
+    meetMates.push({
+      id: mate.id,
+      name: mate.name,
+      firstName: mate.firstname,
+      src: mate.image,
+      age: mate.birthday
+    });
+  }
+
+  console.log('newMeet created');
+  return { id: newMeet.id, name: newMeet.name, mates: meetMates, opened: false };
+}
+
+function getMateFromMates(mateId: string, mates: Mate[]): Mate {
+  const mate = mates[randomInt(mates.length - 1)];
+  if (mate.id == mateId) return getMateFromMates(mateId, mates);
+  return mate;
+}
 
 function checkParamsAsUuIdv4(...Ids: string[]): boolean {
   const regexp = new RegExp('^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$', 'i'); //Regex vor UuidV4 lo

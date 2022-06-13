@@ -23,7 +23,6 @@ interface ReturnMate {
 interface FullMeet {
   id: string;
   name: string;
-  activityId: string;
   mates: ReturnMate[];
 }
 
@@ -94,7 +93,7 @@ router.get('/:id', authService.authenticationMiddleware, async (req, res) => {
   if (!meet) {
     res.status(400).json({ message: `Es existiert kein Meet mit der ID : ${meetId} ` });
   } else {
-    const fullMeet: FullMeet = { id: meet.id, name: meet.name, activityId: meet.activityId, mates: rMates };
+    const fullMeet: FullMeet = { id: meet.id, name: meet.name, mates: rMates };
     res.status(201).json(fullMeet);
     setMeetAsOpened(meetId, mateId, matemeetDAO);
   }
@@ -127,13 +126,26 @@ router.post('/changeName', authService.authenticationMiddleware, async (req, res
 // remove Mate from Meet
 router.delete('/:meetid', authService.authenticationMiddleware, async (req, res) => {
   //console.log(`Remove User: userid${res.locals.user.id} from Meet: ${req.params.meetid}`);
-
+  const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;
   const mateMeetDAO: UniversalDAO<MateMeet> = req.app.locals.matemeetDAO;
   const filter: Partial<MateMeet> = { meetid: req.params.meetid, mateid: res.locals.user.id };
 
-  const result = await mateMeetDAO.deleteOne(filter);
-  if (result) res.status(200).send();
-  res.status(400).send;
+  const meetMates = await mateMeetDAO.findAll({ meetid: req.params.meetid });
+  let result = false;
+
+  //check if Mate is in Meet
+  if (meetMates.find(mateMeet => mateMeet.mateid === res.locals.user.id)) {
+    //check if meet contains more than 2 users
+    if (meetMates.length > 2) {
+      //remove user from Meet
+      result = await mateMeetDAO.deleteOne(filter);
+    } else {
+      //Remove whole Meet
+      result = (await mateMeetDAO.deleteAll({ meetid: req.params.meetid })) > 0 ? true : false;
+      result = await meetDAO.delete(req.params.meetid);
+    }
+  }
+  result ? res.status(200).send() : res.status(400).send;
 });
 
 export default router;
