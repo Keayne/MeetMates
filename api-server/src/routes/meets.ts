@@ -34,7 +34,6 @@ router.get('/', authService.authenticationMiddleware, async (req, res) => {
 
   if (!checkParamsAsUuIdv4(mateId)) {
     res.status(401).send;
-    console.log('Wrong Parameter');
     return;
   }
 
@@ -86,7 +85,6 @@ router.get('/', authService.authenticationMiddleware, async (req, res) => {
     meets.push(await createNewMeet(mateId, req));
   }
 
-  console.log(meets);
 
   res.status(201).json(meets);
 });
@@ -134,7 +132,7 @@ async function createNewMeet(mateId: string, req: express.Request): Promise<Full
     });
   }
 
-  console.log('newMeet created');
+
   return { id: newMeet.id, name: newMeet.name, mates: meetMates, opened: false };
 }
 

@@ -100,7 +100,7 @@ router.get('/:id', authService.authenticationMiddleware, async (req, res) => {
 });
 
 async function setMeetAsOpened(meetId: string, mateId: string, matemeetDAO: UniversalDAO<MateMeet>) {
-  const opened = await matemeetDAO.update({ opened: true }, [
+  await matemeetDAO.update({ opened: true }, [
     { key: 'mateid', value: mateId },
     { key: 'meetid', value: meetId }
   ]);
