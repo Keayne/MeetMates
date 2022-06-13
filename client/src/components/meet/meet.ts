@@ -19,17 +19,20 @@ interface Meet {
   mates: Mate[];
 }
 
-interface Activity {
+export interface Activity {
   id: string;
   title: string;
   description: string;
   tooltip: string;
   tooltipcreatedby: string;
   motivationtitle: string;
-  chosen: number;
-  meetid: string;
-  image?: string;
+  chosen: boolean;
+  meetId: string;
+  image: string;
   category: string;
+  personalRating: number;
+  avgRating: number;
+  deletepermission: boolean;
 }
 
 @customElement('app-your-meet')
@@ -49,8 +52,6 @@ class YourMeetComponent extends PageMixin(LitElement) {
       const activityResponse = await httpClient.get('/activity/findChosenActivity/' + this.meetId + location.search);
       this.activity = await activityResponse.json();
 
-      console.log(this.activity);
-
       this.requestUpdate();
       await this.updateComplete;
     } catch (err) {
@@ -68,11 +69,20 @@ class YourMeetComponent extends PageMixin(LitElement) {
       for (const m of this.meet.mates) {
         matesTemp.push(html`<meet-user class="meetMate" .mate=${m} />`);
       }
-      const activity = this.activity
-        ? html`<activity-info activity=${this.activity} />`
-        : html`<div>
-            <button type="button" class="routeBtn" @click="${this.routeToActiviySeelction}">Find Actitity</button>
-          </div>`;
+
+      //either render chosen Activity or navigationButton
+      let activity;
+      if (typeof this.activity === 'object') {
+        console.log(this.activity);
+        activity =
+          Object.keys(this.activity).length === 0
+            ? html`<div>
+                <button type="button" class="routeBtn" @click="${this.routeToActiviySeelction}">Find Actitity</button>
+              </div>`
+            : html`<div class="activity-container">
+                <div class="activity"><activity-info activity=${this.activity} /></div>
+              </div>`;
+      }
 
       return html`${this.renderNotification()}
         <div class="meeting">
