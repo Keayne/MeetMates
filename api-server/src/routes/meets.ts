@@ -8,6 +8,7 @@ import { MateMeet } from '../models/matemeet.js';
 import { Meet } from '../models/meet.js';
 import { UniversalDAO } from '../models/universal.dao.js';
 import { authService } from '../services/auth.service.js';
+import { validatorService } from '../services/validation.service.js';
 
 /*
 import bcrypt from 'bcryptjs';
@@ -32,7 +33,8 @@ const router = express.Router();
 router.get('/', authService.authenticationMiddleware, async (req, res) => {
   const mateId = res.locals.user.id;
 
-  if (!checkParamsAsUuIdv4(mateId)) {
+  if (!validatorService.validateUuidv4(mateId)) {
+    console.log(mateId);
     res.status(401).send;
     return;
   }
@@ -85,7 +87,6 @@ router.get('/', authService.authenticationMiddleware, async (req, res) => {
     meets.push(await createNewMeet(mateId, req));
   }
 
-
   res.status(201).json(meets);
 });
 
@@ -132,31 +133,13 @@ async function createNewMeet(mateId: string, req: express.Request): Promise<Full
     });
   }
 
-
   return { id: newMeet.id, name: newMeet.name, mates: meetMates, opened: false };
 }
 
 function getMateFromMates(mateId: string, mates: Mate[]): Mate {
   const mate = mates[randomInt(mates.length - 1)];
-  if (mate.id == mateId) return getMateFromMates(mateId, mates);
+  if (mate.id === mateId) return getMateFromMates(mateId, mates);
   return mate;
-}
-
-function checkParamsAsUuIdv4(...Ids: string[]): boolean {
-  const regexp = new RegExp('^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$', 'i'); //Regex vor UuidV4 lo
-
-  //check for values
-  if (Ids.length === 0) return false;
-
-  //check Ids
-  let result = true;
-  Ids.forEach(id => {
-    if (!regexp.test(id)) {
-      result = false;
-    }
-  });
-
-  return result;
 }
 
 export default router;

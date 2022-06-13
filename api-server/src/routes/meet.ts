@@ -10,6 +10,7 @@ import { MateMeet } from '../models/matemeet.js';
 import { Meet } from '../models/meet.js';
 
 import { authService } from '../services/auth.service.js';
+import { validatorService } from '../services/validation.service.js';
 
 const router = express.Router();
 
@@ -27,27 +28,26 @@ interface FullMeet {
 }
 
 router.get('/', authService.authenticationMiddleware, async (req, res) => {
+  if (!validatorService.validateUuidv4(res.locals.user.id)) {
+    res.status(401).send;
+    return;
+  }
+
   const matemeetDAO: UniversalDAO<MateMeet> = req.app.locals.matemeetDAO;
   const mateMeetFilter: Partial<MateMeet> = { mateid: res.locals.user.id };
   const mateMeets = await matemeetDAO.findAll(mateMeetFilter);
 
-  /*
-  const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;
-  const meets = await meetDAO.findAll();
-  */
   res.status(201).json(mateMeets);
 });
 
 router.get('/:id', authService.authenticationMiddleware, async (req, res) => {
-  const mateId = res.locals.user.id;
-  const meetId = req.params.id;
-  /*
-  if (!checkParamsAsUuIdv4(mateId)) {
+  if (!validatorService.validateMultipleUuidv4(res.locals.user.id, req.params.id)) {
     res.status(401).send;
-    console.log('Wrong Parameter');
     return;
   }
-  */
+
+  const mateId = res.locals.user.id;
+  const meetId = req.params.id;
 
   const matemeetDAO: UniversalDAO<MateMeet> = req.app.locals.matemeetDAO;
   const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;
@@ -109,6 +109,11 @@ async function setMeetAsOpened(meetId: string, mateId: string, matemeetDAO: Univ
 router.post('/changeName', authService.authenticationMiddleware, async (req, res) => {
   //console.log(`User: ${res.locals.user.id} change Name from Meet: ${req.body.meetId} to "${req.body.name}"`);
 
+  if (!validatorService.validateMultipleUuidv4(res.locals.user.id, req.body.meetId)) {
+    res.status(401).send;
+    return;
+  }
+
   const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;
 
   const meet = await meetDAO.update({
@@ -126,6 +131,11 @@ router.post('/changeName', authService.authenticationMiddleware, async (req, res
 // remove Mate from Meet
 router.delete('/:meetid', authService.authenticationMiddleware, async (req, res) => {
   //console.log(`Remove User: userid${res.locals.user.id} from Meet: ${req.params.meetid}`);
+  if (!validatorService.validateMultipleUuidv4(res.locals.user.id, req.params.meetid)) {
+    res.status(401).send;
+    return;
+  }
+
   const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;
   const mateMeetDAO: UniversalDAO<MateMeet> = req.app.locals.matemeetDAO;
   const filter: Partial<MateMeet> = { meetid: req.params.meetid, mateid: res.locals.user.id };
