@@ -140,7 +140,7 @@ router.post('/sign-in', async (req, res) => {
 
   if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
     authService.removeToken(res);
-    res.status(401).json({ message: 'E-Mail oder Passwort ungültig!' });
+    res.status(401).json({ message: 'E-Mail or Password not correct.' });
     return;
   }
 

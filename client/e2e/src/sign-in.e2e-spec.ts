@@ -29,35 +29,56 @@ describe('/users/sign-in', () => {
     await context.close();
   });
 
-  it('should render the title "Anmelden"', async () => {
+  it('should render the title "Login"', async () => {
     await page.goto(config.clientUrl('/mates/sign-in'));
     const title = await page.textContent('app-sign-in h1');
-    expect(title).to.equal('Anmelden');
+    expect(title).to.equal('Login');
   });
 
   it('should fail given wrong credentials', async () => {
     await page.goto(config.clientUrl('/mates/sign-in'));
     await page.fill('input:below(:text("E-Mail"))', userSession.email);
-    await page.fill('input:below(:text("Passwort"))', userSession.password);
-    const [response] = await Promise.all([page.waitForResponse('**/sign-in'), page.click('button:text("Anmelden")')]);
+    await page.fill('input:below(:text("Password"))', userSession.password);
+    const [response] = await Promise.all([page.waitForResponse('**/sign-in'), page.click('button:text("Login")')]);
     expect(response.status()).to.equal(401);
   });
 
-  /*it('should render "E-Mail oder Passwort falsch" on login failure', async () => {
-    await page.goto(config.clientUrl('/users/sign-in'));
-    await page.fill('input:below(:text("mail"))', userSession.email);
-    await page.fill('input:below(:text("Passwort"))', userSession.password);
-    await Promise.all([page.waitForResponse('insertTwoStarsHere/sign-in'), page.click('button:text("Anmelden")')]);
-    expect(await page.locator('text="E-Mail oder Passwort ungültig!"').count()).to.equal(1);
+  it('should render "E-Mail or Password not correct." on login failure', async () => {
+    await page.goto(config.clientUrl('/mates/sign-in'));
+    await page.fill('input:below(:text("E-Mail"))', userSession.email);
+    await page.fill('input:below(:text("Password"))', userSession.password);
+    await Promise.all([page.waitForResponse('**/sign-in'), page.click('button:text("Login")')]);
+    expect(await page.locator('text="E-Mail or Password not correct."').count()).to.equal(1);
   });
 
-  it('should succeed given proper credentials', async () => {
+  it('should succeed given correct credentials', async () => {
     await userSession.registerUser();
-    await page.goto(config.clientUrl('/users/sign-in'));
-    await page.fill('input:below(:text("mail"))', userSession.email);
-    await page.fill('input:below(:text("Passwort"))', userSession.password);
-    const [response] = await Promise.all([page.waitForResponse('insertTwoStarsHere/sign-in'), page.click('button:text("Anmelden")')]);
+    await page.goto(config.clientUrl('/mates/sign-in'));
+    await page.fill('input:below(:text("E-Mail"))', userSession.email);
+    await page.fill('input:below(:text("Password"))', userSession.password);
+    const [response] = await Promise.all([page.waitForResponse('**/sign-in'), page.click('button:text("Login")')]);
     expect(response.status()).to.equal(201);
     await userSession.deleteUser();
+  });
+
+  it('should render "Sign up here"', async () => {
+    await userSession.registerUser();
+    await page.goto(config.clientUrl('/mates/sign-in'));
+    page.click('button:text("Sign up here")');
+    expect(page.locator('text=Sign up here'));
+    await userSession.deleteUser();
+  });
+
+  it('should render "Sign up here" and redirect to sign-up page', async () => {
+    await userSession.registerUser();
+    await page.goto(config.clientUrl('/mates/sign-in'));
+    page.click('button:text("Sign up here")');
+    expect('Location', '**/sign-up');
+    await userSession.deleteUser();
+  });
+
+  /*
+  it('should render forgot password reference', async () => {
+    
   });*/
 });

@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import { UserSession } from './user-session.js';
 import config from './config.js';
 
-describe('/', () => {
+describe('/meet/find-activity/', () => {
   //TODO URl
   let browser: Browser;
   let context: BrowserContext;

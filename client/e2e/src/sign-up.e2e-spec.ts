@@ -51,9 +51,9 @@ describe('sign-up', () => {
     // Fill #password
     await page.locator('#password').fill('123456Aa');
     // Click #password-check
-    await page.locator('#password-check').click();
+    await page.locator('#passwordCheck').click();
     // Fill #password-check
-    await page.locator('#password-check').fill('123456Aa');
+    await page.locator('#passwordCheck').fill('123456Aa');
     // Click text=Basketball
     await page.locator('text=Basketball').click();
     // Click text=Golf

@@ -141,12 +141,4 @@ router.patch('/:id', authService.authenticationMiddleware, async (req, res) => {
   }
 });
 
-router.delete('/:id', authService.authenticationMiddleware, async (req, res) => {
-  const mateId = res.locals.user.id;
-});
-
-router.post('/:id', authService.authenticationMiddleware, async (req, res) => {
-  const mateId = res.locals.user.id;
-});
-
 export default router;
