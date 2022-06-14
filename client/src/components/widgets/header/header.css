@@ -18,7 +18,7 @@
 
 .logo {
   /* Center Logo (50px wide) -> 25px + 10px padding left of header*/
-  margin-left: calc(50% - 35px);
+  margin-left: calc(50% - 25px);
   border-radius: 10px;
 }
 
