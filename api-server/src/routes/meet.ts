@@ -29,7 +29,7 @@ interface FullMeet {
 
 router.get('/', authService.authenticationMiddleware, async (req, res) => {
   if (!validatorService.validateUuidv4(res.locals.user.id)) {
-    res.status(401).send;
+    res.status(400).send;
     return;
   }
 
@@ -42,7 +42,7 @@ router.get('/', authService.authenticationMiddleware, async (req, res) => {
 
 router.get('/:id', authService.authenticationMiddleware, async (req, res) => {
   if (!validatorService.validateMultipleUuidv4(res.locals.user.id, req.params.id)) {
-    res.status(401).send;
+    res.status(400).send;
     return;
   }
 
@@ -110,7 +110,7 @@ router.post('/changeName', authService.authenticationMiddleware, async (req, res
   //console.log(`User: ${res.locals.user.id} change Name from Meet: ${req.body.meetId} to "${req.body.name}"`);
 
   if (!validatorService.validateMultipleUuidv4(res.locals.user.id, req.body.meetId)) {
-    res.status(401).send;
+    res.status(400).send;
     return;
   }
 
@@ -122,7 +122,7 @@ router.post('/changeName', authService.authenticationMiddleware, async (req, res
   });
 
   if (!meet) {
-    res.status(400).json({ message: `Fehler beim ändern des Names von Meet: ${req.body.meetId} ` });
+    res.status(409).json({ message: `Fehler beim ändern des Names von Meet: ${req.body.meetId} ` });
   } else {
     res.status(201).json(meet);
   }
@@ -132,7 +132,7 @@ router.post('/changeName', authService.authenticationMiddleware, async (req, res
 router.delete('/:meetid', authService.authenticationMiddleware, async (req, res) => {
   //console.log(`Remove User: userid${res.locals.user.id} from Meet: ${req.params.meetid}`);
   if (!validatorService.validateMultipleUuidv4(res.locals.user.id, req.params.meetid)) {
-    res.status(401).send;
+    res.status(400).send;
     return;
   }
 
@@ -155,7 +155,7 @@ router.delete('/:meetid', authService.authenticationMiddleware, async (req, res)
       result = await meetDAO.delete(req.params.meetid);
     }
   }
-  result ? res.status(200).send() : res.status(400).send;
+  result ? res.status(200).send() : res.status(403).send;
 });
 
 export default router;

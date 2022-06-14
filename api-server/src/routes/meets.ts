@@ -35,7 +35,7 @@ router.get('/', authService.authenticationMiddleware, async (req, res) => {
 
   if (!validatorService.validateUuidv4(mateId)) {
     console.log(mateId);
-    res.status(401).send;
+    res.status(400).send;
     return;
   }
 
@@ -87,7 +87,7 @@ router.get('/', authService.authenticationMiddleware, async (req, res) => {
     meets.push(await createNewMeet(mateId, req));
   }
 
-  res.status(201).json(meets);
+  res.status(200).json(meets);
 });
 
 async function createNewMeet(mateId: string, req: express.Request): Promise<FullMeet> {
