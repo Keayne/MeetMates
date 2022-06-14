@@ -24,12 +24,11 @@ class MeetUserComponent extends PageMixin(LitElement) {
     return html`<button type="button" class="meetingUser" @click=${(e: Event) => this.mateClicked(e)}>
       <img src=${this.mate.src} />
       <span class="h3">${this.mate.name}, ${this.mate.firstName}</span>
-      <span>${this.mate.age}</span>
+      <span class="mateAge">${this.mate.age}</span>
     </button>`;
   }
 
   private mateClicked(e: Event) {
-    //console.log("router.navigate('mates/profile/'" + this.mate.id + ');');
     router.navigate('mates/profile/' + this.mate.id);
   }
 }

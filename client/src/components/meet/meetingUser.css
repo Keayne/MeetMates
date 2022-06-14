@@ -36,7 +36,9 @@
 }
 
 .meetingUser > *{
-    
     margin: 8px;
-    
+}
+
+.mateAge {
+    font-style: italic;
 }

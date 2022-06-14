@@ -16,13 +16,7 @@ class AboutComponent extends PageMixin(LitElement) {
         <div class="quoteContainer">
           <img class="quoteImg" src="arne.jpg" />
           <div>
-            <span>
-              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
-              et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-              Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
-              amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
-              aliquyam erat, sed diam voluptua.
-            </span>
+            <span> MeetMates hat mich und meine neuen Freunde von beginn an begeistert </span>
             <div class="quoteAuthor">~ Arne Schaper</div>
           </div>
         </div>
@@ -35,11 +29,7 @@ class AboutComponent extends PageMixin(LitElement) {
           <img class="quoteImg" src="valentin.jpg" />
           <div>
             <span>
-              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
-              et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-              Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
-              amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
-              aliquyam erat, sed diam voluptua.
+              MeetMates ermöglicht mir, mich mit neuen Menschen zu connecten und Freundschaften zu schließen.
             </span>
             <div class="quoteAuthor">~ Valentin Lieberknecht</div>
           </div>
@@ -48,13 +38,7 @@ class AboutComponent extends PageMixin(LitElement) {
         <div class="quoteContainer">
           <img class="quoteImg" src="jonathan.jpg" />
           <div>
-            <span>
-              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
-              et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-              Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
-              amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
-              aliquyam erat, sed diam voluptua.
-            </span>
+            <span> Ich kann endlich neue Freunde finden, was mir zuvor durch Corona verwehrt wurde. </span>
             <div class="quoteAuthor">~ Jonathan Hüls</div>
           </div>
         </div>
