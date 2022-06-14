@@ -80,7 +80,7 @@ class YourMeetComponent extends PageMixin(LitElement) {
                 <button type="button" class="routeBtn" @click="${this.routeToActiviySeelction}">Find Actitity</button>
               </div>`
             : html`<div class="activity-container">
-                <div class="activity"><activity-info activity=${this.activity} /></div>
+                <activity-info .activity=${this.activity}></activity-info>
               </div>`;
       }
 
