@@ -86,8 +86,6 @@ router.get('/', authService.authenticationMiddleware, async (req, res) => {
     meets.push(await createNewMeet(mateId, req));
   }
 
-  console.log(meets);
-
   res.status(201).json(meets);
 });
 

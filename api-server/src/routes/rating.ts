@@ -6,7 +6,6 @@ import { MateMeet } from '../models/matemeet.js';
 import { Rating } from '../models/rating.js';
 import { UniversalDAO } from '../models/universal.dao.js';
 import { authService } from '../services/auth.service.js';
-import activity from './activity.js';
 
 const router = express.Router();
 
@@ -58,8 +57,9 @@ router.get('/findAverageRating/:id', authService.authenticationMiddleware, async
 router.patch('/:id', authService.authenticationMiddleware, async (req, res) => {
   const ratingDAO: UniversalDAO<Rating> = req.app.locals.ratingDAO;
   const rating = await ratingDAO.findOne({ activityid: req.body.activityid, userid: res.locals.user.id });
+  let result = false;
   if (rating) {
-    await ratingDAO.update(
+    const updatedRating = await ratingDAO.update(
       {
         activityid: req.body.activityid,
         userid: res.locals.user.id,
@@ -70,13 +70,25 @@ router.patch('/:id', authService.authenticationMiddleware, async (req, res) => {
         { key: 'userid', value: res.locals.user.id }
       ]
     );
+    result = updatedRating ? true : false;
   } else {
-    await ratingDAO.create({
+    const createdRating = await ratingDAO.create({
       activityid: req.body.activityid,
       userid: res.locals.user.id,
       rating: req.body.rating
     });
+    result = createdRating ? true : false;
   }
+  if (result) {
+    updateChosenActivity(req, res);
+    res.status(200).end();
+  } else {
+    res.status(500).end();
+  }
+});
+
+async function updateChosenActivity(req: express.Request, res: express.Response) {
+  const ratingDAO: UniversalDAO<Rating> = req.app.locals.ratingDAO;
 
   //get meetId
   const activityDAO: GenericDAO<Activity> = req.app.locals.activityDAO;
@@ -139,6 +151,6 @@ router.patch('/:id', authService.authenticationMiddleware, async (req, res) => {
   } else {
     res.status(500).end();
   }
-});
+}
 
 export default router;

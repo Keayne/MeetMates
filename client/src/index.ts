@@ -30,3 +30,4 @@ import './components/settings/change-password.ts';
 import './components/settings/change-email.ts';
 import './components/settings/delete-profile.ts';
 import './components/widgets/notification/notification.ts';
+import './components/find-activity/create-activity/create-activity.ts';
