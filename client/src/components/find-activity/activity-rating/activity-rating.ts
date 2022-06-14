@@ -15,11 +15,13 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
   @property({ reflect: true }) activity = {} as Actitity;
   @property() rating = {} as Rating;
   @property() sliderValue = '0';
+  @query('#personalSlider') private personalSlider!: HTMLInputElement;
   @query('#deleteButton') private deleteButton!: HTMLImageElement;
 
-  async updated() {
+  async firstUpdated() {
     try {
       this.startAsyncInit();
+      console.log('activiy rating..');
       const responseRating = await httpClient.get(`rating/findOne/${this.activity.id}` + location.search);
       this.rating = (await responseRating.json()).results;
       this.sliderValue = String(this.rating.rating ? this.rating.rating : '0');
@@ -41,7 +43,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
             type="range"
             min="0"
             max="100"
-            value=${this.activity.avgRating}
+            value=${this.activity.avgRating ? this.activity.avgRating : 0}
             class="slider"
             id="overallRating"
             disabled
@@ -58,7 +60,13 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
             id="myRating"
             @change="${(e: Event) => this.readSliderValue(e)}"
           />
-          <img src="/refresh.png" alt="update" @click=${this.saveSliderValueToDb} style="width:60px;height:50px;" />
+          <img
+            id="personalSlider"
+            src="/refresh.png"
+            alt="update"
+            @click=${this.saveSliderValueToDb}
+            style="width:60px;height:50px;"
+          />
           <img
             class="remove-task"
             src="/deleteicon.png"
@@ -91,6 +99,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
   }
 
   async saveSliderValueToDb() {
+    console.log(this.activity.personalRating);
     const partialRating: Partial<Rating> = {
       activityid: this.activity.id,
       rating: Number(this.activity.personalRating) //userID is not included here as it is being provided by the auth Middleware on patch request.
@@ -98,7 +107,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
     await httpClient.patch(`rating/${this.activity.id}${location.search}`, partialRating);
     const responseRatingAll = await httpClient.get(`rating/findAverageRating/${this.activity.id}` + location.search);
     this.activity.avgRating = (await responseRatingAll.json()).results;
-    this.activity.personalRating = this.rating.rating;
+    this.requestUpdate();
   }
 
   emit(eventType: string, eventData = {}) {

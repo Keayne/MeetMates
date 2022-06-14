@@ -8,6 +8,14 @@
   width: 100%;
 }
 
+.outer-rating {
+  width: 100%;
+}
+
+.create-activity {
+  width: 100%;
+}
+
 .rating {
   flex-wrap: wrap;
 }
@@ -38,71 +46,6 @@
   height: 48px;
   display: inline-flex;
   justify-content: center;
-}
-
-/* Button used to open the create activity form */
-.open-button {
-  background-color: #555;
-  width: 50%;
-  margin-top: 8px;
-  margin-bottom: 8px;
-  border-radius: 8px;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-}
-
-.form-container {
-  width: 100%;
-}
-
-/* The popup form - hidden by default */
-.form-popup {
-  display: none;
-  position: relative;
-}
-
-/* Full-width input fields */
-.form-container input[type='text'],
-.form-container input[type='password'] {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  border: none;
-  background: #f1f1f1;
-  border-radius: 8px;
-}
-
-/* When the inputs get focus..*/
-.form-container input[type='text']:focus,
-.form-container input[type='password']:focus {
-  background-color: var(--app-bright-color);
-  outline: none;
-}
-
-/* Set style for create-activity button */
-.form-container .btn {
-  background-color: var(--app-color-first);
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  margin-bottom: 10px;
-  opacity: 0.8;
-}
-
-/* Add a red background color to the cancel button */
-.form-container .cancel {
-  background-color: var(--app-color-third);
-}
-
-/* Add some hover effects to buttons */
-.form-container .btn:hover,
-.open-button:hover {
-  opacity: 1;
 }
 
 /* Filter CSS */
@@ -150,6 +93,10 @@
     height: 48px;
     display: inline-flex;
     justify-content: center;
+  }
+
+  .create-activity {
+    width: 100%;
   }
 
   .open-button {

@@ -39,7 +39,7 @@ class SignInComponent extends PageMixin(LitElement) {
           <!-- TODO: remove autofillbehaviour from browser-->
         </div>
         <div id="submitdiv">
-          <button type="button" @click="${this.submit}">Login</button>
+          <button id="submitbtn" type="button" @click="${this.submit}">Login</button>
         </div>
         <div>
           <p>Forgot your password?</p>
