@@ -55,12 +55,15 @@ describe('find-activity', () => {
     expect(input).to.exist;
   });
 
-  /*
   it('should open create activity dropdown and check for input type file', async () => {
     const element = await fixture('<find-activity></find-activity>');
     const button = element.shadowRoot!.querySelector('button') as HTMLButtonElement;
     button.click();
-    const input = element.shadowRoot!.querySelector('input') as HTMLInputElement;
-    expect(input).to.be.a('file');
-  });*/
+    const input = element.shadowRoot!.getElementById('inputimage') as HTMLInputElement;
+    expect(input).to.exist;
+  });
+
+  it('should open create activity, fill all fields, and check for the created activity with title "Testtitle"', async () => {
+    //todo
+  });
 });

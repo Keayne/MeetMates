@@ -179,7 +179,9 @@ class FindActivityComponent extends PageMixin(LitElement) {
               <option value="Other">Other</option></select
             ><br /><br />
             <label for="Image"><b>Image</b></label><br>
-            <input @change="${this.updateImage}" type="file" accept="image/png, image/jpeg" required /><br>
+            <input @change="${
+              this.updateImage
+            }" type="file" id="inputimage" accept="image/png, image/jpeg" required /><br>
             <img style="max-width: 200px; max-height: 200px" src="${this.imgSrc}" />
             <br><label for="description"><b>Motivation Title</b></label><br>
             <input
