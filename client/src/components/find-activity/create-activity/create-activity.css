@@ -4,8 +4,13 @@
   width: 50%;
 }
 
+h2 {
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
 .open-button {
-  background-color: #555;
+  background-color: var(--app-color-first);
   width: 100%;
   margin-top: 8px;
   margin-bottom: 8px;
@@ -66,4 +71,22 @@
 .form-container .btn:hover,
 .open-button:hover {
   opacity: 1;
+}
+
+@media (max-width: 680px) {
+  :host {
+    width: 100%;
+  }
+  .open-button {
+    background-color: var(--app-color-first);
+    width: 100%;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border-radius: 0;
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    opacity: 0.8;
+  }
 }

@@ -2,13 +2,31 @@
   width: 100%;
   height: 15px;
   border-radius: 7px;
-  background: #dfd2d2;
+  background: var(--app-color-second);
   opacity: 0.7;
   transition: opacity 0.2s;
 }
 
-#img:hover {
-  border: 3px solid rgb(4, 236, 93);
+#personalSlider:hover {
+  -o-transition: 0.2s;
+  -ms-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+  box-shadow: 2px 2px 1px #c4c3c3;
+}
+
+#deleteButton:hover {
+  -o-transition: 0.2s;
+  -ms-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+  box-shadow: 2px 2px 1px #c4c3c3;
+}
+
+p {
+  margin-bottom: 8px;
 }
 
 .slider::-webkit-slider-thumb {
@@ -17,7 +35,7 @@
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  background: #314fd3;
+  background: var(--app-color-dark-second);
   cursor: pointer;
 }
 
@@ -25,17 +43,22 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #314fd3;
+  background: var(--app-color-first);
   cursor: pointer;
 }
 
 #overallRating {
+  margin-top: 2%;
   display: flex;
   flex-direction: row;
   width: 100%;
   height: 15px;
   border-radius: 7px;
-  background: #534e4e;
+  background: var(--app-color-fourth);
   opacity: 0.7;
   transition: opacity 0.2s;
+}
+
+#overallRating:hover {
+  cursor: not-allowed;
 }
