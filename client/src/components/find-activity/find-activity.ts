@@ -43,7 +43,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
   @query('#btn4') private btn4!: HTMLButtonElement;
   @query('#btn5') private btn5!: HTMLButtonElement;
   @query('#btn6') private btn6!: HTMLButtonElement;
-  @query('#nothingHere') private nothingHere!: HTMLDivElement;
+  @query('.nothingHere') private nothingHere!: HTMLDivElement;
 
   async updateAuthor(authorId: string) {
     let response;
@@ -126,9 +126,9 @@ class FindActivityComponent extends PageMixin(LitElement) {
               </div>
             </div>`
         )}
-        <div id="nothingHere">
-          <h2 id="nothingHere">There seems to be nothing here... yet!</h2>
-          <h3 id="nothingHere">Create an activity to get started!</h3>
+        <div class="nothingHere" id="nothingHereDiv">
+          <h2 class="nothingHere">There seems to be nothing here... yet!</h2>
+          <h3 class="nothingHere">Create an activity to get started!</h3>
         </div>
       </div>`;
   }
@@ -144,6 +144,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
     this.btn4.style.backgroundColor = '#d0dbdf';
     this.btn5.style.backgroundColor = '#d0dbdf';
     this.btn6.style.backgroundColor = '#d0dbdf';
+    this.nothingHere.style.display = 'none';
     if (category === 'all') {
       this.activityListLocal = this.activityList;
       this.btn1.style.backgroundColor = '#83a5c2';
@@ -159,9 +160,6 @@ class FindActivityComponent extends PageMixin(LitElement) {
       if (category === 'Other') this.btn6.style.backgroundColor = '#83a5c2';
       if (this.activityListLocal.length === 0) {
         this.nothingHere.style.display = 'block';
-        this.showNotification('There are currently no activities for this topic.', 'info');
-      } else {
-        this.nothingHere.style.display = 'none';
       }
     }
   }
@@ -171,6 +169,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
       await httpClient.delete('activity/' + activityToDelete.id);
       this.activityList = this.activityList.filter(activity => activity.id !== activityToDelete.id);
       this.activityListLocal = this.activityListLocal.filter(activity => activity.id !== activityToDelete.id);
+      this.showNotification('Deleted activity', 'info');
     } catch (error) {
       this.showNotification((error as Error).message, 'error');
     }
@@ -188,9 +187,9 @@ class FindActivityComponent extends PageMixin(LitElement) {
       };
       const response = await httpClient.post(`/activity/${this.meetId}`, partialActivity);
       const activity: Actitity = await response.json();
-      console.log(activity);
       this.activityList = [...this.activityList, activity]; //append activity to screen so user does not have to reload the page to see the activity
       this.activityListLocal = [...this.activityListLocal, activity]; //also add activity to localList
+      this.showNotification('Created activity', 'info');
     } catch (error) {
       this.showNotification((error as Error).message, 'error');
     }

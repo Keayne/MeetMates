@@ -59,8 +59,8 @@ router.get('/findChosenActivity/:id', authService.authenticationMiddleware, asyn
   const activityDAO: GenericDAO<Activity> = req.app.locals.activityDAO;
   const filter: Partial<Activity> = { meetid: req.params.id, chosen: 1 };
   const activites = await activityDAO.findOne(filter);
-
   if (activites) {
+    activites.image = Buffer.from(activites.image as string).toString();
     res.status(200).json(activites);
   } else {
     res.status(200).json({});

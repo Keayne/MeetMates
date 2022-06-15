@@ -40,7 +40,13 @@ const activity: Actitity = {
 describe('activity-rating', () => {
   it('should render a slider with the class disabled with the ID "overallRating"', async () => {
     const element = await fixture(html`<activity-rating .activity=${activity}></activity-rating>`);
-    const slider = element.shadowRoot!.querySelector('slidecontainer') as HTMLDivElement;
-    expect(slider).to.have.property('disabled');
+    const irgend = element.shadowRoot!.querySelectorAll('.slider');
+    expect(irgend.length).to.equal(2);
+  });
+
+  it('should render a slider with the ID "overallRating" with class disabled', async () => {
+    const element = await fixture(html`<activity-rating .activity=${activity}></activity-rating>`);
+    const slider = element.shadowRoot!.querySelector('#overallRating') as HTMLInputElement;
+    expect(slider.disabled).to.eq(true);
   });
 });

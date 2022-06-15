@@ -102,7 +102,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
     console.log(this.activity.personalRating);
     const partialRating: Partial<Rating> = {
       activityid: this.activity.id,
-      rating: Number(this.activity.personalRating) //userID is not included here as it is being provided by the auth Middleware on patch request.
+      rating: Number(this.activity.personalRating ? this.activity.personalRating : 0) //userID is not included here as it is being provided by the auth Middleware on patch request.
     };
     await httpClient.patch(`rating/${this.activity.id}${location.search}`, partialRating);
     const responseRatingAll = await httpClient.get(`rating/findAverageRating/${this.activity.id}` + location.search);
