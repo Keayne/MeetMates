@@ -38,9 +38,15 @@ const activity: Actitity = {
 };
 
 describe('activity-info', () => {
-  it('should render a an ', async () => {
+  it('should render a card title with the ID "cardtitle" ', async () => {
     const element = (await fixture(html`<activity-info .activity=${activity}></activity-info>`)) as LitElement;
-    const div = element.shadowRoot!.getElementById('card-title') as HTMLDivElement;
+    const div = element.shadowRoot!.querySelector('#cardtitle') as HTMLDivElement;
+    expect(div).to.exist;
+  });
+
+  it('should render a card description with the ID "cardtitle" ', async () => {
+    const element = (await fixture(html`<activity-info .activity=${activity}></activity-info>`)) as LitElement;
+    const div = element.shadowRoot!.querySelector('.card-content') as HTMLDivElement;
     expect(div).to.exist;
   });
 });

@@ -124,11 +124,20 @@ async function updateChosenActivity(req: express.Request, res: express.Response)
   );
   if (!activityRatings[0]) res.status(500).send(); //no activity found, should not be possible as rating has to be assigned to an activity
 
+  console.log('Number of Mates in a Meet');
+  console.log(numberOfMatesInMeet);
+
   //iterate through all activities, check if the activity has all criteria to be considered as chosen activity
-  let leadingActivityId: FullActivity = activityRatings[0] as FullActivity;
-  let leadingActivityCalcSum: number;
+  let eligibleLeadingActivity: FullActivity = {
+    id: '',
+    title: '',
+    chosen: 0,
+    meetid: '',
+    category: '',
+    ratings: []
+  };
+  let eligibleLeadingActivityCalcSUm = 0;
   activityRatings.forEach(activity => {
-    if (!leadingActivityId) leadingActivityId = activity as FullActivity;
     let rating = 0;
     let numberOfRatings = 0;
     activity?.ratings.forEach(element => {
@@ -136,20 +145,22 @@ async function updateChosenActivity(req: express.Request, res: express.Response)
       rating += element.rating;
     });
     //eligible activity
-    if (numberOfRatings === numberOfMatesInMeet && rating > leadingActivityCalcSum) {
-      leadingActivityId = activity as FullActivity;
+    if (numberOfRatings === numberOfMatesInMeet && rating > eligibleLeadingActivityCalcSUm) {
+      eligibleLeadingActivity = activity as FullActivity;
+      eligibleLeadingActivityCalcSUm = rating;
+      console.log('Changed leading activity to ' + eligibleLeadingActivity);
+    } else {
+      console.log('Not eligible.');
     }
   });
 
   //set attr. of chosen activity to 1
-  const chosenActivity = await activityDAO.findOne({ id: leadingActivityId.id });
+  const chosenActivity = await activityDAO.findOne({ id: eligibleLeadingActivity.id });
   if (chosenActivity) {
+    console.log('Changed chosen activity');
     chosenActivity.chosen = 1;
     delete chosenActivity.image;
     activityDAO.update(chosenActivity);
-    res.status(200).end();
-  } else {
-    res.status(500).end();
   }
 }
 
