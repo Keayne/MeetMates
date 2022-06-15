@@ -19,32 +19,49 @@ interface Mate {
   name: string;
   firstName: string;
   src: string;
+  age: number;
 }
 
 const mates: Mate[] = [
   {
-    id: '6d46e37c-2b34-49db-9b4e-711ac64cab75',
-    name: 'Doe',
-    firstName: 'Joe',
-    src: ''
+    id: '3939bac7-f0ef-46ec-ac32-cecc98b4926f',
+    name: 'Müller',
+    firstName: 'Peter',
+    src: '',
+    age: 53
   },
   {
-    id: 'ac0a0153-8bc0-43de-a8bb-17cc862145eb',
-    name: 'Mustermann',
-    firstName: 'Max',
-    src: ''
+    id: 'eeab19ed-e87b-49a1-878e-e2a62494b050',
+    name: 'Hamill',
+    firstName: 'Mark',
+    src: '',
+    age: 70
+  },
+  {
+    id: '5376a8df-a292-460e-865b-27441f357398',
+    name: 'Pacino',
+    firstName: 'Alfredo',
+    src: '',
+    age: 82
+  },
+  {
+    id: '28781233-1891-4b61-9a3e-423992b161e7',
+    name: 'Hüls',
+    firstName: 'Jonathan',
+    src: '',
+    age: 25
   }
 ];
 const meets: Meet[] = [
   {
-    id: 'a4b32e76-020f-42ff-ab2f-4021d292c85f',
-    name: 'openedTestMeet',
+    id: '7a28633f-1af7-4e3e-bf8b-f16f66265ae4',
+    name: 'Hello Meet',
     opened: true,
     mates: mates
   },
   {
-    id: 'a4b32e76-020f-42ff-ab2f-4021d292c85f',
-    name: 'unOpenedTestMeet',
+    id: '2a337de3-f69b-4363-946e-57f498cb2d32',
+    name: 'Hello Meet',
     opened: false,
     mates: mates
   }
@@ -60,7 +77,6 @@ beforeEach(() =>{
     sinon.restore();
   });
 
-  /*
   it('should fetch Meets on first update', async () => {
     const stub = sinon.stub(httpClient, 'get').returns(
       Promise.resolve({
@@ -75,7 +91,7 @@ beforeEach(() =>{
     expect(stub.calledOnce).to.be.true;
   });
 
-  it('should render the fetched Meets', async () => {
+  it('should render the newMeets and YourMeets Header', async () => {
     sinon.stub(httpClient, 'get').returns(
       Promise.resolve({
         json() {
@@ -90,8 +106,26 @@ beforeEach(() =>{
     element.requestUpdate(); // da in firstUpdated() das Property tasks asynchron gesetzt wird
     await element.updateComplete;
 
-    const taskElems = element.shadowRoot!.querySelectorAll('.meets-header');
-    expect(taskElems.length).to.equal(2);
+    const meetsHeader = element.shadowRoot!.querySelectorAll('.meets-header');
+    expect(meetsHeader.length).to.equal(2);
   });
-  */
+
+  it('should render the Meets', async () => {
+    sinon.stub(httpClient, 'get').returns(
+      Promise.resolve({
+        json() {
+          return Promise.resolve(meets);
+        }
+      } as Response)
+    );
+
+    const element = (await fixture(html`<app-meets></app-meets>`)) as LitElement;
+    await element.updateComplete;
+
+    element.requestUpdate(); // da in firstUpdated() das Property tasks asynchron gesetzt wird
+    await element.updateComplete;
+
+    const meetsElements = element.shadowRoot!.querySelectorAll('meets-meet');
+    expect(meetsElements.length).to.equal(2);
+  });
 });

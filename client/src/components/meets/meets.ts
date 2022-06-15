@@ -33,9 +33,8 @@ class MeetsComponent extends PageMixin(LitElement) {
 
   async firstUpdated() {
     try {
-      this.startAsyncInit();
-      const response = await httpClient.get('/meets' + location.search);
-      this.meets = await response.json();
+      const meetsResponse = await httpClient.get('/meets' + location.search);
+      this.meets = await meetsResponse.json();
 
       this.meets.forEach(meet => {
         if (meet.opened) {
@@ -44,6 +43,9 @@ class MeetsComponent extends PageMixin(LitElement) {
           this.newMeets.push(meet);
         }
       });
+
+      this.requestUpdate();
+      await this.updateComplete;
     } catch (err) {
       if ((err as { statusCode: number }).statusCode === 401) {
         router.navigate('mates/sign-in');

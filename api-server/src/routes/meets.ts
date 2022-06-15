@@ -25,7 +25,7 @@ interface ReturnMate {
   name: string;
   firstName: string;
   src: string;
-  age: string;
+  age: number;
 }
 
 const router = express.Router();
@@ -74,7 +74,7 @@ router.get('/', authService.authenticationMiddleware, async (req, res) => {
               name: mate.name,
               firstName: mate.firstname,
               src: mate.image,
-              age: mate.birthday
+              age: new Date().getFullYear() - new Date(mate.birthday).getFullYear()
             });
           });
         }
@@ -108,7 +108,7 @@ async function createNewMeet(mateId: string, req: express.Request): Promise<Full
       name: mate.name,
       firstName: mate.firstname,
       src: mate.image,
-      age: mate.birthday
+      age: new Date().getFullYear() - new Date(mate.birthday).getFullYear()
     });
   }
   const mateMeet: MateMeet[] = await Promise.all(
@@ -129,7 +129,7 @@ async function createNewMeet(mateId: string, req: express.Request): Promise<Full
       name: mate.name,
       firstName: mate.firstname,
       src: mate.image,
-      age: mate.birthday
+      age: new Date().getFullYear() - new Date(mate.birthday).getFullYear()
     });
   }
 
