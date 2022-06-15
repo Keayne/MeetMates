@@ -82,7 +82,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
         })
       );
       this.activityListLocal = this.activityList;
-      this.btn1.style.backgroundColor = 'grey'; //preselect all filter
+      this.btn1.style.backgroundColor = '#83a5c2'; //preselect all filter
       if (this.activityListLocal.length !== 0) this.nothingHere.style.display = 'none';
     } catch (e) {
       this.showNotification((e as Error).message, 'error');
@@ -138,28 +138,30 @@ class FindActivityComponent extends PageMixin(LitElement) {
    * @param category Name of the category to filter
    */
   selectFilter(category: string) {
-    this.btn1.style.backgroundColor = 'white';
-    this.btn2.style.backgroundColor = 'white';
-    this.btn3.style.backgroundColor = 'white';
-    this.btn4.style.backgroundColor = 'white';
-    this.btn5.style.backgroundColor = 'white';
-    this.btn6.style.backgroundColor = 'white';
-
+    this.btn1.style.backgroundColor = '#d0dbdf';
+    this.btn2.style.backgroundColor = '#d0dbdf';
+    this.btn3.style.backgroundColor = '#d0dbdf';
+    this.btn4.style.backgroundColor = '#d0dbdf';
+    this.btn5.style.backgroundColor = '#d0dbdf';
+    this.btn6.style.backgroundColor = '#d0dbdf';
     if (category === 'all') {
       this.activityListLocal = this.activityList;
-      this.btn1.style.backgroundColor = 'grey';
+      this.btn1.style.backgroundColor = '#83a5c2';
     } else if (category === 'Highest Rating') {
-      this.btn2.style.backgroundColor = 'grey';
+      this.btn2.style.backgroundColor = '#83a5c2';
       this.activityListLocal = [...this.activityList];
       this.activityListLocal = this.activityListLocal.sort((a, b) => (a.avgRating < b.avgRating ? 1 : -1));
     } else {
       this.activityListLocal = this.activityList.filter(activity => activity.category === category);
-      if (category === 'Entertainment') this.btn3.style.backgroundColor = 'grey';
-      if (category === 'Sport') this.btn5.style.backgroundColor = 'grey';
-      if (category === 'Drinking') this.btn4.style.backgroundColor = 'grey';
-      if (category === 'Other') this.btn6.style.backgroundColor = 'grey';
+      if (category === 'Entertainment') this.btn3.style.backgroundColor = '#83a5c2';
+      if (category === 'Sport') this.btn5.style.backgroundColor = '#83a5c2';
+      if (category === 'Drinking') this.btn4.style.backgroundColor = '#83a5c2';
+      if (category === 'Other') this.btn6.style.backgroundColor = '#83a5c2';
       if (this.activityListLocal.length === 0) {
+        this.nothingHere.style.display = 'block';
         this.showNotification('There are currently no activities for this topic.', 'info');
+      } else {
+        this.nothingHere.style.display = 'none';
       }
     }
   }

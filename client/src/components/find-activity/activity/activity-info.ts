@@ -11,7 +11,6 @@ import componentStyle from './activity-info.css';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class CardComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
-
   @property({ reflect: true }) activity = {} as Actitity;
 
   render() {
@@ -21,7 +20,7 @@ class CardComponent extends PageMixin(LitElement) {
 
         <div class="card-body">
           <div class="tooltip">
-            <div class="card-title">${this.activity.title}</div>
+            <div id="cardtitle" class="card-title">${this.activity.title}</div>
             <span class="tooltiptext">Author: ${this.activity.tooltipcreatedby}</span>
           </div>
           <div class="tooltip">
