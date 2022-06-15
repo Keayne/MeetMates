@@ -128,4 +128,72 @@ beforeEach(() =>{
     const meetsElements = element.shadowRoot!.querySelectorAll('meets-meet');
     expect(meetsElements.length).to.equal(2);
   });
+
+  const openedMeets: Meet[] = [
+    {
+      id: '7a28633f-1af7-4e3e-bf8b-f16f66265ae4',
+      name: 'Hello Meet',
+      opened: true,
+      mates: mates
+    },
+    {
+      id: '2a337de3-f69b-4363-946e-57f498cb2d32',
+      name: 'Hello Meet',
+      opened: true,
+      mates: mates
+    }
+  ];
+
+  it('should render only the Your Meets-Header', async () => {
+    sinon.stub(httpClient, 'get').returns(
+      Promise.resolve({
+        json() {
+          return Promise.resolve(openedMeets);
+        }
+      } as Response)
+    );
+
+    const element = (await fixture(html`<app-meets></app-meets>`)) as LitElement;
+    await element.updateComplete;
+
+    element.requestUpdate(); // da in firstUpdated() das Property tasks asynchron gesetzt wird
+    await element.updateComplete;
+
+    const h2Elements = element.shadowRoot!.querySelector('.meets-header > h2') as HTMLHeadingElement;
+    expect(h2Elements.textContent).to.equal('Your Meets');
+  });
+
+  const newMeets: Meet[] = [
+    {
+      id: '7a28633f-1af7-4e3e-bf8b-f16f66265ae4',
+      name: 'Hello Meet',
+      opened: false,
+      mates: mates
+    },
+    {
+      id: '2a337de3-f69b-4363-946e-57f498cb2d32',
+      name: 'Hello Meet',
+      opened: false,
+      mates: mates
+    }
+  ];
+
+  it('should render only the New Meets-Header', async () => {
+    sinon.stub(httpClient, 'get').returns(
+      Promise.resolve({
+        json() {
+          return Promise.resolve(newMeets);
+        }
+      } as Response)
+    );
+
+    const element = (await fixture(html`<app-meets></app-meets>`)) as LitElement;
+    await element.updateComplete;
+
+    element.requestUpdate(); // da in firstUpdated() das Property tasks asynchron gesetzt wird
+    await element.updateComplete;
+
+    const h2Elements = element.shadowRoot!.querySelector('.meets-header > h2') as HTMLHeadingElement;
+    expect(h2Elements.textContent).to.equal('New Meets');
+  });
 });

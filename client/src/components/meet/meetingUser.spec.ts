@@ -1,3 +1,5 @@
+/* Autor: Jonathan Hüls */
+
 import { expect } from 'chai';
 import { fixture } from '@open-wc/testing-helpers';
 import './meetingUser';
