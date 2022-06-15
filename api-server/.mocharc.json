@@ -1,5 +1,6 @@
 {
+  "require": "./e2e/src/hooks.ts",
   "loader": "ts-node/esm",
-  "spec": ["src/**/*.spec.ts"],
+  "spec": ["e2e/src/**/*.e2e-spec.ts"],
   "no-warnings": true
 }
