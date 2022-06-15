@@ -19,7 +19,7 @@ interface ReturnMate {
   name: string;
   firstName: string;
   src: string;
-  age: string;
+  age: number;
 }
 interface FullMeet {
   id: string;
@@ -86,7 +86,7 @@ router.get('/:id', authService.authenticationMiddleware, async (req, res) => {
       name: mate.name,
       firstName: mate.firstname,
       src: mate.image,
-      age: mate.birthday
+      age: new Date().getFullYear() - new Date(mate.birthday).getFullYear()
     });
   });
 
