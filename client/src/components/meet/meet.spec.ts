@@ -61,7 +61,7 @@ describe('app-your-meet', () => {
   });
 
   it('should render Mates after first update', async () => {
-    const stub = sinon.stub(httpClient, 'get').returns(
+    sinon.stub(httpClient, 'get').returns(
       Promise.resolve({
         json() {
           return Promise.resolve(meet);
@@ -77,7 +77,7 @@ describe('app-your-meet', () => {
   });
 
   it('should render Chat for Mates after first update', async () => {
-    const stub = sinon.stub(httpClient, 'get').returns(
+    sinon.stub(httpClient, 'get').returns(
       Promise.resolve({
         json() {
           return Promise.resolve(meet);
