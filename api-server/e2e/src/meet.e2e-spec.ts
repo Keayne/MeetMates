@@ -95,7 +95,15 @@ describe('Meet', () => {
     });
 
     afterEach(async () => {
-      await userSession.delete(`/meet/${meetId}`);
+      //remove Mate from all of his Meets
+      const response = await userSession.get('/meets/');
+      const meets = (await response.json()) as Array<Meet>;
+
+      await Promise.all(
+        meets.map(async (meet: Meet): Promise<void> => {
+          await userSession.delete(`/meet/${meet.id}`);
+        })
+      );
       await userSession.deleteUser();
     });
 
