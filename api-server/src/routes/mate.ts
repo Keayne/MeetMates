@@ -342,21 +342,8 @@ router.patch('/resetpassword', async (req, res) => {
 
   await mateDAO.update({ id: req.body.id, password: await bcrypt.hash(req.body.password, 10) });
   await verifyDAO.deleteOne({ mateid: req.body.id, type: 'p' });
-  res.send('password changed');
+  res.status(200).json({ message: 'password changed' }).end();
 });
-
-// router.patch('/verifycode', async (req, res) => {
-//   const verifyDAO: UniversalDAO<Verify> = req.app.locals.verifyDAO;
-//   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
-
-//   const verify = await verifyDAO.findOne({ mateid: req.body.id, type: 'e' });
-//   if (!verify) return res.status(400).send('Invalid');
-
-//   if (verify.code !== req.body.code) return res.status(401).send('invalid code');
-//   await mateDAO.update({ id: req.body.id, password: await bcrypt.hash(req.body.password, 10) });
-//   await verifyDAO.deleteOne({ mateid: req.body.id, type: 'e' });
-//   res.send('email verified');
-// });
 
 router.delete('/delete', authService.authenticationMiddleware, async (req, res) => {
   //delete user from DB

@@ -26,6 +26,7 @@ class SignUpComponent extends PageMixin(LitElement) {
   @state() private imgSrc!: string;
   @state() private passwordMessage!: string;
   @state() private passwordCheckMessage!: string;
+  regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*#?&-_=()]{8,}$/;
   private selectedInterests: string[] = [];
   private selectedDescriptions: { id: string; value: number }[] = [];
 
@@ -77,8 +78,7 @@ class SignUpComponent extends PageMixin(LitElement) {
     this.imgSrc = await toBase64(input.files![0]);
   }
   checkPassword() {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*#?&-_=()]{8,}$/;
-    if (!regex.test(this.passwordElement.value)) {
+    if (!this.regex.test(this.passwordElement.value)) {
       this.passwordMessage =
         'Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters';
     } else {
@@ -97,28 +97,32 @@ class SignUpComponent extends PageMixin(LitElement) {
 
   async submit() {
     if (this.form.checkValidity()) {
-      if (this.passwordElement.value === this.passwordCheckElement.value) {
-        const accountData = {
-          name: this.nameElement.value,
-          firstname: this.firstnameElement.value,
-          email: this.emailElement.value,
-          birthday: this.birthdayElement.value,
-          gender: this.genderElement.value,
-          image: this.imgSrc,
-          password: this.passwordElement.value,
-          passwordCheck: this.passwordCheckElement.value,
-          interests: this.selectedInterests,
-          descriptions: this.selectedDescriptions
-        };
-        try {
-          const response = await httpClient.post('/sign-up', accountData);
-          const json = await response.json();
-          router.navigate('/mates/verify-code/' + json.id);
-        } catch (e) {
-          this.showNotification((e as Error).message, 'error');
+      if (!this.regex.test(this.passwordElement.value)) {
+        if (this.passwordElement.value === this.passwordCheckElement.value) {
+          const accountData = {
+            name: this.nameElement.value,
+            firstname: this.firstnameElement.value,
+            email: this.emailElement.value,
+            birthday: this.birthdayElement.value,
+            gender: this.genderElement.value,
+            image: this.imgSrc,
+            password: this.passwordElement.value,
+            passwordCheck: this.passwordCheckElement.value,
+            interests: this.selectedInterests,
+            descriptions: this.selectedDescriptions
+          };
+          try {
+            const response = await httpClient.post('/sign-up', accountData);
+            const json = await response.json();
+            router.navigate('/mates/verify-code/' + json.id);
+          } catch (e) {
+            this.showNotification((e as Error).message, 'error');
+          }
+        } else {
+          this.showNotification('Password does not match!', 'error');
         }
       } else {
-        this.showNotification('Password does not match!');
+        this.showNotification('Password does not meet requeirements!', 'error');
       }
     } else {
       this.form.reportValidity();
@@ -146,7 +150,7 @@ class SignUpComponent extends PageMixin(LitElement) {
         <label>Email:</label>
         <input type="email" id="email" required />
         <label>Password:</label>
-        <input type="password" id="password" @keyup="${this.checkPassword}"  required />
+        <input type="password" id="password" @keyup="${this.checkPassword}" required />
         <span>${this.passwordMessage}</span>
         <br>
         <label>Password Check:</label>

@@ -56,6 +56,7 @@ class ResetPasswordComponent extends PageMixin(LitElement) {
 
   @state() private passwordMessage!: string;
   @state() private passwordCheckMessage!: string;
+  regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*#?&-_=()]{8,}$/;
 
   render() {
     return html`
@@ -67,13 +68,7 @@ class ResetPasswordComponent extends PageMixin(LitElement) {
           <input type="password" id="currentPassword" required />
           <br />
           <label>Password:</label>
-          <input
-            type="password"
-            id="password"
-            @keyup="${this.checkPassword}"
-            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*d)[A-Za-zd@$!%*#?&-_=()]{8,}$"
-            required
-          />
+          <input type="password" id="password" @keyup="${this.checkPassword}" required />
           <span>${this.passwordMessage}</span>
           <br />
           <label>Password Check:</label>
@@ -90,19 +85,23 @@ class ResetPasswordComponent extends PageMixin(LitElement) {
 
   submit() {
     if (this.form.checkValidity()) {
-      if (this.passwordElement.value === this.passwordCheckElement.value) {
-        try {
-          httpClient.patch('changepassword', {
-            currentPassword: this.currentPasswordElement.value,
-            password: this.passwordElement.value
-          });
-          router.navigate('/meets');
-        } catch (e) {
-          console.log(e);
-          this.showNotification((e as Error).message, 'error');
+      if (!this.regex.test(this.passwordElement.value)) {
+        if (this.passwordElement.value === this.passwordCheckElement.value) {
+          try {
+            httpClient.patch('changepassword', {
+              currentPassword: this.currentPasswordElement.value,
+              password: this.passwordElement.value
+            });
+            router.navigate('/meets');
+          } catch (e) {
+            console.log(e);
+            this.showNotification((e as Error).message, 'error');
+          }
+        } else {
+          this.showNotification('Password does not match!', 'error');
         }
       } else {
-        alert('Password does not match!');
+        this.showNotification('Password does not meet requeirements!', 'error');
       }
     } else {
       this.form.reportValidity();
@@ -110,8 +109,7 @@ class ResetPasswordComponent extends PageMixin(LitElement) {
   }
 
   checkPassword() {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*#?&-_=()]{8,}$/;
-    if (!regex.test(this.passwordElement.value)) {
+    if (!this.regex.test(this.passwordElement.value)) {
       this.passwordMessage =
         'Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters';
     } else {
