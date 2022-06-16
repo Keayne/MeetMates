@@ -144,24 +144,26 @@ describe('activity', () => {
       expect(post.status).to.equal(404);
     });
 
-    /*
     it('should create an activity for a meet, then successfully get all activities, and finally delete it.', async () => {
       if (meetResponse === null) expect(meetResponse).to.not.be.equal(null);
       const activity: Partial<Activity> = {
         title: 'title',
         description: 'desc',
-        tooltipcreatedby: '1234',
         motivationtitle: 'motTitle',
         meetid: `${meetIds[0]}`,
         image: '',
         category: 'Sport'
       };
-      const post = await userSession.post(`/activity/b3b9f92b-3845-479b-a896-540c049ab1b3`, activity); //TODO make sure redirect is valid and doenst return error
-      if (post.status === 404) expect(post.status).to.equal(404); //could not create an activity to delete..
+      const post = await userSession.post(`/activity/${meetIds[0]}`, activity); //TODO make sure redirect is valid and doenst return error
+      if (post.status === 404) expect.fail('Failed to post activity.'); //could not create an activity to delete..
 
-      const get = await userSession.get(`/activity/b3b9f92b-3845-479b-a896-540c049ab1b3`);
-      if (get.status != 200) expect(get.status).to.not.equal(200);
-      console.log(get);
-    }); */
+      const getResponse = await userSession.get(`/activity/${meetIds[0]}`);
+      if (getResponse.status === 403 || getResponse.status === 404) expect.fail('Failed get requests for activities');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const activities = ((await getResponse.json()) as any).results as Array<Activity>;
+
+      const deleteReq = await userSession.delete(`/activity/${activities[0].id}`);
+      expect(deleteReq.status).to.equal(200);
+    });
   });
 });

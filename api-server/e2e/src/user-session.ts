@@ -67,7 +67,7 @@ export class UserSession {
   }
 
   async registerUser() {
-    const res = await this.post('sign-up', this.signUpData());
+    await this.post('sign-up', this.signUpData());
 
     if (!this.hasCookie('jwt-token')) {
       throw new Error('Failed to extract jwt-token');

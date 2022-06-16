@@ -6,7 +6,7 @@ import componentStyle from './find-activity.css';
 import { repeat } from 'lit/directives/repeat.js';
 import { httpClient } from '../../http-client';
 
-export interface Actitity {
+export interface Activity {
   id: string;
   title: string;
   description: string;
@@ -34,8 +34,8 @@ class FindActivityComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
 
   @property() meetId!: string;
-  @property({ type: Array }) private activityList: Array<Actitity> = [];
-  @property({ type: Array }) private activityListLocal: Array<Actitity> = [];
+  @property({ type: Array }) private activityList: Array<Activity> = [];
+  @property({ type: Array }) private activityListLocal: Array<Activity> = [];
 
   @query('#btn1') private btn1!: HTMLButtonElement;
   @query('#btn2') private btn2!: HTMLButtonElement;
@@ -76,7 +76,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
       const response = await httpClient.get(`activity/${this.meetId}` + location.search);
       this.activityList = (await response.json()).results;
       await Promise.all(
-        this.activityList.map(async (activity: Actitity): Promise<void> => {
+        this.activityList.map(async (activity: Activity): Promise<void> => {
           activity.tooltipcreatedby = await this.updateAuthor(activity.tooltipcreatedby);
           activity.avgRating = await this.updateAvgRating(activity.id);
         })
@@ -148,10 +148,16 @@ class FindActivityComponent extends PageMixin(LitElement) {
     if (category === 'all') {
       this.activityListLocal = this.activityList;
       this.btn1.style.backgroundColor = '#83a5c2';
+      if (this.activityListLocal.length === 0) {
+        this.nothingHere.style.display = 'block';
+      }
     } else if (category === 'Highest Rating') {
       this.btn2.style.backgroundColor = '#83a5c2';
       this.activityListLocal = [...this.activityList];
       this.activityListLocal = this.activityListLocal.sort((a, b) => (a.avgRating < b.avgRating ? 1 : -1));
+      if (this.activityListLocal.length === 0) {
+        this.nothingHere.style.display = 'block';
+      }
     } else {
       this.activityListLocal = this.activityList.filter(activity => activity.category === category);
       if (category === 'Entertainment') this.btn3.style.backgroundColor = '#83a5c2';
@@ -164,7 +170,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
     }
   }
 
-  async deleteActivity(activityToDelete: Actitity) {
+  async deleteActivity(activityToDelete: Activity) {
     try {
       await httpClient.delete('activity/' + activityToDelete.id);
       this.activityList = this.activityList.filter(activity => activity.id !== activityToDelete.id);
@@ -177,7 +183,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
 
   async createActivity(activityPartial: CustomEvent) {
     try {
-      const partialActivity: Partial<Actitity> = {
+      const partialActivity: Partial<Activity> = {
         title: activityPartial.detail.title,
         description: activityPartial.detail.description,
         motivationtitle: activityPartial.detail.motivationtitle,
@@ -186,7 +192,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
         deletepermission: true
       };
       const response = await httpClient.post(`/activity/${this.meetId}`, partialActivity);
-      const activity: Actitity = await response.json();
+      const activity: Activity = await response.json();
       this.activityList = [...this.activityList, activity]; //append activity to screen so user does not have to reload the page to see the activity
       this.activityListLocal = [...this.activityListLocal, activity]; //also add activity to localList
       this.showNotification('Created activity', 'info');

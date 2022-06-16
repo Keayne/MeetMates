@@ -4,11 +4,6 @@
   width: 50%;
 }
 
-h2 {
-  margin-top: 2%;
-  margin-bottom: 2%;
-}
-
 .open-button {
   background-color: var(--app-color-first);
   width: 100%;
@@ -32,6 +27,23 @@ h2 {
   position: relative;
 }
 
+input,
+select {
+  display: block;
+  padding: 10px 6px;
+  width: 100%;
+  border-radius: 8px;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 1px solid rgb(168, 168, 168);
+}
+
+select:focus {
+  background-color: var(--app-color-first);
+  color: var(--app-color-background);
+  outline: none;
+}
+
 /* Full-width input fields */
 .form-container input[type='text'],
 .form-container input[type='password'] {
@@ -41,18 +53,20 @@ h2 {
   border: none;
   background: #f1f1f1;
   border-radius: 8px;
+  border-bottom: 1px solid rgb(168, 168, 168);
 }
 
 /* When the inputs get focus..*/
 .form-container input[type='text']:focus,
 .form-container input[type='password']:focus {
-  background-color: var(--app-bright-color);
+  background-color: var(--app-color-first);
   outline: none;
 }
 
 /* Set style for create-activity button */
 .form-container .btn {
   background-color: var(--app-color-first);
+  border-radius: 8px;
   color: white;
   padding: 16px 20px;
   border: none;

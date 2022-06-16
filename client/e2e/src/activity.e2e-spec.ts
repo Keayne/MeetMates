@@ -33,9 +33,9 @@ describe('/meet/find-activity/', () => {
   });
 
   /*
-  it('should render the title "Aufgaben"', async () => {
-    await page.goto(config.clientUrl('/tasks'));
-    const title = await page.textContent('app-tasks h1');
-    expect(title).to.equal('Aufgaben');
+  it('should render the title "Available Activities"', async () => {
+    await page.goto(config.clientUrl('/meet/find-activity'));
+    const title = await page.textContent('find-activity h2');
+    expect(title).to.equal('Available Activities');
   });*/
 });

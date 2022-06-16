@@ -23,7 +23,7 @@ interface Actitity {
   deletepermission: boolean;
 }
 
-const authors: string[] = ['Arne Schaper', 'Robert Müller'];
+//const authors: string[] = ['Arne Schaper', 'Robert Müller'];
 
 const activities: Actitity[] = [
   {

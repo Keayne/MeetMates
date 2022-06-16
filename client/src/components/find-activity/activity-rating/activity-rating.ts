@@ -4,7 +4,7 @@ import { LitElement, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { httpClient } from '../../../http-client';
 import { PageMixin } from '../../page.mixin';
-import { Actitity, Rating } from '../find-activity';
+import { Activity, Rating } from '../find-activity';
 import componentStyle from './activity-rating.css';
 
 @customElement('activity-rating')
@@ -12,7 +12,7 @@ import componentStyle from './activity-rating.css';
 class ActivityRatingComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
 
-  @property({ reflect: true }) activity = {} as Actitity;
+  @property({ reflect: true }) activity = {} as Activity;
   @property() rating = {} as Rating;
   @property() sliderValue = '0';
   @query('#personalSlider') private personalSlider!: HTMLInputElement;
@@ -21,7 +21,6 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
   async firstUpdated() {
     try {
       this.startAsyncInit();
-      console.log('activiy rating..');
       const responseRating = await httpClient.get(`rating/findOne/${this.activity.id}` + location.search);
       this.rating = (await responseRating.json()).results;
       this.sliderValue = String(this.rating.rating ? this.rating.rating : '0');
@@ -99,7 +98,6 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
   }
 
   async saveSliderValueToDb() {
-    console.log(this.activity.personalRating);
     const partialRating: Partial<Rating> = {
       activityid: this.activity.id,
       rating: Number(this.activity.personalRating ? this.activity.personalRating : 0) //userID is not included here as it is being provided by the auth Middleware on patch request.
