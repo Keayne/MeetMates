@@ -1,4 +1,4 @@
-/* Autor: Valentin Lieberknecht */
+/* Autor: Arne Schaper */
 
 import { Browser, BrowserContext, Page, chromium } from 'playwright';
 import { expect } from 'chai';
