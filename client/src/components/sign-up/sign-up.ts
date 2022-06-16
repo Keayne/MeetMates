@@ -176,7 +176,7 @@ class SignUpComponent extends PageMixin(LitElement) {
         <h3>Select profile picture</h3>
         <input @change="${this.updateImage}" type="file" accept="image/png, image/jpeg" required>
         <br>
-        <img src="${this.imgSrc}">
+        <img style="max-width: 200px; max-height: 200px;" src="${this.imgSrc}">
         <button type="button" @click="${this.submit}" >Create account</button>
       </form>
     `;

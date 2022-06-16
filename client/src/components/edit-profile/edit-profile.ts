@@ -141,6 +141,7 @@ class SignUpComponent extends PageMixin(LitElement) {
         <h3>Choose your hobbies</h3>
         ${this.interests.map(
           interst =>
+            //ts error comes from open issue: https://github.com/iFwu/vscode-styled-jsx/issues/18
             html`<div
               style=${interst.status ? 'background-color: #04aa6d' : 'background-color: #eee'}
               class="pill"
@@ -152,8 +153,8 @@ class SignUpComponent extends PageMixin(LitElement) {
         <h3>Select profile picture</h3>
         <input @change="${this.updateImage}" type="file" accept="image/png, image/jpeg">
         <br>
-        <img src="${this.imgSrc}">
-        <button type="button" @click="${this.submit}" >Update Profile</button>
+        <img style="max-width: 200px; max-height: 200px;" src="${this.imgSrc}">
+        <button type="button" @click="${this.submit}">Update Profile</button>
       </form>
     `;
   }
