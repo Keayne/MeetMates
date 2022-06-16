@@ -55,7 +55,7 @@ router.get('/:id', authService.authenticationMiddleware, async (req, res) => {
     //Get all Meet-Ids from User
     const mateMeet = await matemeetDAO.findOne({ meetid: meetId, mateid: mateId });
 
-    if (mateMeet === null) {
+    if (!mateMeet) {
       res.status(404).end();
     }
     //Build Meet with Mates
@@ -63,8 +63,9 @@ router.get('/:id', authService.authenticationMiddleware, async (req, res) => {
     let mates: Mate[];
     const rMates: ReturnMate[] = [];
 
-    if (meet === null) return null;
-
+    if (!meet) {
+      res.status(404).end();
+    }
     //Get Mates for Meet
     const meetmates = await matemeetDAO.findAll({ meetid: meet!.id });
     if (meetmates === null) {

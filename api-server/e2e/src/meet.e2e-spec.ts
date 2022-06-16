@@ -29,7 +29,7 @@ describe('Meet', () => {
       expect(response.status).to.equal(401);
     });
 
-    it('should fail to post new Meetname ', async () => {
+    it('should fail to post new Meetname with wrong/unkown Id ', async () => {
       const response = await userSession.post('/meet/changeName', {
         meetId: '3e1f9e5b-616c-4d91-9be1-90dc8d52a621',
         newName: 'FAIL'
@@ -100,6 +100,16 @@ describe('Meet', () => {
         const meet = (await response.json()) as Meet;
         expect(meet.id).to.equal(meetId);
       });
+
+      it('should fail to get requested Meet with wrong Mate ', async () => {
+        const wrongUserSession = new UserSession();
+        await wrongUserSession.registerUser();
+
+        const response = await wrongUserSession.get(`/meet/${meetId}`);
+
+        await wrongUserSession.deleteUser();
+        expect(response.status).to.equal(404);
+      });
     });
 
     describe('#Post ', () => {
@@ -125,6 +135,19 @@ describe('Meet', () => {
           const meet = (await meetResponse.json()) as Meet;
           expect(meet.name).to.equal('noFAIL');
         }
+      });
+
+      it('should fail to post new Meetname with wrong Mate ', async () => {
+        const wrongUserSession = new UserSession();
+        await wrongUserSession.registerUser();
+
+        const response = await wrongUserSession.post('/meet/changeName', {
+          meetId: meetId,
+          newName: 'FAIL'
+        });
+
+        await wrongUserSession.deleteUser();
+        expect(response.status).to.equal(404);
       });
     });
 
