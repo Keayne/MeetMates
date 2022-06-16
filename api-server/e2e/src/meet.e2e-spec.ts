@@ -49,6 +49,10 @@ describe('Meet', () => {
       await userSession.registerUser();
     });
 
+    afterEach(async () => {
+      await userSession.deleteUser();
+    });
+
     it('should fail to get Meet', async () => {
       const response = await userSession.get('/meet/3e1f9e5b9be1-90dc8d52a621');
       expect(response.status).to.equal(400);
@@ -89,6 +93,12 @@ describe('Meet', () => {
         meetId = meets[0].id;
       }
     });
+
+    afterEach(async () => {
+      await userSession.delete(`/meet/${meetId}`);
+      await userSession.deleteUser();
+    });
+
     describe('#GET ', () => {
       it('should succeed to get single Meet', async () => {
         const response = await userSession.get(`/meet/${meetId}`);
@@ -181,10 +191,6 @@ describe('Meet', () => {
           expect(meets.length).to.be.greaterThan(0);
         } else expect.fail('Failed to delet');
       });
-    });
-
-    afterEach(async () => {
-      await userSession.deleteUser();
     });
   });
 });
