@@ -17,7 +17,7 @@ class AppComponent extends LitElement {
 
   @state() private loggedInHeaderOptions = [
     { title: 'Meets', routePath: 'meets' },
-    { title: 'Settings', routePath: 'mates/settings' },
+    { title: 'Settings', routePath: 'mates/settings/edit-profile' },
     { title: 'Logout', routePath: 'mates/sign-out' }
   ];
 
@@ -49,6 +49,7 @@ class AppComponent extends LitElement {
         'mates/sign-in': () => html`<app-sign-in></app-sign-in>`,
         'mates/sign-up': () => html`<app-sign-up></app-sign-up>`,
         'mates/sign-out': () => html`<app-sign-out></app-sign-out>`,
+        'mates/verify-code/:id': params => html`<app-verify-code .id=${params.id}></app-verify-code>`,
         'mates/settings': () => html`<app-settings .comp="edit-profile"></app-settings>`,
         'mates/settings/:comp': params => html`<app-settings .comp=${params.comp}></app-settings>`,
         'mates/reset': () => html`<app-request-password></app-request-password>`,

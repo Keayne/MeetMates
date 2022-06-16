@@ -17,6 +17,7 @@ class ResetPasswordComponent extends PageMixin(LitElement) {
     form {
       max-width: 600px;
       text-align: left;
+      margin: 30px auto;
     }
     label {
       color: rgb(104, 103, 103);
@@ -27,12 +28,31 @@ class ResetPasswordComponent extends PageMixin(LitElement) {
       letter-spacing: 1px;
       font-weight: bold;
     }
+    input {
+      display: block;
+      padding: 10px 6px;
+      width: 100%;
+      box-sizing: border-box;
+      border: none;
+      border-bottom: 1px solid rgb(168, 168, 168);
+      color: #555;
+    }
+    button {
+      margin-top: 5%;
+      width: 100%;
+      border: none;
+      outline: none;
+      padding: 12px 16px;
+      background-color: #f1f1f1;
+      cursor: pointer;
+      border-radius: 8px;
+    }
   `;
 
   @query('form') private form!: HTMLFormElement;
   @query('#currentPassword') private currentPasswordElement!: HTMLInputElement;
   @query('#password') private passwordElement!: HTMLInputElement;
-  @query('#password-check') private passwordCheckElement!: HTMLInputElement;
+  @query('#passwordCheck') private passwordCheckElement!: HTMLInputElement;
 
   @state() private passwordMessage!: string;
   @state() private passwordCheckMessage!: string;
@@ -40,8 +60,8 @@ class ResetPasswordComponent extends PageMixin(LitElement) {
   render() {
     return html`
       ${this.renderNotification()}
-      <h1>Change Password</h1>
       <form>
+        <h1>Change Password</h1>
         <div>
           <label>Current Password:</label>
           <input type="password" id="currentPassword" required />
@@ -51,13 +71,13 @@ class ResetPasswordComponent extends PageMixin(LitElement) {
             type="password"
             id="password"
             @keyup="${this.checkPassword}"
-            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$"
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*d)[A-Za-zd@$!%*#?&-_=()]{8,}$"
             required
           />
           <span>${this.passwordMessage}</span>
           <br />
           <label>Password Check:</label>
-          <input type="password" @keyup="${this.checkCheckPassword}" id="password-check" required />
+          <input type="password" @keyup="${this.checkCheckPassword}" id="passwordCheck" required />
           <span>${this.passwordCheckMessage}</span>
         </div>
         <br />
@@ -90,7 +110,7 @@ class ResetPasswordComponent extends PageMixin(LitElement) {
   }
 
   checkPassword() {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*#?&-_=()]{8,}$/gm;
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*#?&-_=()]{8,}$/;
     if (!regex.test(this.passwordElement.value)) {
       this.passwordMessage =
         'Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters';

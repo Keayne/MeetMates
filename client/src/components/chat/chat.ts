@@ -23,7 +23,7 @@ class ChatComponent extends PageMixin(LitElement) {
     };
     const messages = await httpClient.get('/chat/messages/' + this.room);
     this.messages = await messages.json();
-    scrollTo(0, document.body.scrollHeight);
+    //scrollTo(0, document.body.scrollHeight);
 
     this.ws.onmessage = async () => {
       const messages = await httpClient.get('/chat/messages/' + this.room);
@@ -68,7 +68,7 @@ class ChatComponent extends PageMixin(LitElement) {
           )}
         </div>
         <form class="chat-input" @submit="${this.messageSubmit}">
-          <input class="chat-window-message" type="text" name="message" placeholder="Ihre Nachricht.." />
+          <input class="chat-window-message" id="message" type="text" placeholder="Your message.." />
           <button type="submit">Send</button>
         </form>
       </body>
