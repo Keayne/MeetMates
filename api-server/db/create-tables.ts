@@ -56,7 +56,7 @@ async function createPsqlScheme(client: ClientType) {
   await client.query(
     `create table matemeet(
       mateid varchar(40) NOT NULL references mate(id) on delete cascade,
-      meetid varchar(40) NOT NULL references meet(id),
+      meetid varchar(40) NOT NULL references meet(id) on delete cascade,
       opened boolean default false,
       "createdAt" bigint NOT NULL,
       rating int
