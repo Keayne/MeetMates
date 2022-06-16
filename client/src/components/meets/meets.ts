@@ -59,11 +59,11 @@ class MeetsComponent extends PageMixin(LitElement) {
     return html`${this.renderNotification()}
       <div class="meets">
         ${this.newMeets.length > 0
-          ? html`<div class="meets-header"><h2>New Meets</h2></div>
+          ? html`<div id="newMeets" class="meets-header"><h2>New Meets</h2></div>
               <div class="meets-body">${repeat(this.newMeets, meet => html`<meets-meet .meet=${meet} />`)}</div>`
           : html``}
         ${this.oldMeets.length > 0
-          ? html`<div class="meets-header"><h2>Your Meets</h2></div>
+          ? html`<div id="oldMeets" class="meets-header"><h2>Your Meets</h2></div>
               <div class="meets-body">${repeat(this.oldMeets, meet => html`<meets-meet .meet=${meet} />`)}</div>`
           : html``}
       </div>`;

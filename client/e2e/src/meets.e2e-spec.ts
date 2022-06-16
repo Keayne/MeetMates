@@ -33,7 +33,7 @@ describe('/meets', () => {
     await context.close();
   });
 
-  it('should render Meets-Title "Your Meets"', async () => {
+  it('should render Meets-Title "New Meets"', async () => {
     await page.waitForSelector('app-meets');
 
     const newMeetsHeader = await page.textContent('.meets-header > h2');
