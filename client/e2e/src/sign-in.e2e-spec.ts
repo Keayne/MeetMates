@@ -49,7 +49,7 @@ describe('/users/sign-in', () => {
     await page.fill('input:below(:text("Password"))', userSession.password);
     await Promise.all([page.waitForResponse('**/sign-in'), page.click('button:text("Login")')]);
     expect(await page.locator('text="E-Mail or Password not correct."').count()).to.equal(1);
-  });
+  }).timeout(3000);
 
   it('should succeed given correct credentials', async () => {
     await userSession.registerUser();
@@ -59,25 +59,24 @@ describe('/users/sign-in', () => {
     const [response] = await Promise.all([page.waitForResponse('**/sign-in'), page.click('button:text("Login")')]);
     expect(response.status()).to.equal(201);
     await userSession.deleteUser();
-  });
+  }).timeout(3000);
 
   it('should render "Sign up here"', async () => {
-    await userSession.registerUser();
     await page.goto(config.clientUrl('/mates/sign-in'));
-    page.click('button:text("Sign up here")');
-    expect(page.locator('text=Sign up here'));
-    await userSession.deleteUser();
+    const title = await page.textContent('app-sign-in h3');
+    expect(title).to.equal(`Don't have an account? Sign up here`);
   });
 
+  /*
   it('should render "Sign up here" and redirect to sign-up page', async () => {
     await userSession.registerUser();
     await page.goto(config.clientUrl('/mates/sign-in'));
     page.click('button:text("Sign up here")');
-    expect('Location', '**/sign-up');
+    expect('Location', 'twostarshere/mates/sign-up');
     await userSession.deleteUser();
   });
 
-  /*
+  
   it('should render forgot password reference', async () => {
     
   });*/

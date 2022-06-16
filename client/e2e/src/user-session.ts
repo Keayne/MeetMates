@@ -63,15 +63,6 @@ export class UserSession {
     ]);
   }
 
-  //TODO ...
-  async registerMeetForUser() {
-    const response = await fetch(config.serverUrl('sign-up'), {
-      method: 'POST',
-      body: JSON.stringify(this.signUpData()),
-      headers: { 'Content-Type': 'application/json' }
-    });
-  }
-
   async deleteUser() {
     const response = await fetch(config.serverUrl('delete'), {
       method: 'DELETE',

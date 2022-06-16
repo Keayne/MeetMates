@@ -148,10 +148,16 @@ class FindActivityComponent extends PageMixin(LitElement) {
     if (category === 'all') {
       this.activityListLocal = this.activityList;
       this.btn1.style.backgroundColor = '#83a5c2';
+      if (this.activityListLocal.length === 0) {
+        this.nothingHere.style.display = 'block';
+      }
     } else if (category === 'Highest Rating') {
       this.btn2.style.backgroundColor = '#83a5c2';
       this.activityListLocal = [...this.activityList];
       this.activityListLocal = this.activityListLocal.sort((a, b) => (a.avgRating < b.avgRating ? 1 : -1));
+      if (this.activityListLocal.length === 0) {
+        this.nothingHere.style.display = 'block';
+      }
     } else {
       this.activityListLocal = this.activityList.filter(activity => activity.category === category);
       if (category === 'Entertainment') this.btn3.style.backgroundColor = '#83a5c2';

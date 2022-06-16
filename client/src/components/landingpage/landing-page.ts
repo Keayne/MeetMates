@@ -16,7 +16,7 @@ class AboutComponent extends PageMixin(LitElement) {
         <div class="quoteContainer">
           <img class="quoteImg" src="arne.jpg" />
           <div>
-            <span> MeetMates hat mich und meine neuen Freunde von beginn an begeistert </span>
+            <span> Noch nie war andere Menschen mit gleichen Interessen zu finden so einfach! </span>
             <div class="quoteAuthor">~ Arne Schaper</div>
           </div>
         </div>
@@ -29,7 +29,7 @@ class AboutComponent extends PageMixin(LitElement) {
           <img class="quoteImg" src="valentin.jpg" />
           <div>
             <span>
-              MeetMates ermöglicht mir, mich mit neuen Menschen zu connecten und Freundschaften zu schließen.
+              MeetMates ermöglicht es jedem, sich mit neuen Menschen zu verbinden und Freundschaften zu schließen.
             </span>
             <div class="quoteAuthor">~ Valentin Lieberknecht</div>
           </div>
@@ -38,7 +38,7 @@ class AboutComponent extends PageMixin(LitElement) {
         <div class="quoteContainer">
           <img class="quoteImg" src="jonathan.jpg" />
           <div>
-            <span> Ich kann endlich neue Freunde finden, was mir zuvor durch Corona verwehrt wurde. </span>
+            <span> Endlich wird Freunde finden einfach, und dazu noch entspannt. </span>
             <div class="quoteAuthor">~ Jonathan Hüls</div>
           </div>
         </div>

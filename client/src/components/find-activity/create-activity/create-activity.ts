@@ -25,7 +25,6 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
       <button class="open-button" @click="${this.openForm}"><h2>Create an activity</h2></button>
       <div class="form-popup" id="myForm">
         <form @submit="${this.submit}" class="form-container">
-          <h2>New Activity</h2>
           <label for="title"><b>Title</b></label
           ><br />
           <input
