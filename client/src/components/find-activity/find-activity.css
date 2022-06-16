@@ -30,6 +30,7 @@
   display: flex;
   align-items: center;
   flex-direction: row;
+  width: 46%;
 }
 
 .activity-container:last-child {

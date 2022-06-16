@@ -16,6 +16,10 @@
   box-shadow: 2px 2px 1px #c4c3c3;
 }
 
+.outer-rating {
+  width: 100%;
+}
+
 #deleteButton:hover {
   -o-transition: 0.2s;
   -ms-transition: 0.2s;
@@ -61,4 +65,9 @@ p {
 
 #overallRating:hover {
   cursor: not-allowed;
+}
+
+img {
+  width: 60px;
+  height: 50px;
 }

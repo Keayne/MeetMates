@@ -67,6 +67,12 @@ class FindActivityComponent extends PageMixin(LitElement) {
     return response;
   }
 
+  async updatePersonalRating(activityId: string) {
+    const responseRating = await httpClient.get(`rating/findOne/${activityId}` + location.search);
+    const response = (await responseRating.json()).results;
+    return response.rating;
+  }
+
   /**
    * Initial tasks required to load the page
    */
@@ -79,6 +85,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
         this.activityList.map(async (activity: Activity): Promise<void> => {
           activity.tooltipcreatedby = await this.updateAuthor(activity.tooltipcreatedby);
           activity.avgRating = await this.updateAvgRating(activity.id);
+          activity.personalRating = await this.updatePersonalRating(activity.id);
         })
       );
       this.activityListLocal = this.activityList;
@@ -133,6 +140,10 @@ class FindActivityComponent extends PageMixin(LitElement) {
       </div>`;
   }
 
+  sortActivityListLocal() {
+    this.activityListLocal = this.activityListLocal.sort((a, b) => (a.avgRating < b.avgRating ? 1 : -1));
+  }
+
   /**
    * Apply a filter to the currently shown activites
    * @param category Name of the category to filter
@@ -154,7 +165,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
     } else if (category === 'Highest Rating') {
       this.btn2.style.backgroundColor = '#83a5c2';
       this.activityListLocal = [...this.activityList];
-      this.activityListLocal = this.activityListLocal.sort((a, b) => (a.avgRating < b.avgRating ? 1 : -1));
+      this.sortActivityListLocal();
       if (this.activityListLocal.length === 0) {
         this.nothingHere.style.display = 'block';
       }

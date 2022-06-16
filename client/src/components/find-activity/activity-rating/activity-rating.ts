@@ -14,22 +14,15 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
 
   @property({ reflect: true }) activity = {} as Activity;
   @property() rating = {} as Rating;
-  @property() sliderValue = '0';
-  @query('#personalSlider') private personalSlider!: HTMLInputElement;
+  @property() sliderValue = '';
   @query('#deleteButton') private deleteButton!: HTMLImageElement;
 
-  async firstUpdated() {
-    try {
-      this.startAsyncInit();
-      const responseRating = await httpClient.get(`rating/findOne/${this.activity.id}` + location.search);
-      this.rating = (await responseRating.json()).results;
-      this.sliderValue = String(this.rating.rating ? this.rating.rating : '0');
-      if (this.activity.deletepermission === false) this.deleteButton.style.display = 'none';
-    } catch (e) {
-      this.showNotification((e as Error).message, 'error');
-    } finally {
-      this.finishAsyncInit();
-    }
+  async updated() {
+    console.log(
+      `Personal rating for ${this.activity.title} is ${this.activity.personalRating}, avgRating ${this.activity.avgRating}, currentSliderValue ${this.sliderValue}`
+    );
+    if (this.activity.deletepermission === false) this.deleteButton.style.display = 'none';
+    else this.deleteButton.style.display = 'inline';
   }
 
   render() {
@@ -54,22 +47,15 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
             type="range"
             min="0"
             max="100"
-            value=${this.rating.rating ? this.rating.rating : '0'}
+            value=${this.activity.personalRating ? this.activity.personalRating : '0'}
             class="slider"
             id="myRating"
             @change="${(e: Event) => this.readSliderValue(e)}"
           />
-          <img
-            id="personalSlider"
-            src="/refresh.png"
-            alt="update"
-            @click=${this.saveSliderValueToDb}
-            style="width:60px;height:50px;"
-          />
+          <img id="personalSlider" src="/refresh.png" alt="update" @click=${this.saveSliderValueToDb} />
           <img
             class="remove-task"
             src="/deleteicon.png"
-            style="width:60px;height:50px;"
             alt="update"
             id="deleteButton"
             @click="${this.confirmDelete}"
@@ -93,18 +79,20 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
     const target = e.target as HTMLInputElement;
     if (e) {
       this.sliderValue = target?.value;
-      this.activity.personalRating = Number(this.sliderValue);
+      console.log('Read new slider value ' + Number(target?.value));
     }
   }
 
   async saveSliderValueToDb() {
+    if (this.sliderValue === '') this.sliderValue = String(this.activity.personalRating);
     const partialRating: Partial<Rating> = {
       activityid: this.activity.id,
-      rating: Number(this.activity.personalRating ? this.activity.personalRating : 0) //userID is not included here as it is being provided by the auth Middleware on patch request.
+      rating: Number(this.sliderValue) //userID is not included here as it is being provided by the auth Middleware on patch request.
     };
     await httpClient.patch(`rating/${this.activity.id}${location.search}`, partialRating);
     const responseRatingAll = await httpClient.get(`rating/findAverageRating/${this.activity.id}` + location.search);
     this.activity.avgRating = (await responseRatingAll.json()).results;
+    this.activity.personalRating = Number(this.sliderValue);
     this.requestUpdate();
   }
 
