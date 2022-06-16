@@ -3,7 +3,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { PageMixin } from '../../page.mixin';
-import { Actitity } from '../find-activity';
+import { Activity } from '../find-activity';
 
 import componentStyle from './activity-info.css';
 
@@ -11,7 +11,7 @@ import componentStyle from './activity-info.css';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class CardComponent extends PageMixin(LitElement) {
   static styles = componentStyle;
-  @property({ reflect: true }) activity = {} as Actitity;
+  @property({ reflect: true }) activity = {} as Activity;
 
   render() {
     return html`

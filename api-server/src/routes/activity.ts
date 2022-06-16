@@ -72,10 +72,16 @@ router.post('/:id', authService.authenticationMiddleware, async (req, res) => {
  * Deletes the activiyId with all corresponding ratings registered to this activity.
  */
 router.delete('/:id', authService.authenticationMiddleware, async (req, res) => {
+  const activityDAO: GenericDAO<Activity> = req.app.locals.activityDAO;
+  const filter: Partial<Activity> = { id: req.params.id };
+  const activity: Activity | null = await activityDAO.findOne(filter);
+
   //check if meet is present
   const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;
-  const meet: Meet | null = await meetDAO.findOne({ id: req.params.id });
-  if (meet === null || meet === undefined) res.status(404).end(); //meet is not present
+  const meet: Meet | null = await meetDAO.findOne({ id: activity?.meetid });
+  if (meet === null || meet === undefined) {
+    res.status(404).end(); //meet is not present
+  }
   //end check
   //check if user is in meet
   const mateId = res.locals.user.id;
@@ -86,12 +92,15 @@ router.delete('/:id', authService.authenticationMiddleware, async (req, res) => 
 
   //TODO check if the user is allowed to delete this activity.
 
-  const activityDAO: GenericDAO<Activity> = req.app.locals.activityDAO;
-  const filter: Partial<Activity> = { id: req.params.id };
-  const activity: Activity | null = await activityDAO.findOne(filter);
   if (activity != null || activity != undefined) {
-    if (mateId === activity.tooltipcreatedby) await activityDAO.delete(req.params.id); //table cascades to corresponding ratings, so no delete request necessary for ratings
-    res.status(200).end();
+    if (mateId === activity.tooltipcreatedby) {
+      const success = await activityDAO.delete(req.params.id); //table cascades to corresponding ratings, so no delete request necessary for ratings
+      if (success) {
+        res.status(200).end();
+      } else {
+        //TODO
+      }
+    }
   } else {
     res.status(404).end();
   }

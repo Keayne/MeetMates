@@ -3,7 +3,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, query, state } from 'lit/decorators.js';
 import { PageMixin } from '../../page.mixin';
-import { Actitity } from '../find-activity';
+import { Activity } from '../find-activity';
 import componentStyle from './create-activity.css';
 
 @customElement('create-activity')
@@ -78,7 +78,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
             required
             autocomplete="off"
           /><br />
-          <button type="submit" class="btn">Create Actitity</button><br />
+          <button type="submit" class="btn">Create Activity</button><br />
           <button type="button" class="btn cancel" @click="${this.closeForm}">Close</button>
         </form>
       </div>
@@ -92,7 +92,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
    */
   async submit(event: Event) {
     event.preventDefault();
-    const partialActivity: Partial<Actitity> = {
+    const partialActivity: Partial<Activity> = {
       title: this.titlee.value,
       description: this.description.value,
       motivationtitle: this.motivationTitle.value,
