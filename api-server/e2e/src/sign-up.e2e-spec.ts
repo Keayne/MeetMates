@@ -50,7 +50,7 @@ describe('/sign-in', () => {
     });
     const text = (await response.json()) as ResponseType;
     expect(response.status).to.eq(400);
-    expect(text.message).to.eq('Passwort entspricht nicht den Anforderungen!');
+    expect(text.message).to.eq('Password does not meet the requirements.');
   });
 
   it('should not create user, password and passwordCheck does not match', async () => {
@@ -61,14 +61,14 @@ describe('/sign-in', () => {
     });
     const text = (await response.json()) as ResponseType;
     expect(response.status).to.eq(400);
-    expect(text.message).to.eq('Die beiden Passwörter stimmen nicht überein.');
+    expect(text.message).to.eq('The passwords do not match.');
   });
 
   it('should not create user, email already exists', async () => {
     const response = await userSession.post('/sign-up', { ...userSession.signUpData(), email: 'BayerLisa@gmail.com' });
     const text = (await response.json()) as ResponseType;
     expect(response.status).to.eq(400);
-    expect(text.message).to.eq('Es existiert bereits ein Konto mit der angegebenen E-Mail-Adresse.');
+    expect(text.message).to.eq('An account already exists with the given email address.');
   });
 
   it('should fail when not logged in /verify', async () => {

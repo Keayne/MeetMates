@@ -17,7 +17,7 @@ const router = express.Router();
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*#?&-_=()]{8,}$/;
 const emailRegex =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const stringRegex = /^[a-zA-ZäöüÄÖÜß]+$/;
+const stringRegex = /^[a-zA-ZäöüÄÖÜß-]+$/;
 
 router.post('/sign-up', async (req, res) => {
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
@@ -62,7 +62,7 @@ router.post('/sign-up', async (req, res) => {
   }
 
   if (req.body.password !== req.body.passwordCheck) {
-    return sendErrorMessage('The two passwords do not match.');
+    return sendErrorMessage('The passwords do not match.');
   }
 
   const filter: Partial<Mate> = { email: req.body.email };
@@ -145,6 +145,12 @@ router.post('/sign-in', async (req, res) => {
     res.status(400).json({ message: errors.join('\n') });
     return;
   }
+
+  if (emailRegex.test(String(req.body.email)) == false) {
+    res.status(400).json({ message: 'Email format invalid.' });
+    return;
+  }
+
   const user = await mateDAO.findOne(filter);
 
   if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
@@ -266,6 +272,11 @@ router.patch('/changeemail', authService.authenticationMiddleware, async (req, r
 
   const mate = await mateDAO.findOne({ id: res.locals.user.id });
 
+  if (emailRegex.test(String(req.body.email)) == false) {
+    res.status(400).json({ message: 'Email format invalid.' });
+    return;
+  }
+
   if (!mate) return res.status(503).send('Could not found user in db');
 
   //Create VerifyToken
@@ -302,7 +313,7 @@ router.patch('/changepassword', authService.authenticationMiddleware, async (req
   }
 
   if (passwordRegex.test(String(req.body.password)) == false) {
-    res.status(401).send('Passwort entspricht nicht den Anforderungen!');
+    res.status(401).send('Password does not meet the requirements.');
     return;
   }
   await mateDAO.update({ id: mate.id, password: await bcrypt.hash(req.body.password, 10) });
@@ -341,6 +352,11 @@ router.get('/resetpassword/:email', async (req, res) => {
 router.patch('/resetpassword', async (req, res) => {
   const verifyDAO: UniversalDAO<Verify> = req.app.locals.verifyDAO;
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
+
+  if (passwordRegex.test(String(req.body.password)) == false) {
+    res.status(401).send('Password does not meet the requirements.');
+    return;
+  }
 
   const verify = await verifyDAO.findOne({ mateid: req.body.id, type: 'p' });
   if (!verify) return res.status(400).send('Invalid');

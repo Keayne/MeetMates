@@ -18,8 +18,8 @@ export class UserSession {
 
   constructor() {
     const uuid = uuidv4();
-    this.name = `name_${uuid}`;
-    this.firstname = `firstname_${uuid}`;
+    this.name = `name-TESTACCOUNT`;
+    this.firstname = `firstname-TESTACCOUNT`;
     this.email = `email_${uuid}@example.org`;
     this.birthday = '2022-04-26';
     this.gender = 'diverse';
