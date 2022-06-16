@@ -52,6 +52,7 @@ button {
   background-color: #f1f1f1;
   cursor: pointer;
   border-radius: 8px;
+  margin-bottom: 80px;
 }
 .error {
   color: #ff0062;

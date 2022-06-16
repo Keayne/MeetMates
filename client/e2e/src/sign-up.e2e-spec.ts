@@ -28,7 +28,7 @@ describe('sign-up', () => {
     await context.close();
   });
 
-  it('should render "Es existiert bereits ein Konto mit der angegebenen E-Mail-Adresse." on login failure', async () => {
+  it('should render "An account already exists with the given email address." on login failure', async () => {
     await page.goto(config.clientUrl('/mates/sign-up'));
     await page.locator('#firstname').click();
     await page.locator('#firstname').fill('Max');
@@ -49,10 +49,8 @@ describe('sign-up', () => {
 
     await Promise.all([page.waitForResponse('**/sign-up'), page.locator('text=Create account').click()]);
 
-    expect(
-      await page.locator('text="Es existiert bereits ein Konto mit der angegebenen E-Mail-Adresse."').count()
-    ).to.equal(1);
-  });
+    expect(await page.locator('text="An account already exists with the given email address."').count()).to.equal(1);
+  }).timeout(100000);
 
   it('should register new user', async () => {
     await page.goto(config.clientUrl('/mates/sign-up'));
@@ -77,6 +75,8 @@ describe('sign-up', () => {
       page.waitForResponse('**/sign-up'),
       page.locator('text=Create account').click()
     ]);
+    console.log(await response.json());
+
     expect(response.status()).to.equal(201);
 
     //Delete User

@@ -97,7 +97,7 @@ class SignUpComponent extends PageMixin(LitElement) {
 
   async submit() {
     if (this.form.checkValidity()) {
-      if (!this.regex.test(this.passwordElement.value)) {
+      if (this.regex.test(this.passwordElement.value)) {
         if (this.passwordElement.value === this.passwordCheckElement.value) {
           const accountData = {
             name: this.nameElement.value,
@@ -119,10 +119,10 @@ class SignUpComponent extends PageMixin(LitElement) {
             this.showNotification((e as Error).message, 'error');
           }
         } else {
-          this.showNotification('Password does not match!', 'error');
+          this.showNotification('Password does not match.', 'error');
         }
       } else {
-        this.showNotification('Password does not meet requeirements!', 'error');
+        this.showNotification('Password does not meet requirements.', 'error');
       }
     } else {
       this.form.reportValidity();

@@ -17,6 +17,7 @@ const router = express.Router();
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*#?&-_=()]{8,}$/;
 const emailRegex =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const stringRegex = /^[a-zA-ZäöüÄÖÜß]+$/;
 
 router.post('/sign-up', async (req, res) => {
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
@@ -52,20 +53,28 @@ router.post('/sign-up', async (req, res) => {
     return sendErrorMessage(errors.join('\n'));
   }
 
+  if (stringRegex.test(String(req.body.name)) == false) {
+    return sendErrorMessage('Name has illegal characters.');
+  }
+
+  if (stringRegex.test(String(req.body.firstname)) == false) {
+    return sendErrorMessage('Firstname has illegal characters.');
+  }
+
   if (req.body.password !== req.body.passwordCheck) {
-    return sendErrorMessage('Die beiden Passwörter stimmen nicht überein.');
+    return sendErrorMessage('The two passwords do not match.');
   }
 
   const filter: Partial<Mate> = { email: req.body.email };
   if (await mateDAO.findOne(filter)) {
-    return sendErrorMessage('Es existiert bereits ein Konto mit der angegebenen E-Mail-Adresse.');
+    return sendErrorMessage('An account already exists with the given email address.');
   }
   if (emailRegex.test(String(req.body.email)) == false) {
-    return sendErrorMessage('Email Format ungültig');
+    return sendErrorMessage('Email format invalid.');
   }
 
   if (passwordRegex.test(String(req.body.password)) == false) {
-    return sendErrorMessage('Passwort entspricht nicht den Anforderungen!');
+    return sendErrorMessage('Password does not meet the requirements.');
   }
 
   //Create User
@@ -368,7 +377,7 @@ function hasRequiredFields(object: { [key: string]: unknown }, requiredFields: s
   let hasErrors = false;
   requiredFields.forEach(fieldName => {
     if (!object[fieldName]) {
-      errors.push(fieldName + ' darf nicht leer sein.');
+      errors.push(fieldName + ' is not allowed to be empty.');
       hasErrors = true;
     }
   });

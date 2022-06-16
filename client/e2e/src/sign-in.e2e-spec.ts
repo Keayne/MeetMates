@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import { UserSession } from './user-session.js';
 import config from './config.js';
 
-describe('/users/sign-in', () => {
+describe('/sign-in', () => {
   let browser: Browser;
   let context: BrowserContext;
   let page: Page;

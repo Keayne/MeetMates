@@ -98,10 +98,10 @@ class ResetPasswordComponent extends PageMixin(LitElement) {
             this.showNotification((e as Error).message, 'error');
           }
         } else {
-          this.showNotification('Password does not match!', 'error');
+          this.showNotification('Password does not match.', 'error');
         }
       } else {
-        this.showNotification('Password does not meet requeirements!', 'error');
+        this.showNotification('Password does not meet requirements.', 'error');
       }
     } else {
       this.form.reportValidity();
