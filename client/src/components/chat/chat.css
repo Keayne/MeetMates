@@ -1,3 +1,5 @@
+/* Autor: Valentin Lieberknecht */
+
 .chatbox {
   display: flex;
   flex-direction: column;
@@ -9,6 +11,8 @@
   max-height: calc(100% - 60px);
   background: #2f323b;
   overflow: auto;
+  height: 430px;
+  max-height: 430px;
 }
 .chat-input {
   flex: 0 0 auto;

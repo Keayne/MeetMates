@@ -12,7 +12,7 @@ class EMailService {
       secure: true,
       auth: {
         user: 'meeetmates@gmail.com',
-        pass: '3Qybu3P6QryQyJf'
+        pass: 'sydoapmvafdsxpti'
       }
     });
   }

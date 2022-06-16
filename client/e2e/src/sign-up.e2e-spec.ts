@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { Browser, BrowserContext, chromium, Page } from 'playwright';
 import config from './config.js';
 import { UserSession } from './user-session.js';
+import fetch from 'node-fetch';
 
 describe('sign-up', () => {
   let browser: Browser;
@@ -26,44 +27,64 @@ describe('sign-up', () => {
   afterEach(async () => {
     await context.close();
   });
-  /*
-  it('should register new user', async () => {
-    // Go to http://localhost:8081/
+
+  it('should render "Es existiert bereits ein Konto mit der angegebenen E-Mail-Adresse." on login failure', async () => {
     await page.goto(config.clientUrl('/mates/sign-up'));
-    // Click #firstname
     await page.locator('#firstname').click();
-    // Fill #firstname
     await page.locator('#firstname').fill('Max');
-    // Fill #name
     await page.locator('#name').fill('Mustermann');
-    // Select male
     await page.locator('select').selectOption('male');
-    //Set Birthday
     await page.locator('#birthday').fill('2020-02-02');
-    // Click input[type="email"]
     await page.locator('input[type="email"]').click();
-    // Click input[type="email"]
     await page.locator('input[type="email"]').click();
-    // Fill input[type="email"]
-    await page.locator('input[type="email"]').fill('test@test.de');
-    // Click #password
+    await page.locator('input[type="email"]').fill('BayerLisa@gmail.com');
     await page.locator('#password').click();
-    // Fill #password
-    await page.locator('#password').fill('123456Aa');
-    // Click #password-check
+    await page.locator('#password').fill(userSession.password);
     await page.locator('#passwordCheck').click();
-    // Fill #password-check
-    await page.locator('#passwordCheck').fill('123456Aa');
-    // Click text=Basketball
+    await page.locator('#passwordCheck').fill(userSession.password);
     await page.locator('text=Basketball').click();
-    // Click text=Golf
     await page.locator('text=Golf').click();
     //Select Profile Picture
     await page.setInputFiles('input[type="file"]', 'e2e/src/photo.jpg');
+
+    await Promise.all([page.waitForResponse('**/sign-up'), page.locator('text=Create account').click()]);
+
+    expect(
+      await page.locator('text="Es existiert bereits ein Konto mit der angegebenen E-Mail-Adresse."').count()
+    ).to.equal(1);
+  });
+
+  it('should register new user', async () => {
+    await page.goto(config.clientUrl('/mates/sign-up'));
+    await page.locator('#firstname').click();
+    await page.locator('#firstname').fill('Max');
+    await page.locator('#name').fill('Mustermann');
+    await page.locator('select').selectOption('male');
+    await page.locator('#birthday').fill('2020-02-02');
+    await page.locator('input[type="email"]').click();
+    await page.locator('input[type="email"]').click();
+    await page.locator('input[type="email"]').fill(userSession.email);
+    await page.locator('#password').click();
+    await page.locator('#password').fill(userSession.password);
+    await page.locator('#passwordCheck').click();
+    await page.locator('#passwordCheck').fill(userSession.password);
+    await page.locator('text=Basketball').click();
+    await page.locator('text=Golf').click();
+    //Select Profile Picture
+    await page.setInputFiles('input[type="file"]', 'e2e/src/photo.jpg');
+
     const [response] = await Promise.all([
-      page.waitForResponse('twostarshere/sign-up'),
-      page.locator('text=Konto erstellen').click()
+      page.waitForResponse('**/sign-up'),
+      page.locator('text=Create account').click()
     ]);
     expect(response.status()).to.equal(201);
-  }).timeout(1000000);*/
+
+    //Delete User
+    const delres = await fetch(config.serverUrl('delete'), {
+      method: 'DELETE',
+      headers: { Cookie: `jwt-token=${((await context.cookies()) as unknown as [{ value: string }])[0].value}` }
+    });
+
+    expect(delres.status).to.equal(200);
+  });
 });

@@ -1,4 +1,4 @@
-/* Author: Jonathan Hüls */
+/* Autor: Jonathan Hüls */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import pg, { Client as ClientType } from 'pg';
 import fs from 'fs';

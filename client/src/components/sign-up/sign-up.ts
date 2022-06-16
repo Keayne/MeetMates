@@ -26,6 +26,7 @@ class SignUpComponent extends PageMixin(LitElement) {
   @state() private imgSrc!: string;
   @state() private passwordMessage!: string;
   @state() private passwordCheckMessage!: string;
+  regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*#?&-_=()]{8,}$/;
   private selectedInterests: string[] = [];
   private selectedDescriptions: { id: string; value: number }[] = [];
 
@@ -77,8 +78,7 @@ class SignUpComponent extends PageMixin(LitElement) {
     this.imgSrc = await toBase64(input.files![0]);
   }
   checkPassword() {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*#?&-_=()]{8,}$/gm;
-    if (!regex.test(this.passwordElement.value)) {
+    if (!this.regex.test(this.passwordElement.value)) {
       this.passwordMessage =
         'Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters';
     } else {
@@ -95,29 +95,34 @@ class SignUpComponent extends PageMixin(LitElement) {
     }
   }
 
-  submit() {
+  async submit() {
     if (this.form.checkValidity()) {
-      if (this.passwordElement.value === this.passwordCheckElement.value) {
-        const accountData = {
-          name: this.nameElement.value,
-          firstname: this.firstnameElement.value,
-          email: this.emailElement.value,
-          birthday: this.birthdayElement.value,
-          gender: this.genderElement.value,
-          image: this.imgSrc,
-          password: this.passwordElement.value,
-          passwordCheck: this.passwordCheckElement.value,
-          interests: this.selectedInterests,
-          descriptions: this.selectedDescriptions
-        };
-        try {
-          httpClient.post('/sign-up', accountData);
-          router.navigate('/');
-        } catch (e) {
-          this.showNotification((e as Error).message, 'error');
+      if (!this.regex.test(this.passwordElement.value)) {
+        if (this.passwordElement.value === this.passwordCheckElement.value) {
+          const accountData = {
+            name: this.nameElement.value,
+            firstname: this.firstnameElement.value,
+            email: this.emailElement.value,
+            birthday: this.birthdayElement.value,
+            gender: this.genderElement.value,
+            image: this.imgSrc,
+            password: this.passwordElement.value,
+            passwordCheck: this.passwordCheckElement.value,
+            interests: this.selectedInterests,
+            descriptions: this.selectedDescriptions
+          };
+          try {
+            const response = await httpClient.post('/sign-up', accountData);
+            const json = await response.json();
+            router.navigate('/mates/verify-code/' + json.id);
+          } catch (e) {
+            this.showNotification((e as Error).message, 'error');
+          }
+        } else {
+          this.showNotification('Password does not match!', 'error');
         }
       } else {
-        this.showNotification('Password does not match!');
+        this.showNotification('Password does not meet requeirements!', 'error');
       }
     } else {
       this.form.reportValidity();
@@ -145,9 +150,7 @@ class SignUpComponent extends PageMixin(LitElement) {
         <label>Email:</label>
         <input type="email" id="email" required />
         <label>Password:</label>
-        <input type="password" id="password" @keyup="${
-          this.checkPassword
-        }" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$" required />
+        <input type="password" id="password" @keyup="${this.checkPassword}" required />
         <span>${this.passwordMessage}</span>
         <br>
         <label>Password Check:</label>
@@ -173,8 +176,8 @@ class SignUpComponent extends PageMixin(LitElement) {
         <h3>Select profile picture</h3>
         <input @change="${this.updateImage}" type="file" accept="image/png, image/jpeg" required>
         <br>
-        <img style="max-width: 200px; max-height: 200px" src="${this.imgSrc}">
-        <button type="button" @click="${this.submit}" >Konto erstellen</button>
+        <img style="max-width: 200px; max-height: 200px;" src="${this.imgSrc}">
+        <button type="button" @click="${this.submit}" >Create account</button>
       </form>
     `;
   }

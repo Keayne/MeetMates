@@ -1,4 +1,4 @@
-/* Autor: Prof. Dr. Norman Lahme-Hütig (FH Münster) */
+/* Autor: Valentin Lieberknecht */
 
 import { Browser, BrowserContext, Page, chromium } from 'playwright';
 import { expect } from 'chai';
@@ -81,3 +81,16 @@ describe('/users/sign-in', () => {
     
   });*/
 });
+
+//     expect(response.status()).to.equal(201);
+//     await userSession.deleteUser();
+//   });
+
+//   it('should render "E-Mail oder Passwort ungültig!" on login failure', async () => {
+//     await page.goto(config.clientUrl('/mates/sign-in'));
+//     await page.fill('#email', userSession.email);
+//     await page.fill('#password', userSession.password);
+//     await Promise.all([page.waitForResponse('**/sign-in'), page.click('button:text("Login")')]);
+//     expect(await page.locator('text="E-Mail oder Passwort ungültig!"').count()).to.equal(1);
+//   });
+// });

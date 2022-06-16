@@ -55,7 +55,7 @@ router.get('/:id', async (req, res) => {
         birthday: mate.birthday,
         gender: mate.gender
       },
-      image: Buffer.from(mate.image).toString(),
+      image: mate.image ? Buffer.from(mate.image).toString() : '',
       interests: mateInterests,
       descriptons: mateDescriptions
     });
