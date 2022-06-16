@@ -46,7 +46,7 @@ describe('/meet/:id', () => {
 
   it('should should change Meet-Name', async () => {
     await page.waitForSelector('app-meets');
-    const opendMeetName = await page.textContent('.meet .name');
+    await page.textContent('.meet .name');
     await page.click('.meet .name');
 
     //change name
@@ -63,7 +63,7 @@ describe('/meet/:id', () => {
 
   it('should render delete Button', async () => {
     await page.waitForSelector('app-meets');
-    const opendMeetName = await page.textContent('.meet .name');
+    await page.textContent('.meet .name');
     await page.click('.meet .name');
 
     const deleteBtn = await page.textContent('.meet-Delete');
@@ -73,11 +73,11 @@ describe('/meet/:id', () => {
 
   it('should redirect to Meets after delete', async () => {
     await page.waitForSelector('app-meets');
-    const opendMeetName = await page.textContent('.meet .name');
+    await page.textContent('.meet .name');
     await page.click('.meet .name');
 
     page.on('dialog', dialog => dialog.accept());
-    const deleteBtn = await page.locator('.meet-Delete').click({ delay: 50 });
+    await page.locator('.meet-Delete').click({ delay: 50 });
 
     const newMeetsHeader = await page.textContent('#newMeets h2');
     const redirected = newMeetsHeader ? true : false;
@@ -89,7 +89,7 @@ describe('/meet/:id', () => {
     const opendMeetName = await page.textContent('.meet .name');
     await page.click('.meet .name');
 
-    const deleteBtn = await page.locator('.meet-Delete').click({ delay: 50 });
+    await page.locator('.meet-Delete').click({ delay: 50 });
 
     const headingElement = await page.locator('input[name="meetHeading"]').inputValue();
     expect(headingElement).to.equal('Hello Meet').and.to.equal(opendMeetName);
@@ -97,7 +97,7 @@ describe('/meet/:id', () => {
 
   it('should render "Find-Activities"-Btn ', async () => {
     await page.waitForSelector('app-meets');
-    const opendMeetName = await page.textContent('.meet .name');
+    await page.textContent('.meet .name');
     await page.click('.meet .name');
 
     const activityBtnContent = await page.textContent('.routeBtn');
@@ -107,7 +107,7 @@ describe('/meet/:id', () => {
 
   it('should direct to Activities "Find-Activities"-Btn ', async () => {
     await page.waitForSelector('app-meets');
-    const opendMeetName = await page.textContent('.meet .name');
+    await page.textContent('.meet .name');
     await page.click('.meet .name');
 
     await page.locator('.routeBtn').click();
