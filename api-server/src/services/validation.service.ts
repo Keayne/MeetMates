@@ -3,8 +3,7 @@ class Validator {
   validateUuidv4(id: string): boolean {
     const regexp = new RegExp('^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$', 'i'); //Regex vor UuidV4 lo
     //check Id
-    return true;
-    //return !regexp.test(id);
+    return regexp.test(id);
   }
   validateMultipleUuidv4(...Ids: string[]): boolean {
     //check for values

@@ -29,7 +29,7 @@ interface FullMeet {
 
 router.get('/', authService.authenticationMiddleware, async (req, res) => {
   if (!validatorService.validateUuidv4(res.locals.user.id)) {
-    res.status(400).send;
+    res.status(400).end();
     return;
   }
 
@@ -42,60 +42,60 @@ router.get('/', authService.authenticationMiddleware, async (req, res) => {
 
 router.get('/:id', authService.authenticationMiddleware, async (req, res) => {
   if (!validatorService.validateMultipleUuidv4(res.locals.user.id, req.params.id)) {
-    res.status(400).send;
-    return;
+    res.status(400).end();
   }
+  {
+    const mateId = res.locals.user.id;
+    const meetId = req.params.id;
 
-  const mateId = res.locals.user.id;
-  const meetId = req.params.id;
+    const matemeetDAO: UniversalDAO<MateMeet> = req.app.locals.matemeetDAO;
+    const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;
+    const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
 
-  const matemeetDAO: UniversalDAO<MateMeet> = req.app.locals.matemeetDAO;
-  const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;
-  const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
+    //Get all Meet-Ids from User
+    const mateMeet = await matemeetDAO.findOne({ meetid: meetId, mateid: mateId });
 
-  //Get all Meet-Ids from User
-  const mateMeet = await matemeetDAO.findOne({ meetid: meetId, mateid: mateId });
+    if (mateMeet === null) {
+      res.status(404).end();
+    }
+    //Build Meet with Mates
+    const meet: Meet | null = await meetDAO.findOne({ id: mateMeet!.meetid });
+    let mates: Mate[];
+    const rMates: ReturnMate[] = [];
 
-  if (mateMeet === null) {
-    return null;
-  }
-  //Build Meet with Mates
-  const meet: Meet | null = await meetDAO.findOne({ id: mateMeet!.meetid });
-  let mates: Mate[];
-  const rMates: ReturnMate[] = [];
+    if (meet === null) return null;
 
-  if (meet === null) return null;
+    //Get Mates for Meet
+    const meetmates = await matemeetDAO.findAll({ meetid: meet!.id });
+    if (meetmates === null) {
+      return null;
+    }
 
-  //Get Mates for Meet
-  const meetmates = await matemeetDAO.findAll({ meetid: meet!.id });
-  if (meetmates === null) {
-    return null;
-  }
-
-  const matesFilter: Partial<Mate>[] = [];
-  meetmates.forEach(meetMate => {
-    matesFilter.push({ id: meetMate.mateid });
-  });
-
-  mates! = await mateDAO.findMultiple(...matesFilter);
-
-  mates.forEach(mate => {
-    mate.image = mate.image ? Buffer.from(mate.image).toString() : '';
-    rMates.push({
-      id: mate.id,
-      name: mate.name,
-      firstName: mate.firstname,
-      src: mate.image,
-      age: new Date().getFullYear() - new Date(mate.birthday).getFullYear()
+    const matesFilter: Partial<Mate>[] = [];
+    meetmates.forEach(meetMate => {
+      matesFilter.push({ id: meetMate.mateid });
     });
-  });
 
-  if (!meet) {
-    res.status(400).json({ message: `Es existiert kein Meet mit der ID : ${meetId} ` });
-  } else {
-    const fullMeet: FullMeet = { id: meet.id, name: meet.name, mates: rMates };
-    res.status(201).json(fullMeet);
-    setMeetAsOpened(meetId, mateId, matemeetDAO);
+    mates! = await mateDAO.findMultiple(...matesFilter);
+
+    mates.forEach(mate => {
+      mate.image = mate.image ? Buffer.from(mate.image).toString() : '';
+      rMates.push({
+        id: mate.id,
+        name: mate.name,
+        firstName: mate.firstname,
+        src: mate.image,
+        age: new Date().getFullYear() - new Date(mate.birthday).getFullYear()
+      });
+    });
+
+    if (!meet) {
+      res.status(400).json({ message: `Es existiert kein Meet mit der ID : ${meetId} ` });
+    } else {
+      const fullMeet: FullMeet = { id: meet.id, name: meet.name, mates: rMates };
+      res.status(201).json(fullMeet);
+      setMeetAsOpened(meetId, mateId, matemeetDAO);
+    }
   }
 });
 
@@ -110,21 +110,36 @@ router.post('/changeName', authService.authenticationMiddleware, async (req, res
   //console.log(`User: ${res.locals.user.id} change Name from Meet: ${req.body.meetId} to "${req.body.name}"`);
 
   if (!validatorService.validateMultipleUuidv4(res.locals.user.id, req.body.meetId)) {
-    res.status(400).send;
+    res.status(400).end();
     return;
   }
 
+  //check for Meet and if Mate is in Meet
   const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;
+  const matemeetDAO: UniversalDAO<MateMeet> = req.app.locals.matemeetDAO;
+  const meetFound = await meetDAO.findOne({ id: req.body.meetId });
+  const mateMeetFound = await matemeetDAO.findOne({ meetid: req.body.meetId, mateid: res.locals.user.id });
 
-  const meet = await meetDAO.update({
-    id: req.body.meetId,
-    name: req.body.newName
-  });
-
-  if (!meet) {
-    res.status(409).json({ message: `Fehler beim ändern des Names von Meet: ${req.body.meetId} ` });
+  let meetUpdated = false;
+  if (!meetFound || !mateMeetFound) {
+    res
+      .status(404)
+      .json({ message: `Meet not found: ${req.body.meetId} ` })
+      .end();
   } else {
-    res.status(201).json(meet);
+    meetUpdated = await meetDAO.update({
+      id: req.body.meetId,
+      name: req.body.newName
+    });
+  }
+
+  if (!meetUpdated) {
+    res
+      .status(409)
+      .json({ message: `Fehler beim ändern des Names von Meet: ${req.body.meetId} ` })
+      .end();
+  } else {
+    res.status(201).json(meetUpdated).end();
   }
 });
 
@@ -132,7 +147,7 @@ router.post('/changeName', authService.authenticationMiddleware, async (req, res
 router.delete('/:meetid', authService.authenticationMiddleware, async (req, res) => {
   //console.log(`Remove User: userid${res.locals.user.id} from Meet: ${req.params.meetid}`);
   if (!validatorService.validateMultipleUuidv4(res.locals.user.id, req.params.meetid)) {
-    res.status(400).send;
+    res.status(400).end();
     return;
   }
 
