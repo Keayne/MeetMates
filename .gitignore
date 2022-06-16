@@ -130,4 +130,4 @@ dist
 .pnp.*
 
 #configs
-api-server/config.json
+# api-server/config.json # database credentials
