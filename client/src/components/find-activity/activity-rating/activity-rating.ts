@@ -29,6 +29,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
 
   render() {
     return html`
+      ${this.renderNotification()}
       <div class="outer-rating">
         <p>${this.activity.motivationtitle}</p>
         <div class="slidecontainer">
@@ -93,9 +94,12 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
     await httpClient.patch(`rating/${this.activity.id}${location.search}`, partialRating);
 
     const responseRatingAll = await httpClient.get(`rating/findAverageRating/${this.activity.id}` + location.search);
-    this.activity.avgRating = (await responseRatingAll.json()).results;
-
-    this.activity.personalRating = partialRating.rating ? partialRating.rating : 0;
+    try {
+      this.activity.avgRating = (await responseRatingAll.json()).results;
+      this.activity.personalRating = partialRating.rating ? partialRating.rating : 0;
+    } catch (error) {
+      this.showNotification((error as Error).message, 'error');
+    }
     this.requestUpdate();
   }
 

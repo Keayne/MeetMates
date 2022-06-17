@@ -1,13 +1,12 @@
 /* Autor: Jonathan Hüls */
 
 :root {
-
   --app-color-first: #315895;
   --app-color-second: #83a5c2;
   --app-color-third: #bf7f9b;
   --app-color-fourth: #04204a;
 
-  --app-color-background: azure;
+  --app-color-background: white;
 
   --app-color-dark-first: #eeb76b;
   --app-color-dark-second: #e2703a;
