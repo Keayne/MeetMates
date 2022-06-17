@@ -29,7 +29,15 @@ class SignInComponent extends PageMixin(LitElement) {
         <div id="emaildiv">
           <label for="email">E-Mail</label>
           <br />
-          <input id="email" type="email" placeholder="E-Mail" autofocus required id="email" />
+          <input
+            id="email"
+            type="email"
+            placeholder="E-Mail"
+            autofocus
+            required
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}$"
+            id="email"
+          />
         </div>
 
         <div id="pwdiv">

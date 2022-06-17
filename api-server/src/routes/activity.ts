@@ -5,6 +5,7 @@ import { authService } from '../services/auth.service.js';
 import { MateMeet } from '../models/matemeet.js';
 import { UniversalDAO } from '../models/universal.dao.js';
 import { Meet } from '../models/meet.js';
+import { cryptoService } from '../services/crypto.service.js';
 
 const router = express.Router();
 
@@ -26,15 +27,26 @@ router.get('/:id', authService.authenticationMiddleware, async (req, res) => {
   //end check
 
   const filter: Partial<Activity> = { meetid: req.params.id };
-  const activites = await activityDAO.findAll(filter);
 
-  for (const e of activites) {
-    e.image = Buffer.from(e.image as string).toString();
-    if (mateId === e.tooltipcreatedby) e.deletepermission = true;
-    else e.deletepermission = false;
-  }
-  res.json({ results: activites });
+  //e.title = cryptoService.decrypt(e.title);
+  //e.description = cryptoService.decrypt(e.description);
+  const decrActivities = (await activityDAO.findAll(filter)).map(activity => {
+    return {
+      ...activity,
+      title: cryptoService.decrypt(activity.title),
+      description: cryptoService.decrypt(activity.description),
+      image: Buffer.from(activity.image as string).toString()
+    };
+  });
+  decrActivities.forEach(activity => {
+    if (mateId === activity.tooltipcreatedby) activity.deletepermission = true;
+    else activity.deletepermission = false;
+  });
+  res.json({ results: decrActivities });
 });
+
+//    if (mateId === e.tooltipcreatedby) e.deletepermission = true;
+//  for (const e of activites) {
 
 /**
  * Adds a new activity to a meet
@@ -54,8 +66,8 @@ router.post('/:id', authService.authenticationMiddleware, async (req, res) => {
   const activityDAO: GenericDAO<Activity> = req.app.locals.activityDAO;
   const utc = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
   const createdActivity = await activityDAO.create({
-    title: req.body.title,
-    description: req.body.description,
+    title: cryptoService.encrypt(req.body.title),
+    description: cryptoService.encrypt(req.body.description),
     tooltip: utc,
     tooltipcreatedby: res.locals.user.id,
     motivationtitle: req.body.motivationtitle,
@@ -65,7 +77,11 @@ router.post('/:id', authService.authenticationMiddleware, async (req, res) => {
     category: req.body.category,
     deletepermission: true
   });
-  res.status(201).json(createdActivity);
+  res.status(201).json({
+    ...createdActivity,
+    title: cryptoService.decrypt(createdActivity.title),
+    description: cryptoService.decrypt(createdActivity.description)
+  });
 });
 
 /**
