@@ -10,16 +10,15 @@ describe('/mates/sign-in', () => {
     userSession = new UserSession();
   });
 
-  /*
   it('should fail given faulty logindata', async () => {
-    const response = await userSession.post('/mates/sign-in', userSession.signUpData());
+    const response = await userSession.post('/sign-in', userSession.signUpData());
     expect(response.status).to.equal(401);
   });
 
   it('should successfully login', async () => {
     await userSession.registerUser();
-    const response = await userSession.post('/mates/sign-in', userSession.signInData());
+    const response = await userSession.post('/sign-in', userSession.signInData());
     expect(response.status).to.equal(201);
     userSession.deleteUser();
-  });*/
+  });
 });

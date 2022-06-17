@@ -36,12 +36,7 @@ describe('rating', () => {
       expect(response.status).to.equal(401);
     });
 
-    it('should fail to get rating given that the user is not logged in.', async () => {
-      const response = await userSession.get(`/rating/findAverageRating/0e8309e1-76eb-4eb9-9558-704b9358309d`);
-      expect(response.status).to.equal(401);
-    });
-
-    it('should fail to get rating given that the user is not logged in.', async () => {
+    it('should fail to patch rating given that the user is not logged in.', async () => {
       const partialRating: Partial<Rating> = {
         activityid: '',
         rating: 52
