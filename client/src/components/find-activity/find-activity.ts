@@ -141,6 +141,7 @@ class FindActivityComponent extends PageMixin(LitElement) {
   }
 
   sortActivityListLocal() {
+    this.activityListLocal = [...this.activityList];
     this.activityListLocal = this.activityListLocal.sort((a, b) => (a.avgRating < b.avgRating ? 1 : -1));
   }
 
@@ -164,7 +165,6 @@ class FindActivityComponent extends PageMixin(LitElement) {
       }
     } else if (category === 'Highest Rating') {
       this.btn2.style.backgroundColor = '#83a5c2';
-      this.activityListLocal = [...this.activityList];
       this.sortActivityListLocal();
       if (this.activityListLocal.length === 0) {
         this.nothingHere.style.display = 'block';
@@ -210,5 +210,6 @@ class FindActivityComponent extends PageMixin(LitElement) {
     } catch (error) {
       this.showNotification((error as Error).message, 'error');
     }
+    this.selectFilter('all');
   }
 }

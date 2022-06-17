@@ -14,13 +14,15 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
 
   @property({ reflect: true }) activity = {} as Activity;
   @property() rating = {} as Rating;
-  @property() sliderValue = '';
   @query('#deleteButton') private deleteButton!: HTMLImageElement;
+  private currentSliderValue = -1;
 
   async updated() {
     console.log(
-      `Personal rating for ${this.activity.title} is ${this.activity.personalRating}, avgRating ${this.activity.avgRating}, currentSliderValue ${this.sliderValue}`
+      `Personal rating for ${this.activity.title} is ${this.activity.personalRating}, avgRating ${this.activity.avgRating}, currentSliderValue ${this.currentSliderValue}`
     );
+    this.currentSliderValue = this.activity.personalRating;
+
     if (this.activity.deletepermission === false) this.deleteButton.style.display = 'none';
     else this.deleteButton.style.display = 'inline';
   }
@@ -50,9 +52,9 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
             value=${this.activity.personalRating ? this.activity.personalRating : '0'}
             class="slider"
             id="myRating"
-            @change="${(e: Event) => this.readSliderValue(e)}"
+            @change="${(e: Event) => this.readcurrentSliderValue(e)}"
           />
-          <img id="personalSlider" src="/refresh.png" alt="update" @click=${this.saveSliderValueToDb} />
+          <img id="personalSlider" src="/refresh.png" alt="update" @click=${this.savecurrentSliderValueToDb} />
           <img
             class="remove-task"
             src="/deleteicon.png"
@@ -75,24 +77,25 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
     }
   }
 
-  readSliderValue(e: Event) {
+  readcurrentSliderValue(e: Event) {
     const target = e.target as HTMLInputElement;
     if (e) {
-      this.sliderValue = target?.value;
+      this.currentSliderValue = Number(target?.value);
       console.log('Read new slider value ' + Number(target?.value));
     }
   }
 
-  async saveSliderValueToDb() {
-    if (this.sliderValue === '') this.sliderValue = String(this.activity.personalRating);
+  async savecurrentSliderValueToDb() {
     const partialRating: Partial<Rating> = {
       activityid: this.activity.id,
-      rating: Number(this.sliderValue) //userID is not included here as it is being provided by the auth Middleware on patch request.
+      rating: Number(this.currentSliderValue) //userID is not included here as it is being provided by the auth Middleware on patch request.
     };
     await httpClient.patch(`rating/${this.activity.id}${location.search}`, partialRating);
+
     const responseRatingAll = await httpClient.get(`rating/findAverageRating/${this.activity.id}` + location.search);
     this.activity.avgRating = (await responseRatingAll.json()).results;
-    this.activity.personalRating = Number(this.sliderValue);
+
+    this.activity.personalRating = partialRating.rating ? partialRating.rating : 0;
     this.requestUpdate();
   }
 
