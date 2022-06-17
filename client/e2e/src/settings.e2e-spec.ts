@@ -5,7 +5,7 @@ import { Browser, BrowserContext, chromium, Page } from 'playwright';
 import config from './config.js';
 import { UserSession } from './user-session.js';
 
-describe('chat', () => {
+describe('settings', () => {
   let browser: Browser;
   let context: BrowserContext;
   let page: Page;
@@ -31,11 +31,7 @@ describe('chat', () => {
 
   it('should send a message', async () => {
     await userSession.registerUser();
-    await page.goto(config.clientUrl('/chat/0ea6639d-c6d5-4030-bb1b-e687ecb850fb'));
-    await page.locator('[placeholder="Your message\\.\\."]').click();
-    await page.locator('[placeholder="Your message\\.\\."]').fill('Hello');
-    await page.locator('text=Send').click();
-    expect(await page.locator('text="Hello"').count()).to.equal(1);
+
     await userSession.deleteUser();
   });
 });

@@ -26,6 +26,8 @@ describe('app-sign-up', () => {
   it('should redner the inputs', async () => {
     const firstnameElement = element.shadowRoot!.getElementById('firstname') as HTMLInputElement;
     expect(firstnameElement).to.have.property('type', 'text');
+    const nameElement = element.shadowRoot!.getElementById('name') as HTMLInputElement;
+    expect(nameElement).to.have.property('type', 'text');
     const birthdayElement = element.shadowRoot!.getElementById('birthday') as HTMLInputElement;
     expect(birthdayElement).to.have.property('type', 'date');
     const emailElement = element.shadowRoot!.getElementById('email') as HTMLInputElement;
@@ -37,7 +39,7 @@ describe('app-sign-up', () => {
     const elem = (await fixture('<app-sign-up></app-sign-up>')) as LitElement;
     await elem.updateComplete;
 
-    expect(stub.called).true;
+    expect(stub.callCount === 2);
   });
 
   it('should render the interests', async () => {

@@ -24,6 +24,15 @@ class RatingComponent extends LitElement {
       height: 20px;
       background: #04aa6d;
     }
+    @media (max-width: 600px) {
+      td {
+        font-size: 14px;
+        width: 34%;
+      }
+      .slider {
+        width: 95%;
+      }
+    }
   `;
   @property() ltext = '';
   @property() rtext = '';

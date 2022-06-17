@@ -21,3 +21,23 @@ img {
   max-width: 200px;
   max-height: 200px;
 }
+
+/* Media Queries */
+
+@media (max-width: 600px) {
+  img,
+  p,
+  h1,
+  h3,
+  h4,
+  label {
+    margin-left: 10px;
+  }
+  button {
+    margin-left: 20px;
+    width: 70%;
+  }
+  .pill {
+    margin-left: 5px;
+  }
+}

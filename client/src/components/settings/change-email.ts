@@ -1,53 +1,16 @@
 /* Autor: Valentin Lieberknecht */
 
-import { LitElement, html, css } from 'lit';
+import { LitElement, html } from 'lit';
 import { query, customElement, state } from 'lit/decorators.js';
 import { PageMixin } from '../page.mixin';
 import { httpClient } from '../../http-client.js';
 import { router } from '../../router/router.js';
+import componentStyle from './forms.css';
 
 @customElement('app-change-email')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ChangeEmailComponent extends PageMixin(LitElement) {
-  static styles = css`
-    label {
-      width: 10em;
-      display: inline-block;
-    }
-    form {
-      max-width: 600px;
-      text-align: left;
-      margin: 30px auto;
-    }
-    label {
-      color: rgb(104, 103, 103);
-      display: inline-block;
-      margin: 10px 0 15px;
-      font-size: 0.7em;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: bold;
-    }
-    input {
-      display: block;
-      padding: 10px 6px;
-      width: 100%;
-      box-sizing: border-box;
-      border: none;
-      border-bottom: 1px solid rgb(168, 168, 168);
-      color: #555;
-    }
-    button {
-      margin-top: 5%;
-      width: 100%;
-      border: none;
-      outline: none;
-      padding: 12px 16px;
-      background-color: #f1f1f1;
-      cursor: pointer;
-      border-radius: 8px;
-    }
-  `;
+  static styles = componentStyle;
 
   @query('form') private form!: HTMLFormElement;
   @query('#email') private emailElement!: HTMLInputElement;
