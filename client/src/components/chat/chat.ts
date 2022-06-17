@@ -23,11 +23,12 @@ class ChatComponent extends PageMixin(LitElement) {
     };
     const messages = await httpClient.get('/chat/messages/' + this.room);
     this.messages = await messages.json();
-    //scrollTo(0, document.body.scrollHeight);
+    this.updateScroll();
 
     this.ws.onmessage = async () => {
       const messages = await httpClient.get('/chat/messages/' + this.room);
       this.messages = await messages.json();
+      this.updateScroll();
     };
   }
 
@@ -37,7 +38,7 @@ class ChatComponent extends PageMixin(LitElement) {
     if (form.message.value) {
       this.ws.send(this.room);
       try {
-        httpClient.post('chat', {
+        await httpClient.post('chat', {
           room: this.room,
           body: form.message.value
         });
@@ -47,9 +48,15 @@ class ChatComponent extends PageMixin(LitElement) {
       form.message.value = '';
       const messages = await httpClient.get('/chat/messages/' + this.room);
       this.messages = await messages.json();
+      this.updateScroll();
     } else {
       this.showNotification('Nachricht darf nicht leer sein!');
     }
+  }
+
+  updateScroll() {
+    const chatWindow = this.shadowRoot?.querySelector('.chat-window');
+    if (chatWindow) chatWindow.scrollTop = chatWindow.scrollHeight;
   }
 
   render() {
