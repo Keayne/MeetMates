@@ -77,8 +77,8 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
             required
             autocomplete="off"
           /><br />
-          <button type="submit" class="btn">Create Activity</button><br />
-          <button type="button" class="btn cancel" @click="${this.closeForm}">Close</button>
+          <button type="submit" class="btn" id="createBtn">Create Activity</button><br />
+          <button type="button" class="btn cancel" id="cancelBtn" @click="${this.closeForm}">Close</button>
         </form>
       </div>
       <!-- End New Create Activity -->

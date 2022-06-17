@@ -34,7 +34,6 @@ describe('/meet/find-activity/', () => {
     await page.click('.meet .name');
 
     await page.locator('.routeBtn').click();
-    const correctDirected = page.url().includes('app/meet/find-activity/');
   });
 
   afterEach(async () => {
@@ -58,6 +57,81 @@ describe('/meet/find-activity/', () => {
 
     const form = await page.locator('#myForm:visible');
     expect(form).to.exist;
+  });
+
+  it('should find class ".open-button", click it, find title field with ID "title" and assure it works', async () => {
+    const availableActivitiesHeader = await page.locator('.open-button');
+    await availableActivitiesHeader.click({ delay: 50 });
+
+    await page.click('input[name="title"]'); //focus input
+    await page.fill('input[name="title"]', 'testTitle');
+
+    const result = await page.locator('#title').inputValue();
+    expect(result).to.equal('testTitle');
+  });
+
+  it('should find class ".open-button", click it, find field with ID "inputimage"', async () => {
+    const availableActivitiesHeader = await page.locator('.open-button');
+    await availableActivitiesHeader.click({ delay: 50 });
+
+    const form = await page.locator('#inputimage');
+    expect(form).to.exist;
+  });
+
+  it('should find class ".open-button", click it, find field with ID "description"', async () => {
+    const availableActivitiesHeader = await page.locator('.open-button');
+    await availableActivitiesHeader.click({ delay: 50 });
+
+    const form = await page.locator('#description');
+    expect(form).to.exist;
+  });
+
+  it('should find class ".open-button", click it, find field with ID "category"', async () => {
+    const availableActivitiesHeader = await page.locator('.open-button');
+    await availableActivitiesHeader.click({ delay: 50 });
+
+    const form = await page.locator('#category');
+    expect(form).to.exist;
+  });
+
+  it('should find class ".open-button", click it, find field with ID "motivationTitle"', async () => {
+    const availableActivitiesHeader = await page.locator('.open-button');
+    await availableActivitiesHeader.click({ delay: 50 });
+
+    const form = await page.locator('#motivationTitle');
+    expect(form).to.exist;
+  });
+
+  it('should click the image button and upload an image', async () => {
+    const availableActivitiesHeader = await page.locator('.open-button');
+    await availableActivitiesHeader.click({ delay: 50 });
+
+    await page.setInputFiles('#inputimage', 'e2e/src/photo.jpg');
+  });
+
+  it('should successfully create an activity', async () => {
+    const availableActivitiesHeader = await page.locator('.open-button');
+    await availableActivitiesHeader.click({ delay: 50 });
+
+    //fill title
+    await page.click('input[name="title"]'); //focus input
+    await page.fill('input[name="title"]', 'testTitle');
+
+    //fill description
+    await page.click('input[name="description"]'); //focus input
+    await page.fill('input[name="description"]', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+
+    //choose category
+    //await page.click('input[name="title"]'); //focus input
+    //await page.fill('input[name="title"]', 'testTitle');
+
+    //fill motTitle
+    await page.click('input[name="motivationTitle"]'); //focus input
+    await page.fill('input[name="motivationTitle"]', 'motTitle');
+
+    await page.locator('#createBtn').click();
+    const activity = await page.locator('#card');
+    expect(activity).to.exist;
   });
 
   /*
