@@ -5,6 +5,7 @@ import { PageMixin } from '../page.mixin';
 import componentStyle from './find-activity.css';
 import { repeat } from 'lit/directives/repeat.js';
 import { httpClient } from '../../http-client';
+import { router } from '../../router/router';
 
 export interface Activity {
   id: string;
@@ -92,7 +93,11 @@ class FindActivityComponent extends PageMixin(LitElement) {
       this.btn1.style.backgroundColor = '#83a5c2'; //preselect all filter
       if (this.activityListLocal.length !== 0) this.nothingHere.style.display = 'none';
     } catch (e) {
-      this.showNotification((e as Error).message, 'error');
+      if ((e as { statusCode: number }).statusCode === 401) {
+        router.navigate('mates/sign-in');
+      } else {
+        this.showNotification((e as Error).message, 'error');
+      }
     } finally {
       this.finishAsyncInit();
     }

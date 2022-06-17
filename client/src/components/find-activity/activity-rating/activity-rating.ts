@@ -57,14 +57,8 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
             id="myRating"
             @change="${(e: Event) => this.readcurrentSliderValue(e)}"
           />
-          <img id="personalSlider" src="/refresh.png" alt="update" @click=${this.savecurrentSliderValueToDb} />
-          <img
-            class="remove-task"
-            src="/deleteicon.png"
-            alt="update"
-            id="deleteButton"
-            @click="${this.confirmDelete}"
-          />
+          <img id="personalSlider" src="refresh.png" alt="update" @click=${this.savecurrentSliderValueToDb} />
+          <img class="remove-task" src="deleteicon.png" alt="update" id="deleteButton" @click="${this.confirmDelete}" />
         </div>
       </div>
     `;
