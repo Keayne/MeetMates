@@ -1,3 +1,5 @@
+/* Autor: Valentin Lieberknecht */
+
 import { expect } from 'chai';
 import { Browser, BrowserContext, chromium, Page } from 'playwright';
 import config from './config.js';
