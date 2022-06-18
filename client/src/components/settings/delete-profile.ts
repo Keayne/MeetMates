@@ -18,6 +18,7 @@ class DeleteProfileComponent extends PageMixin(LitElement) {
       if (response.status === 200) {
         this.showNotification('Profile deleted');
         router.navigate('/');
+        location.reload();
       }
     }
   }

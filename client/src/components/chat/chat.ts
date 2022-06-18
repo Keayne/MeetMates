@@ -49,6 +49,7 @@ class ChatComponent extends PageMixin(LitElement) {
       const messages = await httpClient.get('/chat/messages/' + this.room);
       this.messages = await messages.json();
       this.updateScroll();
+      form.message.focus();
     } else {
       this.showNotification('Nachricht darf nicht leer sein!');
     }

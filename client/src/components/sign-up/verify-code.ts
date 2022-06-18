@@ -71,13 +71,14 @@ class VerifyCodeComponent extends PageMixin(LitElement) {
   async submit() {
     if (this.form.checkValidity()) {
       try {
-        await httpClient.patch('confirmcode', {
+        const response = await httpClient.patch('confirmcode', {
           id: this.id,
           code: this.codeElement.value
         });
-        router.navigate('/meets');
+        const json = await response.json();
+        this.showNotification(json.message, 'info');
+        setTimeout(() => router.navigate('/meets'), 1500);
       } catch (e) {
-        console.log(e);
         this.showNotification((e as Error).message, 'error');
       }
     } else {
