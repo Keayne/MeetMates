@@ -21,7 +21,7 @@ class ResetPasswordComponent extends PageMixin(LitElement) {
 
   @state() private passwordMessage!: string;
   @state() private passwordCheckMessage!: string;
-  regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*#?&-_=()]{8,}$/gm;
+  regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*#?&-_=()]{8,}$/;
 
   render() {
     return html`
@@ -46,7 +46,7 @@ class ResetPasswordComponent extends PageMixin(LitElement) {
 
   async submit() {
     if (this.form.checkValidity()) {
-      if (!this.regex.test(this.passwordElement.value)) {
+      if (this.regex.test(this.passwordElement.value)) {
         if (this.passwordElement.value === this.passwordCheckElement.value) {
           try {
             const response = await httpClient.patch('resetpassword', {
@@ -56,10 +56,9 @@ class ResetPasswordComponent extends PageMixin(LitElement) {
               checkPassword: this.passwordCheckElement.value
             });
             const json = await response.json();
-            router.navigate('/meets');
             this.showNotification(json.message, 'info');
+            setTimeout(() => router.navigate('/meets'), 1500);
           } catch (e) {
-            console.log(e);
             this.showNotification((e as Error).message, 'error');
           }
         } else {

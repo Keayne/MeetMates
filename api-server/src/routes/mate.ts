@@ -137,17 +137,20 @@ router.post('/sign-up', async (req, res) => {
 });
 
 router.post('/sign-in', async (req, res) => {
+  const sendErrorMessage = (message: string) => {
+    res.status(400).json({ message });
+  };
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
   const filter: Partial<Mate> = { email: req.body.email };
   const errors: string[] = [];
 
   if (!hasRequiredFields(req.body, ['email', 'password'], errors)) {
-    res.status(400).json({ message: errors.join('\n') });
+    sendErrorMessage(errors.join('\n'));
     return;
   }
 
   if (emailRegex.test(String(req.body.email)) == false) {
-    res.status(400).json({ message: 'Email format invalid.' });
+    sendErrorMessage('Email format invalid.');
     return;
   }
 
@@ -155,13 +158,13 @@ router.post('/sign-in', async (req, res) => {
 
   if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
     authService.removeToken(res);
-    res.status(401).json({ message: 'E-Mail or Password not correct.' });
+    sendErrorMessage('E-Mail or Password not correct.');
     return;
   }
 
   //check if user is active (verified e-mail)
   if (user.active == false) {
-    res.status(401).json({ message: 'E-Mail Adresse noch nicht verifizert!' });
+    sendErrorMessage('Email address not verified yet.');
     return;
   }
 
@@ -200,13 +203,16 @@ router.get('/edit', authService.authenticationMiddleware, async (req, res) => {
 });
 
 router.put('/edit', authService.authenticationMiddleware, async (req, res) => {
+  const sendErrorMessage = (message: string) => {
+    res.status(400).json({ message });
+  };
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
   const matedescriptionDAO: UniversalDAO<MateDescription> = req.app.locals.matedescriptionDAO;
   const mateinterestDAO: UniversalDAO<MateInterest> = req.app.locals.mateinterestDAO;
 
   req.body.mate.id = res.locals.user.id;
   if (req.body.password || req.body.email) {
-    res.status(401).json({ message: 'wrong data' });
+    sendErrorMessage('wrong data');
   }
   await mateDAO.update(req.body.mate);
 
@@ -229,11 +235,14 @@ router.put('/edit', authService.authenticationMiddleware, async (req, res) => {
 });
 
 router.get('/confirm/:id/:token', async (req, res) => {
+  const sendErrorMessage = (message: string) => {
+    res.status(400).json({ message });
+  };
   const verifyDAO: UniversalDAO<Verify> = req.app.locals.verifyDAO;
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
 
   const verify = await verifyDAO.findOne({ mateid: req.params.id, type: 'e' });
-  if (!verify) return res.status(400).send('Invalid link');
+  if (!verify) return sendErrorMessage('Invalid link.');
 
   if (verify.token === req.params.token) {
     await mateDAO.update({ id: req.params.id, active: true, email: verify.email });
@@ -242,6 +251,9 @@ router.get('/confirm/:id/:token', async (req, res) => {
 });
 
 router.patch('/confirmcode', async (req, res) => {
+  const sendErrorMessage = (message: string) => {
+    res.status(400).json({ message });
+  };
   const verifyDAO: UniversalDAO<Verify> = req.app.locals.verifyDAO;
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
 
@@ -251,33 +263,39 @@ router.patch('/confirmcode', async (req, res) => {
   if (verify.code === Number(req.body.code)) {
     await mateDAO.update({ id: req.body.id, active: true, email: verify.email });
     await verifyDAO.deleteOne({ mateid: req.body.id, type: 'e' });
-    res.send('email confirmed sucessfully');
+    res.status(200).send({ message: 'email confirmed sucessfully' });
   } else {
-    res.status(400).send({ message: 'wrong code' });
+    sendErrorMessage('wrong code');
   }
 });
 
 router.get('/currentemail', authService.authenticationMiddleware, async (req, res) => {
+  const sendErrorMessage = (message: string) => {
+    res.status(400).json({ message });
+  };
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
   const mate = await mateDAO.findOne({ id: res.locals.user.id });
 
-  if (!mate) return res.status(503).send('Could not found user in db');
+  if (!mate) return sendErrorMessage('Could not found user in db');
 
   res.json({ email: mate.email });
 });
 
 router.patch('/changeemail', authService.authenticationMiddleware, async (req, res) => {
+  const sendErrorMessage = (message: string) => {
+    res.status(400).json({ message });
+  };
   const verifyDAO: UniversalDAO<Verify> = req.app.locals.verifyDAO;
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
 
   const mate = await mateDAO.findOne({ id: res.locals.user.id });
 
   if (emailRegex.test(String(req.body.email)) == false) {
-    res.status(400).json({ message: 'Email format invalid.' });
+    sendErrorMessage('Email format invalid.');
     return;
   }
 
-  if (!mate) return res.status(503).send('Could not found user in db');
+  if (!mate) return sendErrorMessage('Could not found user in db');
 
   //Create VerifyToken
   const token = await verifyDAO.createAndOverwrite({
@@ -304,28 +322,34 @@ router.patch('/changeemail', authService.authenticationMiddleware, async (req, r
 });
 
 router.patch('/changepassword', authService.authenticationMiddleware, async (req, res) => {
+  const sendErrorMessage = (message: string) => {
+    res.status(400).json({ message });
+  };
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
   const mate = await mateDAO.findOne({ id: res.locals.user.id });
 
   if (!mate || !(await bcrypt.compare(req.body.currentPassword, mate.password))) {
-    res.status(401).send('Aktuelle Passwort ist falsch');
+    sendErrorMessage('Current password is wrong.');
     return;
   }
 
   if (passwordRegex.test(String(req.body.password)) == false) {
-    res.status(401).send('Password does not meet the requirements.');
+    sendErrorMessage('Password does not meet the requirements.');
     return;
   }
   await mateDAO.update({ id: mate.id, password: await bcrypt.hash(req.body.password, 10) });
-  res.send('Changed password');
+  res.status(201).send({ message: 'Changed password' });
 });
 
 router.get('/resetpassword/:email', async (req, res) => {
+  const sendErrorMessage = (message: string) => {
+    res.status(400).json({ message });
+  };
   const verifyDAO: UniversalDAO<Verify> = req.app.locals.verifyDAO;
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
 
   const mate = await mateDAO.findOne({ email: req.params.email });
-  if (!mate) return res.status(400).send({ message: 'E-Mail does not exist' });
+  if (!mate) return sendErrorMessage('E-Mail does not exist.');
 
   //Create VerifyToken
   const token = await verifyDAO.createAndOverwrite({
@@ -333,7 +357,7 @@ router.get('/resetpassword/:email', async (req, res) => {
     type: 'p',
     token: crypto.randomBytes(32).toString('hex')
   });
-  if (!mate.email) return res.status(400).send({ message: 'E-Mail needs to be verified before changing password' });
+  if (!mate.email) return sendErrorMessage('E-Mail needs to be verified before changing password.');
   //Send E-Mail
   await emailService.sendEmail(mate.email, {
     subject: 'Reset Password',
@@ -350,24 +374,27 @@ router.get('/resetpassword/:email', async (req, res) => {
 });
 
 router.patch('/resetpassword', async (req, res) => {
+  const sendErrorMessage = (message: string) => {
+    res.status(400).json({ message });
+  };
   const verifyDAO: UniversalDAO<Verify> = req.app.locals.verifyDAO;
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
 
+  const verify = await verifyDAO.findOne({ mateid: req.body.id, type: 'p' });
+  if (!verify) return sendErrorMessage('Invalid.');
+
   if (passwordRegex.test(String(req.body.password)) == false) {
-    res.status(401).send('Password does not meet the requirements.');
+    sendErrorMessage('Password does not meet the requirements.');
     return;
   }
 
-  const verify = await verifyDAO.findOne({ mateid: req.body.id, type: 'p' });
-  if (!verify) return res.status(400).send('Invalid');
-
-  if (verify.token !== req.body.token) return res.status(401).send('invalid token');
+  if (verify.token !== req.body.token) return sendErrorMessage('invalid token.');
   const hoursBetween = Math.abs(verify.createdAt - Date.now() / (60 * 60 * 1000));
-  if (hoursBetween > 24) res.status(401).send('token expired');
+  if (hoursBetween < 24) sendErrorMessage('Token expired');
 
   await mateDAO.update({ id: req.body.id, password: await bcrypt.hash(req.body.password, 10) });
   await verifyDAO.deleteOne({ mateid: req.body.id, type: 'p' });
-  res.status(200).json({ message: 'password changed' }).end();
+  res.status(200).json({ message: 'password changed' });
 });
 
 router.delete('/delete', authService.authenticationMiddleware, async (req, res) => {

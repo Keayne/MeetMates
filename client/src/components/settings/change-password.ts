@@ -46,18 +46,24 @@ class ResetPasswordComponent extends PageMixin(LitElement) {
     `;
   }
 
-  submit() {
+  async submit() {
     if (this.form.checkValidity()) {
-      if (!this.regex.test(this.passwordElement.value)) {
+      if (this.regex.test(this.passwordElement.value)) {
         if (this.passwordElement.value === this.passwordCheckElement.value) {
           try {
-            httpClient.patch('changepassword', {
+            const response = await httpClient.patch('changepassword', {
               currentPassword: this.currentPasswordElement.value,
               password: this.passwordElement.value
             });
-            router.navigate('/meets');
+            const json = await response.json();
+            this.showNotification(json.message, 'info');
+            setTimeout(() => router.navigate('/meets'), 1500);
           } catch (e) {
-            console.log(e);
+            this.currentPasswordElement.value = '';
+            this.passwordElement.value = '';
+            this.passwordCheckElement.value = '';
+            this.passwordMessage = '';
+            this.passwordCheckMessage = '';
             this.showNotification((e as Error).message, 'error');
           }
         } else {
