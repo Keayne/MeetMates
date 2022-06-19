@@ -25,8 +25,6 @@ class MeetsMeetComponent extends PageMixin(LitElement) {
   @property({ reflect: true }) meet = {} as Meet;
 
   render() {
-    //console.log(this.meet.mates);
-
     return html`<button type="button" class="meet" @click=${() => router.navigate(`/meet/${this.meet.id}`)}>
       <h2 class="name">${this.meet.name}</h2>
       <div>${repeat(this.meet.mates, mate => html`<meets-mate-icon .mate=${mate} />`)}</div>

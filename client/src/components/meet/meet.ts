@@ -114,9 +114,6 @@ class YourMeetComponent extends PageMixin(LitElement) {
   }
   async meetNameChanged() {
     if (this.meetName?.value !== this.meet.name) {
-      console.log(this.meetName?.value);
-      console.log('old value: ' + this.meet.name);
-
       try {
         const response = await httpClient.post('/meet/changeName' + location.search, {
           meetId: this.meetId,
@@ -126,7 +123,7 @@ class YourMeetComponent extends PageMixin(LitElement) {
         await response.json();
         this.meet.name = this.meetName === undefined ? this.meet.name : this.meetName?.value;
       } catch (err) {
-        console.log(err);
+        this.showNotification((err as Error).message, 'error');
       }
     }
   }
