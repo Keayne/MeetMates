@@ -11,6 +11,25 @@ div {
   text-align: center;
 }
 
+.was-validated input:invalid {
+  border: solid var(--app-error-color) 1px;
+}
+
+.was-validated input:invalid:focus {
+  box-shadow: 0 0 0 1px var(--app-error-color);
+}
+
+.was-validated input:invalid ~ .invalid-feedback {
+  color: var(--app-error-color);
+  margin-top: 0.2rem;
+  font-size: 0.8rem;
+  display: block;
+}
+
+.was-validated input:valid ~ .invalid-feedback {
+  display: none;
+}
+
 button {
   margin-top: 5%;
   width: 100%;

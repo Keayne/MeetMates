@@ -1,13 +1,12 @@
-
 /*mobile*/
-.meeting{
-    max-width: 100%;
-    text-align: center;   
-    box-sizing: border-box;
+.meeting {
+  max-width: 100%;
+  text-align: center;
+  box-sizing: border-box;
 }
 
 .meeting * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /* tablets
@@ -19,119 +18,113 @@
 }
 */
 
+h3 {
+  color: var(--app-color-first);
+}
 
 .meeting:not(:defined) {
-    display: none;
+  display: none;
 }
 
-.meet-header{
+.meet-header {
+  box-sizing: border-box;
 
-    box-sizing:border-box;
+  display: inline-flex;
+  position: relative;
+  background-color: var(--app-color-third, #bf7f9b);
+  border-radius: 16px;
 
-    display: inline-flex;
-    position: relative;
-    background-color: var(--app-color-third, #BF7F9B);
-    border-radius: 16px; 
+  justify-content: space-between;
+  align-items: center;
 
-    justify-content: space-between;
-    align-items: center;
-
-    width: 100%;
-    padding: 8px 16px;
+  width: 100%;
+  padding: 8px 16px;
 }
 
+.meetName {
+  border-style: none;
+  background: transparent;
 
-.meetName{
-    border-style: none;
-    background: transparent;
-
-    font-size: 22px;
-    font-weight: bold; 
-    margin: 8px;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 8px;
 }
 
-.meet-Delete{
+.meet-Delete {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
 
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
+  font-weight: 200;
+  border: 2px black solid;
+  border-radius: 16px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+  transition: width ease-in-out 0.3s;
+  display: flex;
 
-    font-weight: 200;
-    border: 2px black solid;
-    border-radius: 16px;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    line-height: 1;
-    transition: width ease-in-out 0.3s;
-    display: flex;
-    
-    cursor: pointer;
-    min-width: 32px;
-    min-height: 32px;
+  cursor: pointer;
+  min-width: 32px;
+  min-height: 32px;
 }
 
-
-.meet-Delete:hover{
-
-    background-color: lightgray;
-    -webkit-box-shadow: 6px 8px 12px -1px rgba(0,0,0,0.36); 
-    box-shadow: 6px 8px 12px -1px rgba(0,0,0,0.36);
-    
+.meet-Delete:hover {
+  background-color: lightgray;
+  -webkit-box-shadow: 6px 8px 12px -1px rgba(0, 0, 0, 0.36);
+  box-shadow: 6px 8px 12px -1px rgba(0, 0, 0, 0.36);
 }
 
-.centerMates{
-    display: flex;
-    justify-content: center;
-    width: 100%;
+.centerMates {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
-.meetingUsers{
-    width: 95%;
-    display: flex;
-    align-items: stretch;
-    flex-direction: column;    
+.meetingUsers {
+  width: 95%;
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
 }
 
-.routeBtn{
-    background-color:var(--app-color-first, #BF7F9B);
+.routeBtn {
+  background-color: var(--app-color-first, #bf7f9b);
 
-    cursor: pointer;
-    text-decoration: none;
-    color: rgb(255, 255, 255);
-    justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+  justify-content: center;
 
-    transition: wid;
+  transition: wid;
 
-    min-width: 15%;
-    min-height: 5%;
-    margin: 8px;
-    border-radius: 16px;
+  min-width: 15%;
+  min-height: 5%;
+  margin: 8px;
+  border-radius: 16px;
 }
 
-.routeBtn:hover{
-    -webkit-box-shadow: 6px 8px 12px -1px rgba(0,0,0,0.36); 
-    box-shadow: 6px 8px 12px -1px rgba(0,0,0,0.36);
+.routeBtn:hover {
+  -webkit-box-shadow: 6px 8px 12px -1px rgba(0, 0, 0, 0.36);
+  box-shadow: 6px 8px 12px -1px rgba(0, 0, 0, 0.36);
 }
 
-.chat{
-    width: 80%;
-    border-radius: 16px;
+.chat {
+  width: 80%;
+  border-radius: 16px;
 }
 
 .activity-container {
-    /* Change flex direction to column when too small*/
-    margin-top: 16px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-  }
+  /* Change flex direction to column when too small*/
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 32px;
+}
 
 .activity-container:last-child {
-    margin-bottom: 16px;
-  }
-
-.activity{
-
+  margin-bottom: 16px;
 }

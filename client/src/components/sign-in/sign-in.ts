@@ -58,11 +58,14 @@ class SignInComponent extends PageMixin(LitElement) {
   }
 
   async submit() {
+    console.log('submit registered');
     if (this.isFormValid()) {
       const authData = {
         email: this.emailElement.value,
         password: this.passwordElement.value
       };
+      console.log(authData.email);
+      console.log(authData.password);
       try {
         await httpClient.post('sign-in', authData);
         router.navigate('/meets'); //link to your meets after login

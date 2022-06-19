@@ -73,15 +73,16 @@ class YourMeetComponent extends PageMixin(LitElement) {
       //either render chosen Activity or navigationButton
       let activity;
       if (typeof this.activity === 'object') {
-        console.log(this.activity);
         activity =
           Object.keys(this.activity).length === 0
-            ? html`<div>
-                <button type="button" class="routeBtn" @click="${this.routeToActiviySeelction}">Find Actitity</button>
-              </div>`
-            : html`<div class="activity-container">
-                <activity-info .activity=${this.activity}></activity-info>
-              </div>`;
+            ? html`<h3>What would you like to do? Create an activity or rate others!</h3>
+                <div>
+                  <button type="button" class="routeBtn" @click="${this.routeToActiviySeelction}">Find Actitity</button>
+                </div>`
+            : html` <h3>You have chosen the following activity:</h3>
+                <div class="activity-container">
+                  <activity-info .activity=${this.activity}></activity-info>
+                </div>`;
       }
 
       return html`${this.renderNotification()}

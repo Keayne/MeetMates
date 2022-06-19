@@ -129,6 +129,7 @@ router.patch('/:id', authService.authenticationMiddleware, async (req, res) => {
 });
 
 async function updateChosenActivity(req: express.Request, res: express.Response) {
+  console.log('entered update chosen activity.');
   const ratingDAO: UniversalDAO<Rating> = req.app.locals.ratingDAO;
 
   //get meetId
@@ -166,14 +167,7 @@ async function updateChosenActivity(req: express.Request, res: express.Response)
   if (!activityRatings[0]) res.status(500).send(); //no activity found, should not be possible as rating has to be assigned to an activity
 
   //iterate through all activities, check if the activity has all criteria to be considered as chosen activity
-  let eligibleLeadingActivity: FullActivity = {
-    id: '',
-    title: '',
-    chosen: 0,
-    meetid: '',
-    category: '',
-    ratings: []
-  };
+  let eligibleLeadingActivity = '0';
   let eligibleLeadingActivityCalcSUm = 0;
   activityRatings.forEach(activity => {
     let rating = 0;
@@ -182,19 +176,31 @@ async function updateChosenActivity(req: express.Request, res: express.Response)
       numberOfRatings++;
       rating += element.rating;
     });
+    console.log(
+      `Activity ${activity?.title} has received ${numberOfRatings} votes with an avgRating of ${rating}. Number of mates in meet: ${numberOfMatesInMeet} and ${rating} ?? ${eligibleLeadingActivityCalcSUm}`
+    );
     //eligible activity
     if (numberOfRatings === numberOfMatesInMeet && rating > eligibleLeadingActivityCalcSUm) {
-      eligibleLeadingActivity = activity as FullActivity;
+      console.log(
+        `Activity ${activity?.title} with ID ${activity?.id} is eligible and ${rating} > ${eligibleLeadingActivityCalcSUm}`
+      );
+      eligibleLeadingActivity = activity?.id ? activity.id : '0';
       eligibleLeadingActivityCalcSUm = rating;
     }
   });
 
   //set attr. of chosen activity to 1
-  const chosenActivity = await activityDAO.findOne({ id: eligibleLeadingActivity.id });
+  console.log(`ACTIVITY TO BE CHOSEN: ${eligibleLeadingActivity}`);
+  const chosenActivity = await activityDAO.findOne({ id: eligibleLeadingActivity });
+  console.log(`DB REQUEST FOR ACTIVITY TO BE CHOSEN RETURNED ${chosenActivity}`);
   if (chosenActivity) {
+    console.log(`**SET CHOSEN ACTIVITY`);
     chosenActivity.chosen = 1;
     delete chosenActivity.image;
     activityDAO.update(chosenActivity);
+    console.log(`**UDPATED CHOSEN ACTIVITY`);
+  } else {
+    console.log(`CRITICAL: DID NOT FIND CHOSEN ACTIVITY`);
   }
 }
 

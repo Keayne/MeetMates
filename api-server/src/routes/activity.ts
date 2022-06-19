@@ -46,7 +46,7 @@ router.get('/:id', authService.authenticationMiddleware, async (req, res) => {
 });
 
 //    if (mateId === e.tooltipcreatedby) e.deletepermission = true;
-//  for (const e of activites) {
+//  for (const e of activity) {
 
 /**
  * Adds a new activity to a meet
@@ -129,10 +129,12 @@ router.delete('/:id', authService.authenticationMiddleware, async (req, res) => 
 router.get('/findChosenActivity/:id', authService.authenticationMiddleware, async (req, res) => {
   const activityDAO: GenericDAO<Activity> = req.app.locals.activityDAO;
   const filter: Partial<Activity> = { meetid: req.params.id, chosen: 1 };
-  const activites = await activityDAO.findOne(filter);
-  if (activites) {
-    activites.image = Buffer.from(activites.image as string).toString();
-    res.status(200).json(activites);
+  const activity = await activityDAO.findOne(filter);
+  if (activity) {
+    activity.image = Buffer.from(activity.image as string).toString();
+    activity.title = cryptoService.decrypt(activity.title);
+    activity.description = cryptoService.decrypt(activity.description);
+    res.status(200).json(activity);
   } else {
     res.status(200).json({});
   }
