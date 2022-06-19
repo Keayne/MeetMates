@@ -9,10 +9,7 @@ import { Meet } from '../models/meet.js';
 import { UniversalDAO } from '../models/universal.dao.js';
 import { authService } from '../services/auth.service.js';
 import { validatorService } from '../services/validation.service.js';
-
-/*
-import bcrypt from 'bcryptjs';
-*/
+import { cryptoService } from '../services/crypto.service.js';
 
 interface FullMeet {
   id: string;
@@ -81,7 +78,7 @@ router.get('/', authService.authenticationMiddleware, async (req, res) => {
             });
           });
         }
-        return { id: meet.id, name: meet.name, opened: mateMeet.opened, mates: rMates };
+        return { id: meet.id, name: cryptoService.decrypt(meet.name), opened: mateMeet.opened, mates: rMates };
       })
     )
   ).filter(fullMeet => !!fullMeet) as FullMeet[];
@@ -94,14 +91,22 @@ async function createNewMeet(mateId: string, req: express.Request): Promise<void
   const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
 
-  const newMeet = await meetDAO.create({ name: 'Hello Meet' });
+  const newMeet = await meetDAO.create({ name: cryptoService.encrypt('Hello Meet') });
 
   //find possible Mates
-  const possibleMates = await mateDAO.findAll();
+  const possibleMates = await mateDAO.findAll({ active: true });
   let chosenMates: Mate[] = [];
-  for (let index = 0; index < randomInt(3, 4); index++) {
+  const rNumber = await randomInt(2, 4);
+  console.log('Create Meet size: ' + rNumber);
+
+  let whileNumber = 0;
+  console.log('possibleMates: ' + possibleMates.length);
+
+  while (rNumber > chosenMates.length) {
+    console.log('itteration: ' + whileNumber);
     const mate = getMateFromMates(mateId, possibleMates, chosenMates);
     chosenMates.push(mate);
+    whileNumber++;
   }
 
   chosenMates = rmDuplicates(chosenMates);
@@ -113,58 +118,34 @@ async function createNewMeet(mateId: string, req: express.Request): Promise<void
   );
   //add requested Mate to Meet
   await matemeetDAO.create({ mateid: mateId, meetid: newMeet.id, opened: false, rating: 0 });
-  console.log(chosenMates);
-  /*
-  //find MeetMates
-  const meetMates: ReturnMate[] = [];
-  const mates = await mateDAO.findAll({ active: true });
-  console.log(mates.length);
-
-  for (let index = 0; index < 3; index++) {
-    const mate = getMateFromMates(mateId, mates, meetMates);
-    mate.image = mate.image ? Buffer.from(mate.image).toString() : '';
-    meetMates.push({
-      id: mate.id,
-      name: mate.name,
-      firstName: mate.firstname,
-      src: mate.image,
-      age: new Date().getFullYear() - new Date(mate.birthday).getFullYear()
-    });
-  }
-  const mateMeet: MateMeet[] = await Promise.all(
-    meetMates.map(async (mate: ReturnMate): Promise<MateMeet> => {
-      const newMateMeet = await matemeetDAO.create({ mateid: mate.id, meetid: newMeet.id, opened: false, rating: 0 });
-      return newMateMeet;
-    })
-  );
-
-  //add requested User to Meet
-  mateMeet.push(await matemeetDAO.create({ mateid: mateId, meetid: newMeet.id, opened: false, rating: 0 }));
-  console.log(`requested User ${mateId} `);
-  const mate = await mateDAO.findOne({ id: mateId });
-  if (mate !== null) {
-    mate.image = mate.image ? Buffer.from(mate.image).toString() : '';
-    meetMates.push({
-      id: mate.id,
-      name: mate.name,
-      firstName: mate.firstname,
-      src: mate.image,
-      age: new Date().getFullYear() - new Date(mate.birthday).getFullYear()
-    });
-  }
-*/
-  //return { id: newMeet.id, name: newMeet.name, mates: meetMates, opened: false };
 }
 
 function getMateFromMates(mateId: string, mates: Mate[], chosenMates: Mate[]): Mate {
-  const mate = mates[randomInt(mates.length - 1)];
-  if (mate.id === mateId) return getMateFromMates(mateId, mates, chosenMates);
+  const randomNumber = randomInt(0, mates.length);
+  console.log('GetMateFromMates random Number: ' + randomNumber);
+  const mate = mates[randomNumber];
+  if (mate.id === mateId) {
+    console.log('Got requested mate for meet');
+    return getMateFromMates(mateId, mates, chosenMates);
+  }
 
   //check if Mate is already in Meet
-  chosenMates.forEach(cMate => {
-    if (mate.id === cMate.id) return getMateFromMates(mateId, mates, chosenMates);
-  });
+  if (containsMate(mate, chosenMates)) {
+    console.log('mate already in Meet');
+    return getMateFromMates(mateId, mates, chosenMates);
+  }
+
   return mate;
+}
+
+function containsMate(mate: Mate, chosenMates: Mate[]) {
+  let i;
+  for (i = 0; i < chosenMates.length; i++) {
+    if (chosenMates[i] === mate) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function rmDuplicates(chosenMates: Mate[]): Mate[] {

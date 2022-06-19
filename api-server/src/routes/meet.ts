@@ -10,6 +10,7 @@ import { MateMeet } from '../models/matemeet.js';
 import { Meet } from '../models/meet.js';
 
 import { authService } from '../services/auth.service.js';
+import { cryptoService } from '../services/crypto.service.js';
 import { validatorService } from '../services/validation.service.js';
 
 const router = express.Router();
@@ -93,7 +94,7 @@ router.get('/:id', authService.authenticationMiddleware, async (req, res) => {
     if (!meet) {
       res.status(400).json({ message: `Es existiert kein Meet mit der ID : ${meetId} ` });
     } else {
-      const fullMeet: FullMeet = { id: meet.id, name: meet.name, mates: rMates };
+      const fullMeet: FullMeet = { id: meet.id, name: cryptoService.decrypt(meet.name), mates: rMates };
       res.status(201).json(fullMeet);
       setMeetAsOpened(meetId, mateId, matemeetDAO);
     }
@@ -128,7 +129,7 @@ router.post('/changeName', authService.authenticationMiddleware, async (req, res
   } else {
     meetUpdated = await meetDAO.update({
       id: req.body.meetId,
-      name: req.body.newName
+      name: cryptoService.encrypt(req.body.newName)
     });
   }
 
