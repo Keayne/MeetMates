@@ -44,8 +44,13 @@ router.get('/', authService.authenticationMiddleware, async (req, res) => {
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
 
   //Get all Meet-Ids from User
-  const mateMeets = await matemeetDAO.findAll({ mateid: mateId });
-
+  let mateMeets = await matemeetDAO.findAll({ mateid: mateId });
+  //check for meets if none create new
+  if (mateMeets.length < 2) {
+    console.log(`requested User ${mateId} `);
+    await createNewMeet(mateId, req);
+    mateMeets = await matemeetDAO.findAll({ mateid: mateId });
+  }
   //Build all Meets with Mates
   const meets = (
     await Promise.all(
@@ -83,14 +88,10 @@ router.get('/', authService.authenticationMiddleware, async (req, res) => {
     )
   ).filter(fullMeet => !!fullMeet) as FullMeet[];
 
-  if (meets.length < 2) {
-    meets.push(await createNewMeet(mateId, req));
-  }
-
   res.status(200).json(meets);
 });
 
-async function createNewMeet(mateId: string, req: express.Request): Promise<FullMeet> {
+async function createNewMeet(mateId: string, req: express.Request): Promise<void> {
   const matemeetDAO: UniversalDAO<MateMeet> = req.app.locals.matemeetDAO;
   const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
@@ -100,8 +101,10 @@ async function createNewMeet(mateId: string, req: express.Request): Promise<Full
   //find MeetMates
   const meetMates: ReturnMate[] = [];
   const mates = await mateDAO.findAll({ active: true });
-  for (let index = 0; index < randomInt(3, 4); index++) {
-    const mate = getMateFromMates(mateId, mates);
+  console.log(mates.length);
+
+  for (let index = 0; index < 3; index++) {
+    const mate = getMateFromMates(mateId, mates, meetMates);
     mate.image = mate.image ? Buffer.from(mate.image).toString() : '';
     meetMates.push({
       id: mate.id,
@@ -120,7 +123,7 @@ async function createNewMeet(mateId: string, req: express.Request): Promise<Full
 
   //add requested User to Meet
   mateMeet.push(await matemeetDAO.create({ mateid: mateId, meetid: newMeet.id, opened: false, rating: 0 }));
-
+  console.log(`requested User ${mateId} `);
   const mate = await mateDAO.findOne({ id: mateId });
   if (mate !== null) {
     mate.image = mate.image ? Buffer.from(mate.image).toString() : '';
@@ -133,12 +136,17 @@ async function createNewMeet(mateId: string, req: express.Request): Promise<Full
     });
   }
 
-  return { id: newMeet.id, name: newMeet.name, mates: meetMates, opened: false };
+  //return { id: newMeet.id, name: newMeet.name, mates: meetMates, opened: false };
 }
 
-function getMateFromMates(mateId: string, mates: Mate[]): Mate {
+function getMateFromMates(mateId: string, mates: Mate[], chosenMates: ReturnMate[]): Mate {
   const mate = mates[randomInt(mates.length - 1)];
-  if (mate.id === mateId) return getMateFromMates(mateId, mates);
+  if (mate.id === mateId) return getMateFromMates(mateId, mates, chosenMates);
+
+  //check if Mate is already in Meet
+  chosenMates.forEach(cMate => {
+    if (mate.id === cMate.id) return getMateFromMates(mateId, mates, chosenMates);
+  });
   return mate;
 }
 
