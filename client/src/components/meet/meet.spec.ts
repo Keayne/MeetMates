@@ -91,14 +91,4 @@ describe('app-your-meet', () => {
     const matesArr = element.shadowRoot!.querySelectorAll('app-chat');
     expect(matesArr.length).to.equal(1);
   });
-
-  /*
-      sinon.stub(httpClient, 'get').rejects(
-      Promise.reject({
-        json() {
-          return Promise.reject({ statusCode: 401 });
-        }
-      } as Response)
-    );
-  */
 });
