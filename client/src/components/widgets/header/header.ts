@@ -2,6 +2,7 @@
 
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { router } from '../../../router/router';
 
 import componentStyle from './header.css';
 
@@ -23,7 +24,7 @@ class HeaderComponent extends LitElement {
 
   render() {
     return html`
-      <img class="logo" src="meetmates.png" style="width:50px;height:50px;" />
+      <img class="logo" src="meetmates.png" style="width:50px;height:50px;" @click=${() => this.routeToLandingpage()} />
       <span class="menu-button" @click="${this.openMenu}"></span>
       <ol ?open=${this.menuOpen}>
         ${this.headerOptions.map(
@@ -31,5 +32,9 @@ class HeaderComponent extends LitElement {
         )}
       </ol>
     `;
+  }
+
+  async routeToLandingpage() {
+    router.navigate('');
   }
 }
