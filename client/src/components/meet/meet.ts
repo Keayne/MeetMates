@@ -103,8 +103,8 @@ class YourMeetComponent extends PageMixin(LitElement) {
           <div class="centerMates">
             <div class="meetingUsers">${matesTemp}</div>
           </div>
-          ${activity}
-          <app-chat class="chat" .room=${this.meetId}></app-chat>
+          <div id="activitydiv">${activity}</div>
+          <div id="chatdiv"><app-chat class="chat" .room=${this.meetId}></app-chat></div>
         </div>`;
     }
   }

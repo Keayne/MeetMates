@@ -20,6 +20,7 @@
   background: #40434e;
   border-top: 1px solid #2671ff;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 4px 8px rgba(0, 0, 0, 0.28);
+  margin-bottom: 140px;
 }
 .chat-input input {
   height: 59px;
