@@ -113,6 +113,13 @@ router.post('/changeName', authService.authenticationMiddleware, async (req, res
     res.status(400).end();
     return;
   }
+  if (!validatorService.validateUserInput(req.body.newName)) {
+    res
+      .status(401)
+      .json({ message: `Meet name "${req.body.newName}" not allowed ` })
+      .end();
+    return;
+  }
 
   //check for Meet and if Mate is in Meet
   const meetDAO: GenericDAO<Meet> = req.app.locals.meetDAO;

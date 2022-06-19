@@ -20,7 +20,7 @@ class Validator {
   }
 
   validateUserInput(text: string): boolean {
-    const regexp = new RegExp('^[0-9a-zA-Z!?,.:#äÄöÖüÜ]*$', 'g');
+    const regexp = new RegExp('^[0-9a-zA-Z!?, .:#*äÄöÖüÜ]*$', 'g');
     return regexp.test(text);
   }
 }
