@@ -1,3 +1,4 @@
+/* Autor: Prof. Dr. Norman Lahme-Hütig (FH Münster) */
 /* Autor: Jonathan Hüls */
 
 import { v4 as uuidv4 } from 'uuid';

@@ -108,8 +108,6 @@ async function setMeetAsOpened(meetId: string, mateId: string, matemeetDAO: Univ
 }
 
 router.post('/changeName', authService.authenticationMiddleware, async (req, res) => {
-  //console.log(`User: ${res.locals.user.id} change Name from Meet: ${req.body.meetId} to "${req.body.name}"`);
-
   if (!validatorService.validateMultipleUuidv4(res.locals.user.id, req.body.meetId)) {
     res.status(400).end();
     return;
@@ -146,7 +144,6 @@ router.post('/changeName', authService.authenticationMiddleware, async (req, res
 
 // remove Mate from Meet
 router.delete('/:meetid', authService.authenticationMiddleware, async (req, res) => {
-  //console.log(`Remove User: userid${res.locals.user.id} from Meet: ${req.params.meetid}`);
   if (!validatorService.validateMultipleUuidv4(res.locals.user.id, req.params.meetid)) {
     res.status(400).end();
     return;

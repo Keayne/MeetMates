@@ -34,7 +34,6 @@ router.get('/', authService.authenticationMiddleware, async (req, res) => {
   const mateId = res.locals.user.id;
 
   if (!validatorService.validateUuidv4(mateId)) {
-    console.log(mateId);
     res.status(400).send;
     return;
   }
@@ -47,7 +46,6 @@ router.get('/', authService.authenticationMiddleware, async (req, res) => {
   let mateMeets = await matemeetDAO.findAll({ mateid: mateId });
   //check for meets if none create new
   if (mateMeets.length < 2) {
-    console.log(`requested User ${mateId} `);
     await createNewMeet(mateId, req);
     mateMeets = await matemeetDAO.findAll({ mateid: mateId });
   }
@@ -98,6 +96,25 @@ async function createNewMeet(mateId: string, req: express.Request): Promise<void
 
   const newMeet = await meetDAO.create({ name: 'Hello Meet' });
 
+  //find possible Mates
+  const possibleMates = await mateDAO.findAll();
+  let chosenMates: Mate[] = [];
+  for (let index = 0; index < randomInt(3, 4); index++) {
+    const mate = getMateFromMates(mateId, possibleMates, chosenMates);
+    chosenMates.push(mate);
+  }
+
+  chosenMates = rmDuplicates(chosenMates);
+
+  await Promise.all(
+    chosenMates.map(async (mate: Mate): Promise<void> => {
+      await matemeetDAO.create({ mateid: mate.id, meetid: newMeet.id, opened: false, rating: 0 });
+    })
+  );
+  //add requested Mate to Meet
+  await matemeetDAO.create({ mateid: mateId, meetid: newMeet.id, opened: false, rating: 0 });
+  console.log(chosenMates);
+  /*
   //find MeetMates
   const meetMates: ReturnMate[] = [];
   const mates = await mateDAO.findAll({ active: true });
@@ -135,11 +152,11 @@ async function createNewMeet(mateId: string, req: express.Request): Promise<void
       age: new Date().getFullYear() - new Date(mate.birthday).getFullYear()
     });
   }
-
+*/
   //return { id: newMeet.id, name: newMeet.name, mates: meetMates, opened: false };
 }
 
-function getMateFromMates(mateId: string, mates: Mate[], chosenMates: ReturnMate[]): Mate {
+function getMateFromMates(mateId: string, mates: Mate[], chosenMates: Mate[]): Mate {
   const mate = mates[randomInt(mates.length - 1)];
   if (mate.id === mateId) return getMateFromMates(mateId, mates, chosenMates);
 
@@ -148,6 +165,11 @@ function getMateFromMates(mateId: string, mates: Mate[], chosenMates: ReturnMate
     if (mate.id === cMate.id) return getMateFromMates(mateId, mates, chosenMates);
   });
   return mate;
+}
+
+function rmDuplicates(chosenMates: Mate[]): Mate[] {
+  chosenMates = chosenMates.filter((value, index, self) => index === self.findIndex(t => t.id === value.id));
+  return chosenMates;
 }
 
 export default router;
