@@ -127,7 +127,7 @@ router.post('/sign-up', async (req, res) => {
       token.code +
       '  ' +
       'Or verify with this link: ' +
-      'http://localhost:3000/api/confirm/' +
+      'https://localhost:3000/api/confirm/' +
       createdUser.id +
       '/' +
       token.token

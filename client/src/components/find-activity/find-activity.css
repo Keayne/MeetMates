@@ -98,6 +98,10 @@
     justify-content: center;
   }
 
+  .btn {
+    margin-top: 5px;
+  }
+
   .activity-container {
     /* Change flex direction to column when too small*/
     margin-top: 16px;
