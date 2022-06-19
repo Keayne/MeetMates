@@ -115,7 +115,7 @@ router.post('/changeName', authService.authenticationMiddleware, async (req, res
   }
   if (!validatorService.validateUserInput(req.body.newName)) {
     res
-      .status(401)
+      .status(400)
       .json({ message: `Meet name "${req.body.newName}" not allowed ` })
       .end();
     return;

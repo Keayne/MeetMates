@@ -97,16 +97,10 @@ async function createNewMeet(mateId: string, req: express.Request): Promise<void
   const possibleMates = await mateDAO.findAll({ active: true });
   let chosenMates: Mate[] = [];
   const rNumber = await randomInt(2, 4);
-  console.log('Create Meet size: ' + rNumber);
-
-  let whileNumber = 0;
-  console.log('possibleMates: ' + possibleMates.length);
 
   while (rNumber > chosenMates.length) {
-    console.log('itteration: ' + whileNumber);
     const mate = getMateFromMates(mateId, possibleMates, chosenMates);
     chosenMates.push(mate);
-    whileNumber++;
   }
 
   chosenMates = rmDuplicates(chosenMates);
@@ -122,16 +116,13 @@ async function createNewMeet(mateId: string, req: express.Request): Promise<void
 
 function getMateFromMates(mateId: string, mates: Mate[], chosenMates: Mate[]): Mate {
   const randomNumber = randomInt(0, mates.length);
-  console.log('GetMateFromMates random Number: ' + randomNumber);
   const mate = mates[randomNumber];
   if (mate.id === mateId) {
-    console.log('Got requested mate for meet');
     return getMateFromMates(mateId, mates, chosenMates);
   }
 
   //check if Mate is already in Meet
   if (containsMate(mate, chosenMates)) {
-    console.log('mate already in Meet');
     return getMateFromMates(mateId, mates, chosenMates);
   }
 
