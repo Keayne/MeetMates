@@ -25,8 +25,7 @@
 
 }
 */
-
-.meetingUser > img{
+.imgContainer{
     border-radius: 16px;
     max-width: 32px;
     max-height: 32px;
@@ -35,6 +34,13 @@
     flex-shrink: 0;
 }
 
+.mateImg{
+    border-radius: 16px;
+    min-width:32px;
+    min-height:32px;
+    max-width: 32px;
+    max-height: 32px;
+}
 .meetingUser > *{
     margin: 8px;
 }
