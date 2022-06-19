@@ -33,8 +33,8 @@
   width: 46%;
 }
 
-.activity-container:last-child {
-  margin-bottom: 16px;
+.activity-outer:last-child {
+  margin-bottom: 100px;
 }
 
 .activity-header {
