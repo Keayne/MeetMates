@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import config from './config.js';
 
 export class UserSession {
+  uuid: string;
   name: string;
   firstname: string;
   email: string;
@@ -18,6 +19,7 @@ export class UserSession {
 
   constructor() {
     const uuid = uuidv4();
+    this.uuid = uuid;
     this.name = `name-TESTACCOUNT`;
     this.firstname = `firstname-TESTACCOUNT`;
     this.email = `email_${uuid}@example.org`;

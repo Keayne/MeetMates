@@ -11,13 +11,13 @@ describe('app-sign-in', () => {
     expect(h1Elem.innerText).to.equal('Login');
   });
 
-  it('should redner the input "E-Mail"', async () => {
+  it('should render the input "E-Mail"', async () => {
     const element = await fixture('<app-sign-in></app-sign-in>');
     const inputElement = element.shadowRoot!.getElementById('email') as HTMLInputElement;
     expect(inputElement).to.have.property('type', 'email');
   });
 
-  it('should redner the input "Password"', async () => {
+  it('should render the input "Password"', async () => {
     const element = await fixture('<app-sign-in></app-sign-in>');
     const inputElement = element.shadowRoot!.getElementById('password') as HTMLInputElement;
     expect(inputElement).to.have.property('type', 'password');

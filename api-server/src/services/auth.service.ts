@@ -1,4 +1,4 @@
-/* Autor: Valentin Lieberknecht */
+/* Autor: Prof. Dr. Norman Lahme-Hütig (FH Münster) */
 
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
@@ -22,7 +22,7 @@ class AuthService {
 
   createAndSetToken(userClaimSet: Record<string, unknown>, res: Response) {
     const token = jwt.sign(userClaimSet, SECRET, { algorithm: 'HS256', expiresIn: '1h' });
-    res.cookie('jwt-token', token, { sameSite: 'lax', httpOnly: true, secure: true });
+    res.cookie('jwt-token', token, { sameSite: 'lax', httpOnly: false, secure: false });
   }
 
   verifyToken(req: Request, res: Response) {

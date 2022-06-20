@@ -17,7 +17,7 @@ class DeleteProfileComponent extends PageMixin(LitElement) {
       const response = await httpClient.delete('/delete');
       if (response.status === 200) {
         this.showNotification('Profile deleted');
-        router.navigate('/');
+        setTimeout(() => router.navigate('/'));
         location.reload();
       }
     }
@@ -25,11 +25,11 @@ class DeleteProfileComponent extends PageMixin(LitElement) {
 
   render() {
     return html`${this.renderNotification()}
-      <div class="section">
+      <form>
         <h1>Delete your Profile</h1>
         <p>Do you really want to delete your profile?</p>
         <p>All your data gets deleted. Forever.</p>
         <button type="button" @click="${this.deleteProfile}">Yes remove my account!</button>
-      </div> `;
+      </form> `;
   }
 }

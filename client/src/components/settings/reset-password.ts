@@ -38,7 +38,7 @@ class ResetPasswordComponent extends PageMixin(LitElement) {
           <span>${this.passwordCheckMessage}</span>
         </div>
         <div>
-          <button type="button" @click="${this.submit}">Senden</button>
+          <button type="button" @click="${this.submit}">Send</button>
         </div>
       </form>
     `;
@@ -75,7 +75,7 @@ class ResetPasswordComponent extends PageMixin(LitElement) {
   checkPassword() {
     if (!this.regex.test(this.passwordElement.value)) {
       this.passwordMessage =
-        'Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters';
+        'Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters, no withespaces';
     } else {
       this.passwordMessage = 'good password!';
     }

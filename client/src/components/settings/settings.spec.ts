@@ -24,6 +24,6 @@ describe('app-settings', () => {
     expect(anchorElements[0].text).to.eq('Edit Profile');
     expect(anchorElements[1].text).to.eq('Change Email');
     expect(anchorElements[2].text).to.eq('Change Password');
-    expect(anchorElements[3].text).to.eq('Delete profile');
+    expect(anchorElements[3].text).to.eq('Delete Profile');
   });
 });

@@ -17,7 +17,12 @@ describe('app-change-password', () => {
     sinon.restore();
   });
 
-  it('should redner the input elements', async () => {
+  it('should render the title "Register"', async () => {
+    const h1Elem = element.shadowRoot!.querySelector('h1') as HTMLElement;
+    expect(h1Elem.innerHTML).to.eq('Change Password');
+  });
+
+  it('should render the input elements', async () => {
     const currentPasswordElement = element.shadowRoot!.getElementById('currentPassword') as HTMLInputElement;
     expect(currentPasswordElement).to.have.property('type', 'password');
     const passwordElement = element.shadowRoot!.getElementById('password') as HTMLInputElement;

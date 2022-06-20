@@ -1,4 +1,4 @@
-/* Autor: Valentin Lieberknecht */
+/* Autor: Prof. Dr. Norman Lahme-Hütig (FH Münster) */
 
 import { Entity } from './entity.js';
 

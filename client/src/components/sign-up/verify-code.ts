@@ -62,7 +62,7 @@ class VerifyCodeComponent extends PageMixin(LitElement) {
           <input id="code" type="number" placeholder="Verification Code" autofocus required />
         </div>
         <div>
-          <button type="button" @click="${this.submit}">Senden</button>
+          <button type="button" @click="${this.submit}">Send</button>
         </div>
       </form>
     `;

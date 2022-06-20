@@ -1,5 +1,3 @@
-/* Autor: Valentin Lieberknecht */
-
 import pg from 'pg';
 import { Express } from 'express';
 import { PsqlGenericDAO } from './models/psql-generic.dao.js';
@@ -17,40 +15,38 @@ import { Message } from './models/message.js';
 import { Report } from './models/report.js';
 import { Rating } from './models/rating.js';
 import { Verify } from './models/verify.js';
+import { InMemoryGenericDAO } from './models/in-memory-generic.dao.js';
+import { InMemoryUniversalDAO } from './models/in-memory-universal.dao.js';
 
 const config = JSON.parse(fs.readFileSync(new URL('../config.json', import.meta.url), 'utf-8'));
 const { Client } = pg;
 
 export default async function startDB(app: Express) {
-  return await startPsql(app);
+  switch (config.db.use) {
+    case 'in-memory-db':
+      return await startInMemoryDB(app);
+    case 'psql':
+      return await startPsql(app);
+    default:
+      return await startPsql(app);
+  }
 }
 
-// async function startInMemoryDB(app: Express) {
-//   // TODO: DAOs erzeugen
-//   return async () => Promise.resolve();
-// }
-
-// async function startMongoDB(app: Express) {
-//   const client = await connectToMongoDB();
-//   const db = client.db('myapp');
-//   // TODO: DAOs erzeugen
-//   return async () => await client.close();
-// }
-
-// async function connectToMongoDB() {
-//   const url = `mongodb://${config.db.connect.host}:${config.db.connect.port.mongodb}`;
-//   const client = new MongoClient(url, {
-//     auth: { username: config.db.connect.user, password: config.db.connect.password },
-//     authSource: config.db.connect.database
-//   });
-//   try {
-//     await client.connect();
-//   } catch (err) {
-//     console.log('Could not connect to MongoDB: ', err);
-//     process.exit(1);
-//   }
-//   return client;
-// }
+async function startInMemoryDB(app: Express) {
+  app.locals.mateDAO = new InMemoryGenericDAO<Mate>();
+  app.locals.descriptionDAO = new InMemoryGenericDAO<Description>();
+  //app.locals.matedescriptionDAO = new InMemoryUniversalDAO<MateDescription>();
+  app.locals.interestDAO = new InMemoryGenericDAO<Interest>();
+  //app.locals.mateinterestDAO = new InMemoryUniversalDAO<MateInterest>();
+  app.locals.meetDAO = new InMemoryGenericDAO<Meet>();
+  //app.locals.matemeetDAO = new InMemoryUniversalDAO<MateMeet>();
+  app.locals.activityDAO = new InMemoryGenericDAO<Activity>();
+  app.locals.chatDAO = new InMemoryGenericDAO<Message>();
+  //app.locals.verifyDAO = new InMemoryUniversalDAO<Verify>();
+  app.locals.reportDAO = new InMemoryGenericDAO<Report>();
+  //app.locals.ratingDAO = new InMemoryUniversalDAO<Rating>();
+  return async () => Promise.resolve();
+}
 
 async function startPsql(app: Express) {
   const client = await connectToPsql();

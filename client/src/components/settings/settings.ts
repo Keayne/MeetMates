@@ -34,7 +34,7 @@ class SettingsComponent extends PageMixin(LitElement) {
         <a href="/mates/settings/edit-profile">Edit Profile</a>
         <a href="/mates/settings/change-email">Change Email</a>
         <a href="/mates/settings/change-password">Change Password</a>
-        <a href="/mates/settings/delete-profile">Delete profile</a>
+        <a href="/mates/settings/delete-profile">Delete Profile</a>
       </div>
       <div class="main">${this.currentComponent()}</div> `;
   }

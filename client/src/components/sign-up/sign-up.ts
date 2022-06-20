@@ -80,7 +80,7 @@ class SignUpComponent extends PageMixin(LitElement) {
   checkPassword() {
     if (!this.regex.test(this.passwordElement.value)) {
       this.passwordMessage =
-        'Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters';
+        'Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters, no withespaces';
     } else {
       this.passwordMessage = 'good password!';
     }
@@ -146,7 +146,7 @@ class SignUpComponent extends PageMixin(LitElement) {
           <option value="diverse">Diverse</option>
         </select>
         <label>Birthday:</label>
-        <input type="date" id="birthday" required>
+        <input type="date" id="birthday" max=${new Date().toISOString().split('T')[0]} required>
         <label>Email:</label>
         <input type="email" id="email" required />
         <label>Password:</label>

@@ -85,7 +85,7 @@ class SignUpComponent extends PageMixin(LitElement) {
     this.imgSrc = await toBase64(input.files![0]);
   }
 
-  submit() {
+  async submit() {
     if (this.form.checkValidity()) {
       const accountData = {
         mate: {
@@ -99,8 +99,10 @@ class SignUpComponent extends PageMixin(LitElement) {
         descriptions: this.selectedDescriptions
       };
       try {
-        httpClient.put('/edit', accountData);
-        router.navigate('/');
+        const response = await httpClient.put('/edit', accountData);
+        const json = await response.json();
+        this.showNotification(json.message, 'info');
+        setTimeout(() => router.navigate('/'), 1500);
       } catch (e) {
         this.showNotification((e as Error).message, 'error');
       }
@@ -126,7 +128,7 @@ class SignUpComponent extends PageMixin(LitElement) {
           <option value="diverse">Diverse</option>
         </select>
         <label>Birthday:</label>
-        <input type="date" id="birthday" required>
+        <input type="date" id="birthday"  max=${new Date().toISOString().split('T')[0]} required>
         <h3>Rate yourself here<h3>
         ${this.descriptions.map(
           e =>

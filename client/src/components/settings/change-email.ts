@@ -52,8 +52,8 @@ class ChangeEmailComponent extends PageMixin(LitElement) {
           email: this.emailElement.value
         });
         const json = await response.json();
-        router.navigate('/mates/verify-code/' + json.id);
         this.showNotification(json.message, 'info');
+        setTimeout(() => router.navigate('/mates/verify-code/' + json.id));
       } catch (e) {
         console.log(e);
         this.showNotification((e as Error).message, 'error');

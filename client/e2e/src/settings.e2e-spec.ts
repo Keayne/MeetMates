@@ -29,8 +29,22 @@ describe('settings', () => {
     await context.close();
   });
 
-  it('should send a message', async () => {
+  it('should change to all sites', async () => {
     await userSession.registerUser();
+    await page.goto(config.clientUrl('/mates/settings/edit-profile'));
+    await page.goto(config.clientUrl('/mates/settings/edit-profile'));
+    // Click a:has-text("Edit Profile")
+    await page.locator('a:has-text("Edit Profile")').click();
+    expect(page.url()).to.eq(config.clientUrl('/mates/settings/edit-profile'));
+    // Click text=Change Email
+    await page.locator('text=Change Email').click();
+    expect(page.url()).to.eq(config.clientUrl('/mates/settings/change-email'));
+    // Click text=Change Password
+    await page.locator('text=Change Password').click();
+    expect(page.url()).to.eq(config.clientUrl('/mates/settings/change-password'));
+    // Click text=Delete Profile
+    await page.locator('text=Delete Profile').click();
+    expect(page.url()).to.eq(config.clientUrl('/mates/settings/delete-profile'));
 
     await userSession.deleteUser();
   });

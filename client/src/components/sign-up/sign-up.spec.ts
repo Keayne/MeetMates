@@ -23,7 +23,7 @@ describe('app-sign-up', () => {
     expect(h1Elem.innerHTML).to.eq('Register');
   });
 
-  it('should redner the inputs', async () => {
+  it('should render the inputs', async () => {
     const firstnameElement = element.shadowRoot!.getElementById('firstname') as HTMLInputElement;
     expect(firstnameElement).to.have.property('type', 'text');
     const nameElement = element.shadowRoot!.getElementById('name') as HTMLInputElement;
@@ -43,8 +43,6 @@ describe('app-sign-up', () => {
   });
 
   it('should render the interests', async () => {
-    const elem = (await fixture('<app-sign-up></app-sign-up>')) as LitElement;
-    await elem.updateComplete;
     const interests = [
       { id: '66939399-b094-4966-b2a7-b8bfd1b4ca6b', createdAt: '1653491900929', text: 'Schwimmen', sort: 'Sport' },
       { id: '922e018f-f6a0-4674-b4af-8b3d8fe37afc', createdAt: '1653491900929', text: 'Segeln', sort: 'Sport' },
@@ -77,10 +75,10 @@ describe('app-sign-up', () => {
         }
       } as Response)
     );
-    element.requestUpdate();
-    await element.updateComplete;
-    const interestsElements = element.shadowRoot!.querySelectorAll('.pill');
+    const elem = (await fixture('<app-sign-up></app-sign-up>')) as LitElement;
+    await elem.updateComplete;
 
+    const interestsElements = elem.shadowRoot!.querySelectorAll('.pill');
     expect(interestsElements.length).to.equal(23);
   });
 });

@@ -26,7 +26,7 @@ class RequestPasswordReset extends PageMixin(LitElement) {
         </div>
         <br />
         <div>
-          <button type="button" @click="${this.submit}">Senden</button>
+          <button type="button" @click="${this.submit}">Send</button>
         </div>
       </form>
     `;
@@ -37,8 +37,8 @@ class RequestPasswordReset extends PageMixin(LitElement) {
       try {
         const response = await httpClient.get('resetpassword/' + this.emailElement.value);
         const json = await response.json();
-        router.navigate('/meets');
         this.showNotification(json.message, 'info');
+        setTimeout(() => router.navigate('/meets'), 1500);
       } catch (e) {
         console.log(e);
         this.showNotification((e as Error).message, 'error');

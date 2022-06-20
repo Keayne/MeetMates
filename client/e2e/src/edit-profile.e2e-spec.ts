@@ -5,7 +5,7 @@ import { Browser, BrowserContext, chromium, Page } from 'playwright';
 import config from './config.js';
 import { UserSession } from './user-session.js';
 
-describe('chat', () => {
+describe('settings/change-password', () => {
   let browser: Browser;
   let context: BrowserContext;
   let page: Page;
@@ -29,13 +29,19 @@ describe('chat', () => {
     await context.close();
   });
 
-  it('should send a message', async () => {
+  it('should edit profile', async () => {
     await userSession.registerUser();
-    await page.goto(config.clientUrl('/chat/0ea6639d-c6d5-4030-bb1b-e687ecb850fb'));
-    await page.locator('[placeholder="Your message\\.\\."]').click();
-    await page.locator('[placeholder="Your message\\.\\."]').fill('Hello');
-    await page.locator('text=Send').click();
-    expect(await page.locator('text="Hello"').count()).to.equal(1);
+    await page.goto(config.clientUrl('/mates/settings/edit-profile'));
+    await page.locator('#firstname').fill('NEWNAME');
+    await page.locator('#name').click();
+    await page.locator('#name').fill('NEWNAME');
+    await page.locator('select').selectOption('diverse');
+    await page.locator('text=Puzzeln').click();
+    // Click text=Update Profile
+    await Promise.all([page.waitForResponse('**/edit'), page.locator('text=Update Profile').click()]);
+
+    expect(await page.locator('text="Profile updated successfully"').count()).to.equal(1);
+
     await userSession.deleteUser();
   });
 });

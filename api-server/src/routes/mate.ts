@@ -235,6 +235,7 @@ router.put('/edit', authService.authenticationMiddleware, async (req, res) => {
       value: e.value
     });
   });
+  res.status(200).send({ message: 'Profile updated successfully' });
 });
 
 router.get('/confirm/:id/:token', async (req, res) => {

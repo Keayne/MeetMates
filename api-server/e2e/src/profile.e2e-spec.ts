@@ -3,7 +3,7 @@
 import { expect } from 'chai';
 import { UserSession } from './user-session.js';
 
-describe('/chat', () => {
+describe('/profile', () => {
   let userSession: UserSession;
 
   beforeEach(async () => {
