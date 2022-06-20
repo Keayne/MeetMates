@@ -32,6 +32,22 @@ describe('settings/change-password', () => {
   it('should edit profile', async () => {
     await userSession.registerUser();
     await page.goto(config.clientUrl('/mates/settings/edit-profile'));
+    await page.locator('#firstname').fill('NEWNAME%&/');
+    await page.locator('#name').click();
+    await page.locator('#name').fill('NEWNAME');
+    await page.locator('select').selectOption('diverse');
+    await page.locator('text=Puzzeln').click();
+    // Click text=Update Profile
+    await Promise.all([page.waitForResponse('**/edit'), page.locator('text=Update Profile').click()]);
+
+    expect(await page.locator('text="Firstname has illegal characters."').count()).to.equal(1);
+
+    await userSession.deleteUser();
+  });
+
+  it('should edit profile', async () => {
+    await userSession.registerUser();
+    await page.goto(config.clientUrl('/mates/settings/edit-profile'));
     await page.locator('#firstname').fill('NEWNAME');
     await page.locator('#name').click();
     await page.locator('#name').fill('NEWNAME');

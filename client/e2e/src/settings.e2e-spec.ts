@@ -32,7 +32,6 @@ describe('settings', () => {
   it('should change to all sites', async () => {
     await userSession.registerUser();
     await page.goto(config.clientUrl('/mates/settings/edit-profile'));
-    await page.goto(config.clientUrl('/mates/settings/edit-profile'));
     // Click a:has-text("Edit Profile")
     await page.locator('a:has-text("Edit Profile")').click();
     expect(page.url()).to.eq(config.clientUrl('/mates/settings/edit-profile'));

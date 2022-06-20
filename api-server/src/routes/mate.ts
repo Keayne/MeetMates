@@ -65,10 +65,10 @@ router.post('/sign-up', async (req, res) => {
     return sendErrorMessage('The passwords do not match.');
   }
 
-  const filter: Partial<Mate> = { email: req.body.email };
-  if (await mateDAO.findOne(filter)) {
+  if (await mateDAO.findOne({ email: req.body.email })) {
     return sendErrorMessage('An account already exists with the given email address.');
   }
+
   if (emailRegex.test(String(req.body.email)) == false) {
     return sendErrorMessage('Email format invalid.');
   }
@@ -127,7 +127,7 @@ router.post('/sign-up', async (req, res) => {
       token.code +
       '  ' +
       'Or verify with this link: ' +
-      'https://localhost:3000/api/confirm/' +
+      'http://localhost:3000/api/confirm/' +
       createdUser.id +
       '/' +
       token.token
@@ -217,6 +217,14 @@ router.put('/edit', authService.authenticationMiddleware, async (req, res) => {
   if (req.body.password || req.body.email) {
     sendErrorMessage('wrong data');
   }
+  if (stringRegex.test(String(req.body.mate.name)) == false) {
+    return sendErrorMessage('Name has illegal characters.');
+  }
+
+  if (stringRegex.test(String(req.body.mate.firstname)) == false) {
+    return sendErrorMessage('Firstname has illegal characters.');
+  }
+
   await mateDAO.update(req.body.mate);
 
   mateinterestDAO.deleteAll({ mateid: res.locals.user.id });
@@ -296,6 +304,11 @@ router.patch('/changeemail', authService.authenticationMiddleware, async (req, r
 
   if (emailRegex.test(String(req.body.email)) == false) {
     sendErrorMessage('Email format invalid.');
+    return;
+  }
+
+  if (await mateDAO.findOne({ email: req.body.email })) {
+    sendErrorMessage('An account already exists with the given email address.');
     return;
   }
 

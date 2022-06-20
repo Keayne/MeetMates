@@ -114,7 +114,8 @@ class SignUpComponent extends PageMixin(LitElement) {
           try {
             const response = await httpClient.post('/sign-up', accountData);
             const json = await response.json();
-            router.navigate('/mates/verify-code/' + json.id);
+            this.showNotification(json.message, 'info');
+            setTimeout(() => router.navigate('/mates/verify-code/' + json.id), 1500);
           } catch (e) {
             this.showNotification((e as Error).message, 'error');
           }
