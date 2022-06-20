@@ -129,7 +129,6 @@ router.patch('/:id', authService.authenticationMiddleware, async (req, res) => {
 });
 
 async function updateChosenActivity(req: express.Request, res: express.Response) {
-  console.log('entered update chosen activity.');
   const ratingDAO: UniversalDAO<Rating> = req.app.locals.ratingDAO;
 
   //get meetId
@@ -176,31 +175,22 @@ async function updateChosenActivity(req: express.Request, res: express.Response)
       numberOfRatings++;
       rating += element.rating;
     });
-    console.log(
-      `Activity ${activity?.title} has received ${numberOfRatings} votes with an avgRating of ${rating}. Number of mates in meet: ${numberOfMatesInMeet} and ${rating} ?? ${eligibleLeadingActivityCalcSUm}`
-    );
+
     //eligible activity
     if (numberOfRatings === numberOfMatesInMeet && rating > eligibleLeadingActivityCalcSUm) {
-      console.log(
-        `Activity ${activity?.title} with ID ${activity?.id} is eligible and ${rating} > ${eligibleLeadingActivityCalcSUm}`
-      );
       eligibleLeadingActivity = activity?.id ? activity.id : '0';
       eligibleLeadingActivityCalcSUm = rating;
     }
   });
 
   //set attr. of chosen activity to 1
-  console.log(`ACTIVITY TO BE CHOSEN: ${eligibleLeadingActivity}`);
+
   const chosenActivity = await activityDAO.findOne({ id: eligibleLeadingActivity });
-  console.log(`DB REQUEST FOR ACTIVITY TO BE CHOSEN RETURNED ${chosenActivity}`);
+
   if (chosenActivity) {
-    console.log(`**SET CHOSEN ACTIVITY`);
     chosenActivity.chosen = 1;
     delete chosenActivity.image;
     activityDAO.update(chosenActivity);
-    console.log(`**UDPATED CHOSEN ACTIVITY`);
-  } else {
-    console.log(`CRITICAL: DID NOT FIND CHOSEN ACTIVITY`);
   }
 }
 

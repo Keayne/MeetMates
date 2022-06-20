@@ -41,26 +41,26 @@ describe('/meet/find-activity/', () => {
     await context.close();
   });
 
-  it('should find div "activity-header"', async () => {
-    const availableActivitiesHeader = await page.locator('.activity-header');
+  it('should find class ".open-button"', async () => {
+    const availableActivitiesHeader = page.locator('.open-button');
     expect(availableActivitiesHeader).to.exist;
   });
 
-  it('should find class ".open-button"', async () => {
-    const availableActivitiesHeader = await page.locator('.open-button');
+  it('should find div "activity-header"', async () => {
+    const availableActivitiesHeader = page.locator('.activity-header');
     expect(availableActivitiesHeader).to.exist;
   });
 
   it('should find class ".open-button", click it, and find element with ID "myForm" that is visible', async () => {
-    const availableActivitiesHeader = await page.locator('.open-button');
+    const availableActivitiesHeader = page.locator('.open-button');
     await availableActivitiesHeader.click({ delay: 50 });
 
-    const form = await page.locator('#myForm:visible');
+    const form = page.locator('#myForm:visible');
     expect(form).to.exist;
   });
 
   it('should find class ".open-button", click it, find title field with ID "title" and assure it works', async () => {
-    const availableActivitiesHeader = await page.locator('.open-button');
+    const availableActivitiesHeader = page.locator('.open-button');
     await availableActivitiesHeader.click({ delay: 50 });
 
     await page.click('input[name="title"]'); //focus input
@@ -71,7 +71,7 @@ describe('/meet/find-activity/', () => {
   });
 
   it('should find class ".open-button", click it, find field with ID "inputimage"', async () => {
-    const availableActivitiesHeader = await page.locator('.open-button');
+    const availableActivitiesHeader = page.locator('.open-button');
     await availableActivitiesHeader.click({ delay: 50 });
 
     const form = await page.locator('#inputimage');
@@ -79,38 +79,38 @@ describe('/meet/find-activity/', () => {
   });
 
   it('should find class ".open-button", click it, find field with ID "description"', async () => {
-    const availableActivitiesHeader = await page.locator('.open-button');
+    const availableActivitiesHeader = page.locator('.open-button');
     await availableActivitiesHeader.click({ delay: 50 });
 
-    const form = await page.locator('#description');
+    const form = page.locator('#description');
     expect(form).to.exist;
   });
 
   it('should find class ".open-button", click it, find field with ID "category"', async () => {
-    const availableActivitiesHeader = await page.locator('.open-button');
+    const availableActivitiesHeader = page.locator('.open-button');
     await availableActivitiesHeader.click({ delay: 50 });
 
-    const form = await page.locator('#category');
+    const form = page.locator('#category');
     expect(form).to.exist;
   });
 
   it('should find class ".open-button", click it, find field with ID "motivationTitle"', async () => {
-    const availableActivitiesHeader = await page.locator('.open-button');
+    const availableActivitiesHeader = page.locator('.open-button');
     await availableActivitiesHeader.click({ delay: 50 });
 
-    const form = await page.locator('#motivationTitle');
+    const form = page.locator('#motivationTitle');
     expect(form).to.exist;
   });
 
   it('should click the image button and upload an image', async () => {
-    const availableActivitiesHeader = await page.locator('.open-button');
+    const availableActivitiesHeader = page.locator('.open-button');
     await availableActivitiesHeader.click({ delay: 50 });
 
     await page.setInputFiles('#inputimage', 'e2e/src/photo.jpg');
   });
 
   it('should successfully create an activity', async () => {
-    const availableActivitiesHeader = await page.locator('.open-button');
+    const availableActivitiesHeader = page.locator('.open-button');
     await availableActivitiesHeader.click({ delay: 50 });
 
     //fill title
@@ -130,7 +130,7 @@ describe('/meet/find-activity/', () => {
     await page.fill('input[name="motivationTitle"]', 'motTitle');
 
     await page.locator('#createBtn').click();
-    const activity = await page.locator('#card');
+    const activity = page.locator('#card');
     expect(activity).to.exist;
   });
 

@@ -6,6 +6,7 @@ import { MateMeet } from '../models/matemeet.js';
 import { UniversalDAO } from '../models/universal.dao.js';
 import { Meet } from '../models/meet.js';
 import { cryptoService } from '../services/crypto.service.js';
+import { validatorService } from '../services/validation.service.js';
 
 const router = express.Router();
 
@@ -65,6 +66,27 @@ router.post('/:id', authService.authenticationMiddleware, async (req, res) => {
   //end check
   const activityDAO: GenericDAO<Activity> = req.app.locals.activityDAO;
   const utc = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
+
+  //validate user input
+  if (!validatorService.validateUserInput(req.body.title)) {
+    res
+      .status(400)
+      .json({ message: `Title "${req.body.title}" not allowed ` })
+      .end();
+  }
+  if (!validatorService.validateUserInput(req.body.description)) {
+    res
+      .status(400)
+      .json({ message: `Description "${req.body.description}" not allowed ` })
+      .end();
+  }
+  if (!validatorService.validateUserInput(req.body.motivationtitle)) {
+    res
+      .status(400)
+      .json({ message: `Motivation Title "${req.body.motivationtitle}" not allowed ` })
+      .end();
+  }
+
   const createdActivity = await activityDAO.create({
     title: cryptoService.encrypt(req.body.title),
     description: cryptoService.encrypt(req.body.description),
