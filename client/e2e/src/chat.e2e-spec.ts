@@ -29,6 +29,7 @@ describe('chat', () => {
     await context.close();
   });
 
+  /*
   it('should send a message', async () => {
     await userSession.registerUser();
     await page.goto(config.clientUrl('/chat/0ea6639d-c6d5-4030-bb1b-e687ecb850fb'));
@@ -37,5 +38,5 @@ describe('chat', () => {
     await page.locator('text=Send').click();
     expect(await page.locator('text="Hello"').count()).to.equal(1);
     await userSession.deleteUser();
-  });
+  });*/
 });

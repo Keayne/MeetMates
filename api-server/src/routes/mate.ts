@@ -140,6 +140,9 @@ router.post('/sign-in', async (req, res) => {
   const sendErrorMessage = (message: string) => {
     res.status(400).json({ message });
   };
+  const sendUnauthorizedMessage = (message: string) => {
+    res.status(401).json({ message });
+  };
   const mateDAO: GenericDAO<Mate> = req.app.locals.mateDAO;
   const filter: Partial<Mate> = { email: req.body.email };
   const errors: string[] = [];
@@ -158,7 +161,7 @@ router.post('/sign-in', async (req, res) => {
 
   if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
     authService.removeToken(res);
-    sendErrorMessage('E-Mail or Password not correct.');
+    sendUnauthorizedMessage('Incorrect email or password.');
     return;
   }
 

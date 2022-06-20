@@ -43,12 +43,12 @@ describe('/sign-in', () => {
     expect(response.status()).to.equal(401);
   });
 
-  it('should render "E-Mail or Password not correct." on login failure', async () => {
+  it('should render "Incorrect email or password." on login failure', async () => {
     await page.goto(config.clientUrl('/mates/sign-in'));
     await page.fill('input:below(:text("E-Mail"))', userSession.email);
     await page.fill('input:below(:text("Password"))', userSession.password);
     await Promise.all([page.waitForResponse('**/sign-in'), page.click('button:text("Login")')]);
-    expect(await page.locator('text="E-Mail or Password not correct."').count()).to.equal(1);
+    expect(await page.locator('text="Incorrect email or password."').count()).to.equal(1);
   }).timeout(3000);
 
   it('should succeed given correct credentials', async () => {
