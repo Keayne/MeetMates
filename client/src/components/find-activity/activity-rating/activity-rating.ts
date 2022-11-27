@@ -41,7 +41,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
             type="range"
             min="0"
             max="100"
-            value=${this.activity.avgRating ? this.activity.avgRating : 0}
+            .value=${this.activity.avgRating ? this.activity.avgRating : 0}
             class="slider"
             id="overallRating"
             disabled
@@ -53,7 +53,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
             type="range"
             min="0"
             max="100"
-            value=${this.activity.personalRating ? this.activity.personalRating : '0'}
+            .value=${this.activity.personalRating ? this.activity.personalRating : '0'}
             class="slider"
             id="myRating"
             @change="${(e: Event) => this.readcurrentSliderValue(e)}"
