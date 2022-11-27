@@ -19,12 +19,7 @@ class ActivityRatingComponent extends PageMixin(LitElement) {
   private currentSliderValue = -1;
 
   async updated() {
-    /*
-    console.log(
-      `Personal rating for ${this.activity.title} is ${this.activity.personalRating}, avgRating ${this.activity.avgRating}, currentSliderValue ${this.currentSliderValue}`
-    );*/
     this.currentSliderValue = this.activity.personalRating ? this.activity.personalRating : 0;
-    //console.log(`Current slider value after: ${this.currentSliderValue}`);
 
     if (this.activity.deletepermission === false) this.deleteButton.style.display = 'none';
     else this.deleteButton.style.display = 'inline';
