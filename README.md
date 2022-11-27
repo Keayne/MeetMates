@@ -1,2 +1,3 @@
-# Team 10
+# Developed by Jonathan, Valentin and Arne. 
+# Part of the module "Web Engineering 1"
 
